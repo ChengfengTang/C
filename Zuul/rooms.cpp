@@ -4,11 +4,11 @@
 
 using namespace std;
 
-rooms::rooms (char* newname, char* newdescription)
-{
-  name = newname;
-  description = newdescription;
+#define createRoom(number, description) rooms* room##number = new rooms(#number, description);
 
+
+rooms::rooms (char* newname, char* newdescription) : name(newname), description(newdescription)
+{
 
 }
 
@@ -21,9 +21,10 @@ char* rooms::getdescription()
 {
   return description;
 }
+
 void rooms::additem(item* item)
 {
-  itemsintheroom.putsh_back(item);
+  itemsintheroom.push_back(item);
 }
 void rooms::checkitem()
 {
@@ -32,6 +33,12 @@ void rooms::checkitem()
       cout << (it*).name << endl;
     }
 }
+
+item* rooms::deleteitem(char* name) {
+  
+}
+
+
 rooms::~rooms()
 {
   delete []name;

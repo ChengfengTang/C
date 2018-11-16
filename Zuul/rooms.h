@@ -6,6 +6,13 @@
 
 using namespace std;
 
+enum class Direction {
+  North,
+  East,
+  South,
+  West
+}
+
 class rooms
 {
  public:
@@ -15,8 +22,10 @@ class rooms
   char* getdescription();
 
   void additem(item* item);
-  void checkitem();
-  void deleteitem(item* item);
+  void listitems();
+  item* deleteitem(item* item);
+
+  
   
   ~rooms();
   
@@ -24,7 +33,12 @@ class rooms
   
   char* name;
   char* description;
-  vector<item> itemsintheroom;
+  vector<item> items;
+
+  room* north = nullptr;
+  room* east = nullptr;
+  room* south = nullptr;
+  room* west = nullptr;
 
 
 };
