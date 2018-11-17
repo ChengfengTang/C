@@ -2,110 +2,123 @@
 #include <cstring>
 #include <vector>
 #include <stdlib.h>
-#include "rooms.h"
+#include "room.h"
+#include "item.h"
 using namespace std;
-
-
-struct item
-{
-  char name[10];
-  int roomnumber;
-};
-
 
 
 int main ()
 {
+  char* name;
+  char* input;
+  
   cout <<"Welcome to Chengfeng Tang's Zuul game! "<< endl;
   cout <<"There will be 5 items that you have to create at the beginning of the game!" << endl;
   cout << "and they will be randomly put into some of the 15 rooms." << endl;
   cout << "You will have to collect all of them at first!" << endl;
   cout << "and correctly put them back to the room where they belong to finish the game" << endl;
   cout << endl;
+  
 
-  item one;
+  name = new char[10];
+  int roomnumber = 0;
   cout << "What's the name of the first item you want to create?" << endl;
-  cin.get(one.name,10);
+  cin.get(name,10);
   cin.get();
-  cout << one.name << " is created. " << endl;
+  cout << name << " is created. " << endl;
   cout << endl;
-  one.roomnumber = rand() % 15 + 1;
-  cout << one.roomnumber << endl;
+  roomnumber = rand() % 15 + 1;
+  cout << roomnumber << endl;
+  item* one = new item(name,roomnumber);
+
   
+  name = new char[10];
+  roomnumber = 0;
   cout << "What's the name of the second item you want to create?" << endl;
-  item two;
-  cin >> two.name;
-  cout << two.name << " is created. " << endl;
+  cin.get(name,10);
+  cin.get();
+  cout << name << " is created. " << endl;
   cout << endl;
-  two.roomnumber = rand() % 15 + 1;
-  cout <<two.roomnumber << endl;
+  roomnumber = rand() % 15 + 1;
+  cout << roomnumber << endl;
+  item* two = new item(name,roomnumber);
 
- cout << "What's the name of the third item you want to create?" << endl;
-  item three;
-  cin >> three.name;
-  cout << three.name << " is created. " << endl;
-cout << endl;
- three.roomnumber = rand() % 15 + 1;
- cout <<three.roomnumber << endl;
   
-  cout << "What's the name of the fouth item you want to create?" << endl;
-  item four;
-  cin >> four.name;
-  cout << four.name << " is created. " << endl;
-cout << endl;
- four.roomnumber = rand() % 15 + 1;
- cout <<four.roomnumber << endl;
+  name = new char[10];
+  roomnumber = 0;
+  cout << "What's the name of the third item you want to create?" << endl;
+  cin.get(name,10);
+  cin.get();
+  cout << name << " is created. " << endl;
+  cout << endl;
+  roomnumber = rand() % 15 + 1;
+  cout << roomnumber << endl;
+  item* three = new item(name,roomnumber);
+
   
- 
+  name= new char[10];
+  roomnumber = 0;
+  cout << "What's the name of the fourth item you want to create?" << endl;
+  cin.get(name,10);
+  cin.get();
+  cout << name << " is created. " << endl;
+  cout << endl;
+  roomnumber = rand() % 15 + 1;
+  cout << roomnumber << endl;
+  item* four = new item(name,roomnumber);
+
+  
+  name = new char[10];
+  roomnumber = 0;
   cout << "What's the name of the fifth item you want to create?" << endl;
-  item* five = new item;
-  cin >> five.name;
-  cout << five.name << " is created. " << endl;
+  cin.get(name,10);
+  cin.get();
+  cout << name << " is created. " << endl;
   cout << endl;
-  five.roomnumber = rand() % 15 + 1;
-  cout <<five.roomnumber << endl;
+  roomnumber = rand() % 15 + 1;
+  cout << roomnumber << endl;
+  item* five = new item(name,roomnumber);
 
-
-  vector<item> items;
+  vector<item*> items;
   items.push_back(one);
   items.push_back(two);
   items.push_back(three);
   items.push_back(four);
   items.push_back(five);
 
-  vector<item> inventory;
+  vector<item*> inventory;
   
-  vector <rooms*> alltherooms;
+  vector <room*> alltherooms;
   
-  rooms* roomone = new rooms("one", "This is a room");
+  room* roomone = new room("one", "This is a room");
        
-  rooms* roomtwo = new rooms("two", "This is a room");
+  room* roomtwo = new room("two", "This is a room");
   
-  rooms* roomthree = new rooms("three", "This is a room");
+  room* roomthree = new room("three", "This is a room");
   
-  rooms* roomfour = new rooms("four", "This is a room");
+  room* roomfour = new room("four", "This is a room");
   
-  rooms* roomfive = new rooms("five", "This is a room");
+  room* roomfive = new room("five", "This is a room");
   
-  rooms* roomsix = new rooms("six", "This is a room");
+  room* roomsix = new room("six", "This is a room");
   
-  rooms* roomseven = new rooms("seven", "This is a room");
+  room* roomseven = new room("seven", "This is a room");
   
-  rooms* roomeight= new rooms("eight", "This is a room");
+  room* roomeight= new room("eight", "This is a room");
   
-  rooms* roomnine = new rooms("nine", "This is a room");
+  room* roomnine = new room("nine", "This is a room");
   
-  rooms* roomten = new rooms("ten", "This is a room");
+  room* roomten = new room("ten", "This is a room");
   
-  rooms* roomeleven = new rooms("eleven", "This is a room");
+  room* roomeleven = new room("eleven", "This is a room");
   
-  rooms* roomtwelve = new rooms("twelve", "This is a room");
+  room* roomtwelve = new room("twelve", "This is a room");
   
-  rooms* roomthirteen = new rooms("thirteen", "This is a room");
+  room* roomthirteen = new room("thirteen", "This is a room");
   
-  rooms* roomfourteen = new rooms("fourteen", "This is a room");
+  room* roomfourteen = new room("fourteen", "This is a room");
   
-  rooms* roomfifteen = new rooms("fifteen", "This is a room");
+  room* roomfifteen = new room("fifteen", "This is a room");
   
   alltherooms.push_back(roomone);
  
@@ -137,59 +150,177 @@ cout << endl;
  
   alltherooms.push_back(roomfifteen);
        
-  rooms* currentroom;
+  room* currentroom;
   currentroom = roomone;
-  
-  for (vector<item>::iterator it = items.begin(); it != items.end(); ++it) {
-    switch ((it)->roomnumber) {
-    case 1:
-      roomone.additem(*it);
+
+  for (vector<item*>::iterator it = items.begin(); it != items.end(); ++it) {
+    
+    switch ((*it)->getroomnumber())
+
+      {
+      case 1:
+      roomone->additem(*it);
       break;
-    case 2:
-      roomtwo.additem(*it);
+    
+      case 2:
+      roomtwo->additem(*it);
       break;
     case 3:
-      roomthree.additem(*it);
+      roomthree->additem(*it);
       break;
-    }
+    case 4:
+      roomfour->additem(*it);
+      break;
+    case 5:
+      roomfive->additem(*it);
+      break;
+    case 6:
+      roomsix->additem(*it);
+      break;
+    case 7:
+      roomseven->additem(*it);
+      break;
+    case 8:
+      roomeight->additem(*it);
+      break;
+    case 9:
+      roomnine->additem(*it);
+      break;
+    case 10:
+      roomten->additem(*it);
+      break;
+    case 11:
+      roomeleven->additem(*it);
+      break;
+    case 12:
+      roomtwelve->additem(*it);
+      break;
+    case 13:
+      roomthirteen->additem(*it);
+      break;
+    case 14:
+      roomfourteen->additem(*it);
+      break;
+    case 15:
+      roomfifteen->additem(*it);
+      break;
+      }
   }
 
-	
-  
-  cout << currentroom->getdescription() << endl;
+	  
+  while (true)
+    {
+      cout << endl;
+      cout << endl;
+      cout << endl;
+      cout << "You are currently in: Room " ;
+      cout <<  currentroom->getname()<< endl;
+      cout << currentroom->getdescription() << endl;
+      currentroom->start();
+      cout << endl;
+      cout << "What do you want to do?" << endl;
+      cout << "Type in a direction to go somewhere Ex. \"WEST\" " << endl;
+      cout << "Type in \"PICK\" if there is any items in the currentroom" << endl;
+      cout << "Type in \"DROP\" if you want to drop one of your items in the currentroom" << endl;
+      cout << "Type in \"INVENTORY\" to see what items you have with you" << endl;
+      cout << endl;
+      cout << endl;
+      cout << endl;
 
-  Game state;
-  
-  while (true) {
-    char input[100];
-    memset(input, '\0', sizeof(input));
-
-    cin.getline(input, sizeof(input));
-
-    
-    if (strcmp(input, "WHERE") == 0) {
-      Game.listExits();
-    }
-
-    if (strncmp(input, "PICKUP", 6)) {
-      char* name = input + 7;
       
-    }
+      
 
-    if (strncmp(input, "GO", 2) == 0) {
-      char* location = input + 3;
-      Direction dir;
-      if (strcmp(location, "NORTH") == 0) {
-	dir = Direction::North;
-      } else if (strcmp(location, "EAST") == 0) {
-	dir = Direction::South;
-      } else {
+
+      input = new char[100];
+      memset(input, '\0', sizeof(input));
+
+      cin.getline(input, 100);
+
+
+      if (strcmp(input, "PICK") == 0)
+      {
+	if (currentroom->checkitem() == true)
+	  {
+	    
+
+	    
+	    inventory.push_back(currentroom->itemsintheroom());
+	    
+	    //currentroom->deleteitem();
+	    
+	  }
+	else
+	  {
+	    cout << "There isn't any items in the room." << endl;
+	  }
+	      
+      }
+      else if (strcmp(input, "INVENTORY")==0)
+	{
+	  if (inventory.empty() == 1)
+	    {
+	      cout << "You don't have anything!" << endl;
+	    }
+	  else
+	    {
+	  cout << "You have: " << endl;
+	  for (vector<item*>::iterator it = inventory.begin(); it != inventory.end(); ++it)
+	    {
+	      cout << (*it) ->getname() << endl;
+	  }
+	    }
+	}
+      else if (strcmp(input, "DROP") == 0)
+	{
+	  if (inventory.empty() == 1)
+	    {
+	      cout << "You don't have anything in your inventory!" << endl;
+	      
+	    }
+	  else
+	    {
+	      cout << "Which one would you like to drop?" << endl;
+	      cout << "You have: " << endl;
+	      for (vector<item*>::iterator it = inventory.begin(); it != inventory.end(); ++it) 
+		{
+		  cout << (*it)->getname() << " \t ";
+		}
+	      cout << endl;
+	      name = new char[10];
+	      cin.get(name,10);
+	      cin.get();
+	      
+	      for (vector<item*>::iterator ita = inventory.begin(); ita != inventory.end(); ++ita) 
+		{
+		  if( strcmp((*ita)->getname(),name) == 0)
+		    {
+		      currentroom->additem(*ita);
+		      //inventory.erase(ita);
+		    }
+		}
+	      
+	    }
+
+	}
+	 else if (strcmp(input, "WEST") == 0)
+      {
+	
+      }
+	 else if (strcmp(input, "NORTH") == 0)
+       {
+	 currentroom = roomtwo;
+
+       }
+     else
+       {
+	 cout << "Invalid Command!"  <<endl;
+	 cout << endl;
+	 cout << endl;
 	continue;
       }
       
-      Game.changeRoom(dir);
     }
-  }
+
 
   return 0;
 }
