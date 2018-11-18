@@ -37,7 +37,8 @@ int main ()
   cin.get();
   cout << name << " is created. " << endl;
   cout << endl;
-  roomnumber =  rand() % 15 + 1;
+ srand(time(NULL));
+ roomnumber =   rand() % 15+ 1;
   cout << roomnumber << endl;
   item* one = new item(name,roomnumber);
 
@@ -49,8 +50,14 @@ int main ()
   cin.get();
   cout << name << " is created. " << endl;
   cout << endl;
-  roomnumber = rand() % 15 + 1;
-  cout << roomnumber << endl;
+roomnumber = rand() % 15 + 1;
+// to avoid having two items in one room, the random room number will reroll if there are two items in room.
+  while (roomnumber == one->getroomnumber())
+    {
+      roomnumber = rand() % 15 + 1;
+    }
+  
+  cout << roomnumber << endl;  
   item* two = new item(name,roomnumber);
 
   
@@ -62,6 +69,11 @@ int main ()
   cout << name << " is created. " << endl;
   cout << endl;
   roomnumber = rand() % 15 + 1;
+  while (roomnumber == one->getroomnumber() || roomnumber == two->getroomnumber())
+    {
+      roomnumber = rand() % 15 + 1;
+    }
+  
   cout << roomnumber << endl;
   item* three = new item(name,roomnumber);
 
@@ -74,6 +86,10 @@ int main ()
   cout << name << " is created. " << endl;
   cout << endl;
   roomnumber = rand() % 15 + 1;
+  while (roomnumber == one->getroomnumber() || roomnumber == two->getroomnumber() || roomnumber == three->getroomnumber())
+    {
+      roomnumber = rand() % 15 + 1;
+    }
   cout << roomnumber << endl;
   item* four = new item(name,roomnumber);
 
@@ -86,6 +102,10 @@ int main ()
   cout << name << " is created. " << endl;
   cout << endl;
   roomnumber = rand() % 15 + 1;
+  while (roomnumber == one->getroomnumber()|| roomnumber == two->getroomnumber() || roomnumber == three->getroomnumber() || roomnumber == four->getroomnumber())
+    {
+      roomnumber = rand() % 15 + 1;
+    }
   cout << roomnumber << endl;
   item* five = new item(name,roomnumber);
 
@@ -237,7 +257,7 @@ int main ()
   // Liam taught me how to do case and switch, I would have done it with if
   for (vector<item*>::iterator it = items.begin(); it != items.end(); ++it) {
     
-    switch ((*it)->getroomnumber())
+	    switch ((*it)->getroomnumber())
 
       {
       case 1:
@@ -287,7 +307,7 @@ int main ()
       roomfifteen->additem(*it);
       break;
       }
-  }
+  } 
   int gamemode =1;
 	  
   while (true)
@@ -306,13 +326,149 @@ int main ()
 	     }
 	  
 	}
-      /*
-      if (gamemode == 2)
+     
+      if (gamemode == 2) // if the user has completed collecting all the items
 	{
-	  if ( one.getroomnumber == 
+	  int complete= 0;
+	  for (vector<item*>::iterator it = items.begin(); it != items.end(); ++it)
+	    /*
+	      Go through the five items at the beginning, since their inital roomnumber doesn't change
+	      check if that room has the coresponding item
+	      for example, if one's roomnumber is 1, we check if roomone has that item, and if it does compelte += 1 
+	      and when all five items are successfully put back
+	      game ends.
 
+	     */
+	    {
+		  if  ((*it)->getroomnumber() == 1)
+		    {
+		      if (roomone->itemsintheroom()->getname() == (*it)->getname())
+			{
+			  complete += 1;
+			}
+			  
+		    }
+		  if  ((*it)->getroomnumber() == 2)
+		    {
+		      if (roomtwo->itemsintheroom()->getname() == (*it)->getname())
+			{
+			  complete += 1;
+			}
+			  
+		    }
+		  if  ((*it)->getroomnumber() == 3)
+		    {
+		      if (roomthree->itemsintheroom()->getname() == (*it)->getname())
+			{
+			  complete += 1;
+			}
+			  
+		    }
+		  if  ((*it)->getroomnumber() == 4)
+		    {
+		      if (roomfour->itemsintheroom()->getname() == (*it)->getname())
+			{
+			  complete += 1;
+			}
+			  
+		    }
+		  if  ((*it)->getroomnumber() == 5)
+		    {
+		      if (roomfive->itemsintheroom()->getname() == (*it)->getname())
+			{
+			  complete += 1;
+			}
+			  
+		    }
+		  if  ((*it)->getroomnumber() == 6)
+		    {
+		      if (roomsix->itemsintheroom()->getname() == (*it)->getname())
+			{
+			  complete += 1;
+			}
+			  
+		    }
+		  if  ((*it)->getroomnumber() == 7)
+		    {
+		      if (roomseven->itemsintheroom()->getname() == (*it)->getname())
+			{
+			  complete += 1;
+			}
+			  
+		    }
+		  if  ((*it)->getroomnumber() == 8)
+		    {
+		      if (roomeight->itemsintheroom()->getname() == (*it)->getname())
+			{
+			  complete += 1;
+			}
+			  
+		    }
+		  if  ((*it)->getroomnumber() == 9)
+		    {
+		      if (roomnine->itemsintheroom()->getname() == (*it)->getname())
+			{
+			  complete += 1;
+			}
+			  
+		    }
+		  if  ((*it)->getroomnumber() == 10)
+		    {
+		      if (roomten->itemsintheroom()->getname() == (*it)->getname())
+			{
+			  complete += 1;
+			}
+			  
+		    }
+		  if  ((*it)->getroomnumber() == 11)
+		    {
+		      if (roomeleven->itemsintheroom()->getname() == (*it)->getname())
+			{
+			  complete += 1;
+			}
+			  
+		    }
+		  if  ((*it)->getroomnumber() == 12)
+		    {
+		      if (roomtwelve->itemsintheroom()->getname() == (*it)->getname())
+			{
+			  complete += 1;
+			}
+			  
+		    }
+		  if  ((*it)->getroomnumber() == 13)
+		    {
+		      if (roomthirteen->itemsintheroom()->getname() == (*it)->getname())
+			{
+			  complete += 1;
+			}
+			  
+		    }
+		  if  ((*it)->getroomnumber() == 14)
+		    {
+		      if (roomfourteen->itemsintheroom()->getname() == (*it)->getname())
+			{
+			  complete += 1;
+			}
+			  
+		    }
+		  if  ((*it)->getroomnumber() == 15)
+		    {
+		      if (roomfifteen->itemsintheroom()->getname() == (*it)->getname())
+			{
+			  complete += 1;
+			}
+			  
+		    }
+		  
+	    }
+	  if (complete == 5)
+	    {
+	      cout << "Congratulations! You have finished the game!" << endl;
+	      return 0;
+	    }
 	}
-      */
+      
       cout << endl;
       cout << endl;
       cout << endl;
