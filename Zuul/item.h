@@ -7,9 +7,9 @@ class item
 {
  public:
   item(char* name, int roomnumber);
-  char* getname();
-  int getroomnumber();
-  ~item();
+  char* getname(); // tells u the name of the room
+  int getroomnumber();// tells u what room it belongs
+  ~item(); // destructor
  private:
 
   char* name;

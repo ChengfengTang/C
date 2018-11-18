@@ -4,11 +4,12 @@
 using namespace std;
 
 item::item(char* newname, int newroomnumber)
-{
+{// create items
   name = newname;
   roomnumber =  newroomnumber;
 
 }
+//check .h file, too lazy :
 char* item::getname()
 {
   return name;
