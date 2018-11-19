@@ -39,7 +39,7 @@ int main ()
   cout << endl;
  srand(time(NULL));
  roomnumber =   rand() % 15+ 1;
-  cout << roomnumber << endl;
+//  cout << roomnumber << endl;
   item* one = new item(name,roomnumber);
 
   
@@ -57,7 +57,7 @@ roomnumber = rand() % 15 + 1;
       roomnumber = rand() % 15 + 1;
     }
   
-  cout << roomnumber << endl;  
+//  cout << roomnumber << endl;  
   item* two = new item(name,roomnumber);
 
   
@@ -74,7 +74,7 @@ roomnumber = rand() % 15 + 1;
       roomnumber = rand() % 15 + 1;
     }
   
-  cout << roomnumber << endl;
+  //cout << roomnumber << endl;
   item* three = new item(name,roomnumber);
 
   
@@ -90,7 +90,7 @@ roomnumber = rand() % 15 + 1;
     {
       roomnumber = rand() % 15 + 1;
     }
-  cout << roomnumber << endl;
+  //cout << roomnumber << endl;
   item* four = new item(name,roomnumber);
 
   
@@ -106,7 +106,7 @@ roomnumber = rand() % 15 + 1;
     {
       roomnumber = rand() % 15 + 1;
     }
-  cout << roomnumber << endl;
+ // cout << roomnumber << endl;
   item* five = new item(name,roomnumber);
 
   // add all the items to a vector so I can put them into the room with a for loop, otherwise this vector has no use
