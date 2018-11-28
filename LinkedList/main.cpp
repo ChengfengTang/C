@@ -3,41 +3,44 @@
 
 using namespace std;
 
-void add(int newvalue);
+void add(Student*);
 void print(Node* next);
 
 Node* head = NULL;
 
 int main()
 {
-  add(5);
-  print(head);
 
-  add(7);
-  print(head);
+  
+  Student* temp = new Student ( "Chengfeng", "Tang", 465783, 4.0);
 
-  add(2);
+  add(temp);
+
+  temp = new Student ( "Zareef", "xd", 453183, 3.0);
+
+  
+  add(temp);
+
   print(head);
 
 }
 
-void add(int newvalue)
+void add(Student* newStudent)
 {
   Node* current = head;
   if (current == NULL)
     {
       head = new Node();
-      head -> setvalue(newvalue);
+      head -> setStudent(newStudent);
 	
     }
   else
-    {
-      while(current -> getnext() != NULL)
+    {      while(current -> getnext() != NULL)
 	{
 	  current = current->getnext();
 	}
       current->setnext(new Node());
-      current->getnext()->setvalue(newvalue);
+      current->getnext()->setStudent(newStudent);
     }
 }
 
@@ -50,7 +53,7 @@ void print(Node* next)
 
   if (next != NULL)
     {
-      cout << next->getvalue() << " ";
+      cout << next->getStudent()->getfirstname() << " ";
       print(next->getnext());
     }
 }
