@@ -15,7 +15,7 @@ class Node
   Node* getnext();
 
  private:
-  Student* Student;
+  Student* student;
   Node* next;
 
 

@@ -8,16 +8,16 @@ Node::Node()
 }
 Node::~Node()
 {
-  delete &Student;
+  delete &student;
   next = NULL;
 }
 void Node::setStudent(Student* newStudent)
 {
-  Student = newStudent;
+  student = newStudent;
 }
 Student* Node::getStudent()
 {
-  return Student;
+  return student;
 }
 void Node::setnext(Node* newnext)
 {
