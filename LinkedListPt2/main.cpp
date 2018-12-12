@@ -8,9 +8,11 @@
 
 using namespace std;
 void Average(Node* next, float total, int number);
+void Delete();
 void add(Student*);
 void print(Node* next, int longeswtfirstname, int longestlastname, int longestid);
 char* firstname;
+char* yesno;
 char* lastname;
 char* command;
 Node* head = NULL;
@@ -28,7 +30,10 @@ int main()
   cout << "Welcome to Chengfeng Tang's Linked List " <<  endl;
   cout << "Linked List holds a list of students." << endl;
   cout << "Type in \"ADD\" to add students." << endl;
-  cout << "Type in \"PRINT\" to prinnt out the list of students." << endl;
+  cout << "Type in \"PRINT\" to print out the list of students." << endl;
+cout << "Type in \"DELETE\" to delete a student." << endl;
+cout << "Type in \"AVERAGE\" to find out the average gpa of all the stuents." << endl;
+
   cout << "Type in \"QUIT\" to exit the program." << endl;
   cout << endl;
   cout << endl;
@@ -103,7 +108,7 @@ int main()
     }
   else if (strcmp(command,(char*)"DELETE") == 0)
      {
-
+       Delete();
      }
   else if (strcmp(command, (char*)"AVERAGE") == 0)
     {
@@ -218,10 +223,127 @@ void print(Node* next, int longestfirstname, int longestlastname, int longestid)
       print(next->getNext(), longestfirstname, longestlastname, longestid);
     }
 }
+void Delete()
+{
+  cout << endl;
+  firstname = new char [99];
+  lastname = new char[99];
+  yesno = new char[99];
+  
+  int id = 0;
+  cout << "Do you know the name of the student?" << endl;
+  cout << "Type \"Y\" if you do and anything else if not " << endl;
+  cin.get(yesno, 99, '\n');
+  cin.get();
+  cout << endl;
+  // these are all the format thing
+  // basically ask if the user knows the name
+  // if yes delete based on name
+  // if he doesn't ask if the user knows the id
+  // if yes delete based on id
+  // if no not enough info
+  if (strcmp(yesno, (char*)("Y")) ==0)
+    {
+      
+      cout << "What's the firstname of the student? " << endl;
+      cin.get(firstname, 99, '\n');
+      cin.get();
+      cout << endl;
+
+      
+      cout << "What's the lastname of the student? " << endl;
+      cin.get(lastname, 99, '\n');
+      cin.get();
+      cout << endl;
+    }
+  else
+    {
+      cout << "Do you know the ID of the student?" << endl;
+      yesno = new char[99];
+      cin.get(yesno, 99, '\n');
+      cin.get();
+      cout << endl;
+
+      if (strcmp(yesno, (char*)("Y")) == 0)
+	{
+	  cout << "What's the ID of the student that you want to delete?" << endl;
+	  cin >> id;
+	  cin.get();
+	  cout << endl;
+	  // delete based on ID starts here
+	  Node* current;
+	  current = head;
+	    
+	  if (current != NULL)
+	    {
+	    if (current ->getValue()->getid() == id) // when the first node in the list matches the id
+		    {
+		      cout << "Is this the one?" << endl;
+		      if (current->getNext() != NULL)
+			{
+			  head = current->getNext();
+			  current->~Node();
+			  current = head;
+			}
+		      else // if this is the first and the only node and it matches, delete it and set the head to null
+			{
+		      current->~Node();
+		      head = NULL;
+			}
+		    }
+	      
+	      while (current->getNext() != NULL) //keep going through the list until the last one in the list
+		{
+		  if (current ->getNext() ->getValue()->getid() == id) // if the next node matches
+		    {
+		      cout << "Is this the one?" << endl;
+
+		      if (current->getNext()->getNext() != NULL)
+			{
+		      Node* thenextnext = current->getNext()->getNext(); // set the current's next to the next next
+		      current->getNext()->~Node();
+		      current->setNext(thenextnext);	      
+		      current = current->getNext();
+	   
+			}
+		      else // if the next node matches and is the last node, just delete it
+			{
+			  Node* theone = current->getNext();
+			  current->setNext(NULL);
+			  theone->~Node(); // delete it and set the current node as the last node
+			  
+			}
+		     
+		    }
+		  
+		}
+	      
+
+	      
+	    }
+	  else if (current == NULL)
+	   {
+	     cout << "You don't have any Students in the list!" << endl;
+	     cout << endl;
+	   }
+
+		 
+	    
+	  // ends here
+	}
+      else
+	{
+	  cout << "You don't have enough information!" << endl;
+	  cout << endl;
+	  
+	}
+      
+    }
+}
 void Average(Node* next, float total, int number)
 {
   
-  if (next != NULL)
+  if (next != NULL) // keep adding the gpa up until there isn't anymore students, and keep track of the number of students. totalamount / numbers  = average
     {
       total += next->getValue()->getgpa();
       number += 1;
