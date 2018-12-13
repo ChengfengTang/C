@@ -46,7 +46,30 @@ void room::additem(item* item)
 {
   items.push_back(item);
 }
-
+void room::getdirections()
+{
+  cout << endl;
+  cout << "Exits: " ;
+  if(west != nullptr)
+    {
+      cout << "WEST ";
+    }
+  if(east != nullptr)
+    {
+      cout << "EAST ";
+    }
+  if(north != nullptr)
+    {
+      cout << "NORTH ";
+    }
+  if(south != nullptr)
+    {
+      cout << "SOUTH ";
+     
+    }
+  cout << endl;
+  
+}
 bool room::checkitem()
 {
   if (items.empty() == 1)

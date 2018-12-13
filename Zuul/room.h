@@ -36,7 +36,8 @@ class room
   room* gosouth();
   
   void setitself(room* room);
-  
+
+  void getdirections();
   ~room (); // destructor
   
  private:
