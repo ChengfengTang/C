@@ -9,7 +9,7 @@
 using namespace std;
 void Average(Node* next, float total, int number);
 void Deletebyid(Node* &head, int id);
-void add(Student*, Node* &head);
+void add(Student*, Node* &head, int id);
 void print(Node* next, int longeswtfirstname, int longestlastname, int longestid, Node* head);
 char* firstname;
 int checkvalidid(int id, Node* head);
@@ -98,7 +98,7 @@ int main()
 	    and make a student and add students into the student list,
 	  */
 	  Student* temp = new Student ( firstname, lastname, id, gpa);
-	  add(temp, head);
+	  add(temp, head, id);
 	}
       else if (strcmp(command,(char*)"PRINT") == 0)
 	{
@@ -157,11 +157,12 @@ int main()
     }
 }
 
-void add(Student* newStudent, Node* &head)
+void add(Student* newStudent, Node* &head, int id)
 {
   // when adding a new student, create a pointer, if this is
   // the first student, make it the head
   Node* current = head;
+  bool xd = true;
   if (head == NULL)
     {
       head = new Node(newStudent);
@@ -169,15 +170,37 @@ void add(Student* newStudent, Node* &head)
     }
   else // if it's not a head, go to the laststudent on the list, and make its nextstudent the new student
     {
-      while(current -> getNext() != NULL)
+      
+      while(xd == true)
 	{
-	  current  = current->getNext();
+	  if (current->getNext()!= NULL)
+	    {
+	      if (current->getNext()->getValue()->getid() > id)
+		{
+	      
+		  Node* newstudent = new Node(newStudent);
+		  Node* temp = current->getNext();
+		  current->setNext(newstudent);
+		  newstudent->setNext(temp);
+		  xd = false; 
+		}
+	      else
+		{
+		  current  = current->getNext();   
+		}	 
+	    }
+	  else
+	    {
+	            current->setNext(new Node(newStudent));
+		      xd = false;
+	    }
 	}
-      current->setNext(new Node(newStudent));
-     
+      
+      
     }
   cout << endl;
 }
+	
 int checkvalidid(int id, Node* head)
 { // self explainatory, return the final id when there isn't any repetitive
   Node* current = head;
