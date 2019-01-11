@@ -13,7 +13,7 @@ class Node
   void setRight(Node* newRight);
   Node* getLeft();
   Node* getRight();
-  char* getsymbol();
+  char* getSymbol();
   
  private:
   char* symbol;
