@@ -8,12 +8,12 @@ Node::Node()
 };
 Node::~Node()
 {
-  delete[] symbol;
+  
     left = NULL;
   
   right = NULL;
 }
-void Node::setSymbol(char* newSymbol)
+void Node::setSymbol(char newSymbol)
 {
   symbol = newSymbol;
 }
@@ -33,7 +33,7 @@ Node* Node::getRight()
 {
   return right;
 }
-char* Node::getSymbol()
+char Node::getSymbol()
 {
   return symbol;
 }
