@@ -109,48 +109,111 @@ void printqueue(queue <char> q)
 Node* turntree(queue<char>q)
 {
   stack<Node*> chars;
-  Node* head;
+  Node* head = new Node();
   while (q.size() != 1)
     {
      
       if ( isdigit(q.front()) == 0 )
 	{
-	  Node* newNode;
+	  
+	  Node* newNode = new Node();
+	  //cout << q.front()<< endl;
+	  
 	  newNode->setSymbol(q.front());
 	  q.pop();
+	  newNode->setRight(chars.top());
+	  // cout << chars.top()->getSymbol()<< endl;
+	  chars.pop();
+	  //cout << chars.top()->getSymbol()<< endl;
 	  newNode->setLeft(chars.top());
 	  chars.pop();
-	  newNode->setRight(chars.top());
-	  chars.pop();
+	  
 	  chars.push(newNode);
 	  
 	}
       else
 	{
 	  
-	  Node* newNode;
-	  newNode->setSymbol(q.front());
+	  Node*  newNode1 = new Node();
+	  //cout << q.front()<< endl;
+	  
+	  newNode1->setSymbol(q.front());
 	  q.pop();
-	  chars.push(newNode);
+	  chars.push(newNode1);
 	  
 	}
       
     
     }
+  //cout << q.front()<< endl; 
   head->setSymbol(q.front());
   q.pop();
+ 
+  
 
-  head->setLeft(chars.top());
-  chars.pop();
- 
+  //cout << chars.top()->getSymbol()<< endl;
+	  
   head->setRight(chars.top());
- 
   chars.pop();
+ 
+  //cout << chars.top()->getSymbol()<< endl;
+	  
+ head->setLeft(chars.top());
+ 
+ chars.pop();
 	  
   return head;
-  cout << " done"<< endl;
+  
 }
-
+void treeinfix(Node* head)
+{
+  if (head == NULL)
+    {
+     
+    }
+  else
+    {
+      
+      treeinfix (head->getLeft());
+      cout << head->getSymbol();
+      treeinfix(head->getRight());
+      
+    }
+  
+}
+void treeprefix(Node* head)
+{
+  if (head == NULL)
+    {
+    }
+  else
+    {
+      cout << head->getSymbol();
+      treeprefix(head->getLeft());
+      treeprefix(head->getRight());
+    }
+}
+void treepostfix(Node* head)
+{
+   if (head == NULL)
+    {
+    }
+  else
+    {
+      if (!(head->getLeft() == NULL && head->getRight() == NULL))
+	{
+	  cout << "(";
+	}
+      treepostfix(head->getLeft());
+      
+      treepostfix(head->getRight());
+      cout << head->getSymbol();
+      if ((head->getLeft() != NULL) && (head->getRight() != NULL))
+	{
+	  cout << ")";
+	}
+    }
+}
 int main()
 {
   cout << "Welcome to Chengfeng Tang's Shunting Yard Project" << endl << "Please input a valid mathmatical equation with infix expressions!" << endl << "I will be able to turn them into either prefix or postfix expressionss" << endl;
@@ -194,28 +257,38 @@ int main()
   //turn them into a tree
   
   Node* head = turntree(q);
-
   
-  /*
-  cout << head->getSymbol() << endl;
-  //while (current->getLeft() != NULL)
-  //{
-      cout << head->getLeft()->getSymbol() << endl;
-      current = current->getLeft();
-      //}
-  current = head;
-   while (current->getRight() != NULL)
+  cout <<"If you would like to create an infix notation, enter number \"1\" . " << endl;
+  
+  cout <<"If you would like to create a prefix notation, enter number \"2\" . " << endl;
+  
+  cout <<"If you would like to create a postfix notation, enter number \"3\" . " << endl;
+
+  int answer = 0;
+
+  cin >> answer;
+  cin.get();
+
+  if (answer == 1)
     {
-      cout << head->getLeft()->getSymbol() << endl;
-      current = current->getLeft();
+      treeinfix(head);
     }
-  */
+  
   //if output infix
-
   
   
+  else if (answer == 2)
+    {
+      treeprefix(head);
+    }
   //if ouotput prefix
+  else if (answer == 3)
+    {
+      treepostfix(head);
 
+    }
+
+  
   //if output postfix
   return 0;
 }
