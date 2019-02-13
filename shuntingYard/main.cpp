@@ -173,18 +173,191 @@ void treeinfix(Node* head)
     }
   else
     {
-      
+            if (head->getSymbol() == '^')
+	{
+	  if ((head->getLeft()->getSymbol() != '^') && (isdigit(head->getLeft()->getSymbol()) == 0 ) && (head->getLeft() != NULL)&& (head->getRight() != NULL)) 
+	    {
+	      cout << "(" ;
+	    }
+
+	}
+      else if ((head->getSymbol() == '*') || (head->getSymbol() == '/'))
+	{
+	  if (
+	      (head->getLeft()->getSymbol() == '+') ||
+	      (head->getLeft()->getSymbol() == '-') ||
+	      (head->getLeft()->getSymbol() == '*') ||
+	      (head->getLeft()->getSymbol() == '/') 
+	      )
+	     
+	    {
+	      cout << "(" ;
+	    }
+	  
+	}
+
+      if (head->getSymbol() == '^')
+	{
+	  if ((head->getRight()->getSymbol() != '^') && (isdigit(head->getRight()->getSymbol()) == 0 ) && (head->getRight() != NULL ) && (head->getLeft() != NULL))
+	    {
+	      cout << "(" ;
+	    }
+	}
+      else if ((head->getSymbol() == '*') || (head->getSymbol() == '/'))
+	{
+	  if (
+	      (head->getRight()->getSymbol() == '+') ||
+	      (head->getRight()->getSymbol() == '-') ||
+	      (head->getRight()->getSymbol() == '*') ||
+	      (head->getRight()->getSymbol() == '/'))
+	      {
+	      cout << "(" ;
+	       }
+	  
+	}
+ 
       treeinfix (head->getLeft());
+
+             if (head->getSymbol() == '^')
+	{
+	  if ((head->getLeft()->getSymbol() != '^') && (isdigit(head->getLeft()->getSymbol()) == 0 ) && (head->getLeft() != NULL) && (head->getRight() != NULL)) 
+	    {
+	      cout << ")" ;
+	    }
+
+	}
+      else if ((head->getSymbol() == '*') || (head->getSymbol() == '/'))
+	{
+	  if (
+	      (head->getLeft()->getSymbol() == '+') ||
+	      (head->getLeft()->getSymbol() == '-') ||
+	      (head->getLeft()->getSymbol() == '*') ||
+	      (head->getLeft()->getSymbol() == '/') 
+	      )
+	     
+	    {
+	      cout << ")" ;
+	    }
+	  
+	}
+
+      if (head->getSymbol() == '^')
+	{
+	  if ((head->getRight()->getSymbol() != '^') && (isdigit(head->getRight()->getSymbol()) == 0 ) && (head->getRight() != NULL ) && (head->getLeft() != NULL)) 
+	    {
+	      cout << ")" ;
+	    }
+	}
+      else if ((head->getSymbol() == '*') || (head->getSymbol() == '/'))
+	{
+	  if (
+	      (head->getRight()->getSymbol() == '+') ||
+	      (head->getRight()->getSymbol() == '-') ||
+	      (head->getRight()->getSymbol() == '*') ||
+	      (head->getRight()->getSymbol() == '/'))
+	      {
+	      cout << ")" ;
+	       }
+	  
+	}
+
       cout << head->getSymbol();
-      treeinfix(head->getRight());
-      
+    if (head->getSymbol() == '^')
+	{
+	  if ((head->getLeft()->getSymbol() != '^') && (isdigit(head->getLeft()->getSymbol()) == 0 ) && (head->getLeft() != NULL) && (head->getRight() != NULL)) 
+	    {
+	      cout << "(" ;
+	    }
+
+	}
+      else if ((head->getSymbol() == '*') || (head->getSymbol() == '/'))
+	{
+	  if (
+	      (head->getLeft()->getSymbol() == '+') ||
+	      (head->getLeft()->getSymbol() == '-') ||
+	      (head->getLeft()->getSymbol() == '*') ||
+	      (head->getLeft()->getSymbol() == '/') 
+	      )
+	     
+	    {
+	      cout << "(" ;
+	    }
+	  
+	}
+
+      if (head->getSymbol() == '^')
+	{
+	  if ((head->getRight()->getSymbol() != '^') && (isdigit(head->getRight()->getSymbol()) == 0 ) && (head->getRight() != NULL ) && (head->getLeft() != NULL)) 
+	    {
+	      cout << "(" ;
+	    }
+	}
+      else if ((head->getSymbol() == '*') || (head->getSymbol() == '/'))
+	{
+	  if (
+	      (head->getRight()->getSymbol() == '+') ||
+	      (head->getRight()->getSymbol() == '-') ||
+	      (head->getRight()->getSymbol() == '*') ||
+	      (head->getRight()->getSymbol() == '/'))
+	      {
+	      cout << "(" ;
+	       }
+	  
+	}
+
+	  treeinfix(head->getRight());
+            
+         
+             if (head->getSymbol() == '^')
+	{
+	  if ((head->getLeft()->getSymbol() != '^') && (isdigit(head->getLeft()->getSymbol()) == 0 ) && (head->getLeft() != NULL) && (head->getRight() != NULL)) 
+	    {
+	      cout << ")" ;
+	    }
+
+	}
+      else if ((head->getSymbol() == '*') || (head->getSymbol() == '/'))
+	{
+	  if (
+	      (head->getLeft()->getSymbol() == '+') ||
+	      (head->getLeft()->getSymbol() == '-') ||
+	      (head->getLeft()->getSymbol() == '*') ||
+	      (head->getLeft()->getSymbol() == '/') 
+	      )
+	     
+	    {
+	      cout << ")" ;
+	    }
+	  
+	}
+
+      if (head->getSymbol() == '^')
+	{
+	  if ((head->getRight()->getSymbol() != '^') && (isdigit(head->getRight()->getSymbol()) == 0 ) && (head->getRight() != NULL ) && (head->getLeft() != NULL)) 
+	    {
+	      cout << ")" ;
+	    }
+	}
+      else if ((head->getSymbol() == '*') || (head->getSymbol() == '/'))
+	{
+	  if (
+	      (head->getRight()->getSymbol() == '+') ||
+	      (head->getRight()->getSymbol() == '-') ||
+	      (head->getRight()->getSymbol() == '*') ||
+	      (head->getRight()->getSymbol() == '/'))
+	      {
+	      cout << ")" ;
+	       }
+	  
+	}            
     }
   
 }
 void treeprefix(Node* head)
 {
   if (head == NULL)
-    {
+
+     {
     }
   else
     {
