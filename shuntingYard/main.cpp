@@ -3,6 +3,7 @@
 #include "Node.h"
 #include <stack>
 #include <queue>
+#include <math.h>
 using namespace std;
 void popstack(stack <char>& s, queue<char>& q)
 {
@@ -104,40 +105,50 @@ void printstack(stack <char> s)
 void printqueue(queue <char> q, queue <int> spaces)
 {
 
-  vector<char*> allc;
-
- 
+  vector<char> allc;
+  
   while(!q.empty())
     {
+      int degree = 0;
+      int newNum = 0;
       if (isdigit(q.front()) == 1)
 	{
-      char newArray[spaces.front() + 1] = new char[];
-      for (int x = 0; x < spaces.front(); x++ )
-	{
-	  newArray[x] = q.front();
-	  q.pop();
 	  
-	}
-      newArray[spaces.front()] = '\0';
-      spaces.pop();
-      allc.push_back(newArray);
-	}
+	  queue<int> newArray;
+	  
+          for (int x = 0; x < spaces.front() - 1; x++ )
+	    {
+	      newArray.push(q.front());
+	      q.pop();
+	    }
+	   spaces.pop();
+	   int a = 0;
+	   while ( !newArray.empty())
+	     {
+	      
+	       degree = newArray.size() - a;
+	       newNum += (newArray.front() * pow(10, degree));
+	       newArray.pop();
+	       a++;
+	     }
+	   allc.push_back((char)(newNum));
+
+      }
       else
 	{
-	  char newArray[2] = new char[];
-	  newArray[1] = q.front();
-	  newArray[2] = '\0' ;
+	  
+	   allc.push_back(q.front());
 	  q.pop();
-	  allc.push_back(newArray);
 	 
 	}
 
     }
+  /*
   for (vector<char*>::iterator ptr = allc.begin(); ptr != allc.end(); ++ptr)
     {
       cout << *ptr << endl;
 
-    }
+      }*/
   
 }
 Node* turntree(queue<char>q)
@@ -486,13 +497,9 @@ int main()
   poptherest(s,q);
   printqueue(q,spaces);
 
-  while (!q.empty())
-    {
-      
-    }
-   
+ 
   //turn them into a tree
-  
+  /*
   Node* head = turntree(q);
   
   cout <<"If you would like to create an infix notation, enter number \"1\" . " << endl;
@@ -525,7 +532,7 @@ int main()
 
     }
 
-  
+  */
   //if output postfix
   return 0;
 }
