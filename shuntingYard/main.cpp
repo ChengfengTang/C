@@ -89,22 +89,56 @@ void poptherest(stack <char>& s, queue<char>& q)
 } 
 void printstack(stack <char> s)
 {
+  
   while(!s.empty())
     {
-      cout << s.top() ;
+      
+      cout << s.top();
       s.pop();
+          
+      
 
     }
   cout << endl;
 }
-void printqueue(queue <char> q)
+void printqueue(queue <char> q, queue <int> spaces)
 {
+
+  vector<char*> allc;
+
+ 
   while(!q.empty())
     {
-      cout << q.front();
-      q.pop();
+      if (isdigit(q.front()) == 1)
+	{
+      char newArray[spaces.front() + 1] = new char[];
+      for (int x = 0; x < spaces.front(); x++ )
+	{
+	  newArray[x] = q.front();
+	  q.pop();
+	  
+	}
+      newArray[spaces.front()] = '\0';
+      spaces.pop();
+      allc.push_back(newArray);
+	}
+      else
+	{
+	  char newArray[2] = new char[];
+	  newArray[1] = q.front();
+	  newArray[2] = '\0' ;
+	  q.pop();
+	  allc.push_back(newArray);
+	 
+	}
+
     }
-  cout << endl;
+  for (vector<char*>::iterator ptr = allc.begin(); ptr != allc.end(); ++ptr)
+    {
+      cout << *ptr << endl;
+
+    }
+  
 }
 Node* turntree(queue<char>q)
 {
@@ -399,14 +433,40 @@ int main()
   //cout << input << endl;
 
   //turn them into postfix first
+
+  
+  
+
   int a = strlen(input);
+  input [a+1] = ' ';
+  queue<int> spaces;
+
+  int sp = 0;
+  for (int y=0; y< a ; y++)
+    {
+      if (isdigit(input[y]) == 1 )
+	{
+	  sp+= 1;
+	}
+      if (input[y] == ' ')
+	{
+	  if (sp != 0)
+	    {
+	  spaces.push(sp);
+	  sp = 0;
+	    }
+	}
+      
+    }
+  	
+  
   stack<char> s;
   queue <char> q;
   for (int i = 0; i < a; i++ )
     {
       if (input[i] == ' ')
 	{
-       
+	  
 	}
       if ((input[i] == '+') || (input[i] == '-') || (input[i] == '^')
          || (input[i] == '*') || (input[i] == '/') ||  (input[i] == '(')
@@ -424,9 +484,13 @@ int main()
       
     }
   poptherest(s,q);
-  printqueue(q);
+  printqueue(q,spaces);
 
-  
+  while (!q.empty())
+    {
+      
+    }
+   
   //turn them into a tree
   
   Node* head = turntree(q);
