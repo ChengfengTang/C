@@ -10,43 +10,80 @@ char* input;
 
 void printArray(int array[])
 {
-  
-  for (int x = 0 ;x < 100 ; x ++ )
+  for (int x = 0; x < 100; x++)
     {
-      cout << array[x];
       if (array[x] == -1)
 	{
 	  break;
 	}
+      else
+	{
+	  cout << array[x] << " ";
+	}
     }
-
+      
+      /*
+      cout << endl;
+      int min = 1;
+      int max = 1;
+   
+      while (min == min)
+	{
+	  min = 2 * min;
+	  max = 2 * max + 1;
+	  for (int i = min; i <= max; i++)
+	    {
+	      
+	      if (array[i-1] == -1)
+		{
+		  break;
+		  break;
+		}
+	      else
+		{
+		  //cout << array[i-1] << " ";
+		}
+	    }
+	  cout << endl;
+	}
+      */
+  cout << endl;
 }
 void checkbackward(int array[], int i)
 {
-  if( i != 1)
-    {
-      if (array[i-1] >= array[i/2])
+ 
+      if (array[i-1] > array[i/2-1])
 	{
 	      
 	      int temp = array[i-1];
-	      array[i-1] = array[i/2];
-	      array[i/2] = temp;
+	      array[i-1] = array[i/2-1];
+	      array[i/2-1] = temp;
+
 	      
 	      checkbackward(array, i);
 	}
-      
+      else
+	{
 
-    }
+	}
+      
+      if (array[0] < array[1])
+	{
+	  int temp = array[0];
+	  array[0] = array[1];
+	  array[1] = temp;
+	  }
+   
 }
 void processArray(int array[])
 {
-  
+
   int i = 1; // first number, aka index 0;
-  while (i <= 100) 
+  while ((i <= 100) && (array[i] != -1)) 
     {
       if (array[2*i-1] != -1) // if it has a child and its child is bigger, swap them and check all of its parent
 	{
-	  if (array[i-1] <= array[2*i-1])
+	  if (array[i-1] < array[2*i-1])
 	    {
 	      
 	      int temp = array[i-1];
@@ -56,15 +93,15 @@ void processArray(int array[])
 	      checkbackward(array,i);
 	    }
 	}
-      else if (array[2*i] != -1) // same here
+      if (array[2*i] != -1) // same here
 	{
-	  if (array[i-1] <= array[2*i])
+	  if (array[i-1] < array[2*i])
 	    {
 
 	      
 	      int temp = array[i-1];
-	      array[i-1] = array[2*i-1];
-	      array[2*i-1] = temp;
+	      array[i-1] = array[2*i];
+	      array[2*i] = temp;
 	      
 	      checkbackward(array, i);
 	    }
@@ -72,7 +109,9 @@ void processArray(int array[])
       
       i ++ ;
     }
+  
   printArray(array);
+  
 }
 
 int main()
@@ -80,11 +119,13 @@ int main()
   cout << "Welcome to Cheng's heap project" << endl;
   int a = 0;
   int array [100];
+ 
   for (int abc = 0; abc <= 100; abc++)
     {
       array[abc] = -1;
 
     }
+  
   while (a!=3)
     {
       cout << "Enter 1 if you  would like to enter the numbers manually." << endl;
@@ -146,13 +187,13 @@ int main()
 	      spaces.pop(); // pop the number of digits from the spaces since we already got the number out
 
 	      int b = atoi(numbers); // turn the char array into a number
-	      cout << b ; // test
+	      cout << b << endl; ; // test
 	      
 	      array[arrayindex++] = b; // add it to the int array
 	      
 	      
 	    }
-
+	  printArray(array);	 
 	  processArray(array);
 	      
 	  
