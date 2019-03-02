@@ -10,24 +10,14 @@ char* input;
 
 void printArray(int array[])
 {
-  for (int x = 0; x < 100; x++)
-    {
-      if (array[x] == -1)
-	{
-	  break;
-	}
-      else
-	{
-	  cout << array[x] << " ";
-	}
-    }
-      
-      /*
-      cout << endl;
+  
+  cout << endl;
+      cout << array[0] << endl;
+     
       int min = 1;
       int max = 1;
    
-      while (min == min)
+      while (max <= 100)
 	{
 	  min = 2 * min;
 	  max = 2 * max + 1;
@@ -41,38 +31,44 @@ void printArray(int array[])
 		}
 	      else
 		{
-		  //cout << array[i-1] << " ";
+		  cout << array[i-1] << " ";
 		}
 	    }
 	  cout << endl;
 	}
-      */
+      
   cout << endl;
 }
 void checkbackward(int array[], int i)
-{
- 
-      if (array[i-1] > array[i/2-1])
+{ // everytime a number is replaced with an element after it check everything before the number and make sure they are all bigger than the element 
+
+  if (i != 1)
+    {
+      if (array[i-1] > array[i/2-1]) // if the parent of this new element is smaller, switch them and keep checking until we are at the head
 	{
 	      
 	      int temp = array[i-1];
 	      array[i-1] = array[i/2-1];
 	      array[i/2-1] = temp;
 
-	      
+	      //printArray(array);
 	      checkbackward(array, i);
 	}
-      else
-	{
-
-	}
-      
-      if (array[0] < array[1])
+    }
+     
+  if (array[0] < array[1]) // constantly check if the head's two children are bigger than it (not sure if i even need this, just to make sure)
 	{
 	  int temp = array[0];
 	  array[0] = array[1];
 	  array[1] = temp;
 	  }
+  if (array[0] < array[2]) // constantly check if the head's two children are bigger than it (not sure if i even need this, just to make sure)
+	{
+	  int temp = array[0];
+	  array[0] = array[2];
+	  array[2] = temp;
+	  }
+  
    
 }
 void processArray(int array[])
@@ -89,7 +85,7 @@ void processArray(int array[])
 	      int temp = array[i-1];
 	      array[i-1] = array[2*i-1];
 	      array[2*i-1] = temp;
-	      
+	      //printArray(array);
 	      checkbackward(array,i);
 	    }
 	}
@@ -102,7 +98,7 @@ void processArray(int array[])
 	      int temp = array[i-1];
 	      array[i-1] = array[2*i];
 	      array[2*i] = temp;
-	      
+	      //printArray(array);
 	      checkbackward(array, i);
 	    }
 	}
@@ -193,7 +189,7 @@ int main()
 	      
 	      
 	    }
-	  printArray(array);	 
+	  //printArray(array);	 
 	  processArray(array);
 	      
 	  
