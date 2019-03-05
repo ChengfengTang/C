@@ -1,13 +1,14 @@
 #include <iostream>
 #include <cstring>
 #include <queue>
+#include <math.h>
 #include <fstream>
 #include <stdlib.h>
 using namespace std;
 
 
 char* input;
-
+char* numbers;
 void printArray(int array[])
 {
   
@@ -38,6 +39,31 @@ void printArray(int array[])
 	}
       
   cout << endl;
+  cout << endl;
+  int f = 0;
+  int longestnumber = 0;
+  for (f = 0; f <= 100; f++)
+    {
+      if (array[f] == -1)
+	{
+	  break;
+	}
+      else
+	{
+	  if (log10(array[f] + 1 ) > longestnumber)
+	    {
+	      longestnumber = log10(array[f]) + 1; // this will be used late
+	    }
+			    
+	}
+    }
+  int sz = log2(f) + 1 ;
+  cout << longestnumber << endl;
+  cout << f << endl;
+  cout << sz << endl;
+
+  
+  
 }
 void checkbackward(int array[], int i)
 { // everytime a number is replaced with an element after it check everything before the number and make sure they are all bigger than the element 
@@ -149,6 +175,7 @@ int main()
 	     		      {
 				if (sp != 0) // push the numbers of digits to the queue
 			  {
+			    
 			    spaces.push(sp);
 			    sp = 0;
 			    
@@ -169,12 +196,16 @@ int main()
 	  //testing all the digits
 	  int inputindex = 0; // keep track of the input array
 	  int arrayindex = 0; // keep ptrack of the output array
+	  int c = 0;
+	  int d = 0;
+	  
 	  while(!spaces.empty()) // while there are still more numbers
 	    {
-	      int a = spaces.front(); 
 	      
-	      char numbers[100]; // a char array to help change each char to int
-	      for (int y = 0; y < a; y++)  // keep read in from the input array until it reaches the size of the number
+	      c = spaces.front(); 
+	      
+	      numbers = new char [100]  ; // a char array to help change each char to int
+	      for (int y = 0; y < c; y++)  // keep read in from the input array until it reaches the size of the number
 		{
 		  numbers[y] = input[inputindex]; // put that number into the char array
 		  inputindex ++; //input moves towards the left as you read
@@ -182,10 +213,10 @@ int main()
 	      inputindex ++; // this is the space
 	      spaces.pop(); // pop the number of digits from the spaces since we already got the number out
 
-	      int b = atoi(numbers); // turn the char array into a number
-	      cout << b << endl; ; // test
+	      d = atoi(numbers); // turn the char array into a number
+	      cout << d << endl; ; // test
 	      
-	      array[arrayindex++] = b; // add it to the int array
+	      array[arrayindex++] = d; // add it to the int array
 	      
 	      
 	    }
