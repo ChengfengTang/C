@@ -4,6 +4,7 @@
 #include <math.h>
 #include <fstream>
 #include <stdlib.h>
+#include <iomanip>
 using namespace std;
 
 
@@ -11,59 +12,60 @@ char* input;
 char* numbers;
 void printArray(int array[])
 {
-  
-  cout << endl;
-      cout << array[0] << endl;
-     
-      int min = 1;
-      int max = 1;
-   
-      while (max <= 100)
-	{
-	  min = 2 * min;
-	  max = 2 * max + 1;
-	  for (int i = min; i <= max; i++)
-	    {
-	      
-	      if (array[i-1] == -1)
-		{
-		  break;
-		  break;
-		}
-	      else
-		{
-		  cout << array[i-1] << " ";
-		}
-	    }
-	  cout << endl;
-	}
-      
+       
   cout << endl;
   cout << endl;
   int f = 0;
-  int longestnumber = 0;
+ 
   for (f = 0; f <= 100; f++)
     {
       if (array[f] == -1)
 	{
 	  break;
 	}
-      else
-	{
-	  if (log10(array[f] + 1 ) > longestnumber)
-	    {
-	      longestnumber = log10(array[f]) + 1; // this will be used late
-	    }
-			    
-	}
+    
     }
-  int sz = log2(f) + 1 ;
-  cout << longestnumber << endl;
-  cout << f << endl;
-  cout << sz << endl;
+  int rows = log2(f) + 1 ;
+ 
+  
+  //cout << rows << endl;
 
-  
-  
+ 
+  cout << endl;
+  cout <<setw((rows - 1)*10) << " " <<  array[0] << endl;
+     
+  int min = 1;
+  int max = 1;
+  int currentrow = log2(min) + 1;
+  while (max <= 100)
+    {
+      min = 2 * min;
+      max = 2 * max + 1;
+      currentrow = log2(min) + 1 ;
+      //cout << "currentrow" << currentrow << endl;
+      
+      for (int i = min; i <= max; i++)
+	{
+	  
+	  if (array[i-1] == -1)
+	    {
+	      break;
+	      break;
+	    }
+	  else
+	    {
+	      if ((rows - currentrow) != 0)
+		{
+		cout << setw((rows - currentrow)*10) << " " << array[i-1] ;
+		}
+	      else
+		{
+		  cout <<  setw(5)<< " " <<  array[i-1] ;
+		}
+	    }
+	}
+      cout << endl;
+    }
 }
 void checkbackward(int array[], int i)
 { // everytime a number is replaced with an element after it check everything before the number and make sure they are all bigger than the element 
@@ -73,27 +75,27 @@ void checkbackward(int array[], int i)
       if (array[i-1] > array[i/2-1]) // if the parent of this new element is smaller, switch them and keep checking until we are at the head
 	{
 	      
-	      int temp = array[i-1];
-	      array[i-1] = array[i/2-1];
-	      array[i/2-1] = temp;
+	  int temp = array[i-1];
+	  array[i-1] = array[i/2-1];
+	  array[i/2-1] = temp;
 
-	      //printArray(array);
-	      checkbackward(array, i);
+	  //printArray(array);
+	  checkbackward(array, i);
 	}
     }
      
   if (array[0] < array[1]) // constantly check if the head's two children are bigger than it (not sure if i even need this, just to make sure)
-	{
-	  int temp = array[0];
-	  array[0] = array[1];
-	  array[1] = temp;
-	  }
+    {
+      int temp = array[0];
+      array[0] = array[1];
+      array[1] = temp;
+    }
   if (array[0] < array[2]) // constantly check if the head's two children are bigger than it (not sure if i even need this, just to make sure)
-	{
-	  int temp = array[0];
-	  array[0] = array[2];
-	  array[2] = temp;
-	  }
+    {
+      int temp = array[0];
+      array[0] = array[2];
+      array[2] = temp;
+    }
   
    
 }
@@ -172,15 +174,15 @@ int main()
 	      
 	      
 	      if (input[y] == ' ') // if it's the end of a number
-	     		      {
-				if (sp != 0) // push the numbers of digits to the queue
-			  {
+		{
+		  if (sp != 0) // push the numbers of digits to the queue
+		    {
 			    
-			    spaces.push(sp);
-			    sp = 0;
+		      spaces.push(sp);
+		      sp = 0;
 			    
-			  }
-		      }
+		    }
+		}
 	      else // else the digits ++
 		{
 		  sp += 1;
@@ -188,11 +190,11 @@ int main()
 	      
 	    }
 	  /*
-	  while (!spaces.empty())
+	    while (!spaces.empty())
 	    {
-	      cout << spaces.front() << endl;
-	      spaces.pop();
-	      }*/
+	    cout << spaces.front() << endl;
+	    spaces.pop();
+	    }*/
 	  //testing all the digits
 	  int inputindex = 0; // keep track of the input array
 	  int arrayindex = 0; // keep ptrack of the output array
@@ -203,18 +205,25 @@ int main()
 	    {
 	      
 	      c = spaces.front(); 
+	      //cout << "c" << c << endl;
 	      
-	      numbers = new char [100]  ; // a char array to help change each char to int
+	      numbers = new char [100]; // a char array to help change each char to int
 	      for (int y = 0; y < c; y++)  // keep read in from the input array until it reaches the size of the number
 		{
-		  numbers[y] = input[inputindex]; // put that number into the char array
-		  inputindex ++; //input moves towards the left as you read
+		  //cout << "index" << inputindex << endl;
+		  numbers[y] = input[inputindex];
+		  // cout <<"number" <<  input[inputindex] << endl;// put that number into the char array
+		  inputindex ++;
+		  
+		  //input moves towards the left as you read
 		}
-	      inputindex ++; // this is the space
+	      numbers[c] = '\0';
+	      inputindex ++;
+	      //  cout << "index" << inputindex << endl;// this is the space
 	      spaces.pop(); // pop the number of digits from the spaces since we already got the number out
 
 	      d = atoi(numbers); // turn the char array into a number
-	      cout << d << endl; ; // test
+	      //cout << d << endl; ; // test
 	      
 	      array[arrayindex++] = d; // add it to the int array
 	      
@@ -247,13 +256,13 @@ int main()
 	      while (true)
 		{
 		  int b;
-		 myfile >> b; 
-		 if (myfile.eof())
-		   {
-		     break;
-		   }
-		 // keep read in numbers until the file is at the end
-		 array[size++] = b; // set the next index to the number that just read in
+		  myfile >> b; 
+		  if (myfile.eof())
+		    {
+		      break;
+		    }
+		  // keep read in numbers until the file is at the end
+		  array[size++] = b; // set the next index to the number that just read in
 
 		}
 	      myfile.close();
