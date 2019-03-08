@@ -32,7 +32,7 @@ void printArray(int array[])
 
  
   cout << endl;
-  cout <<setw((rows - 1)*10) << " " <<  array[0] << endl;
+  cout <<setw((rows)*3.5) << " " <<  array[0] << endl;
      
   int min = 1;
   int max = 1;
@@ -54,14 +54,17 @@ void printArray(int array[])
 	    }
 	  else
 	    {
-	      if ((rows - currentrow) != 0)
+	      if ( i/2 != (i+1)/2)
 		{
-		cout << setw((rows - currentrow)*10) << " " << array[i-1] ;
+		  
+		  cout << setw( pow(2 ,(rows-currentrow)) *3 ) << " " << array[i-1] ;
 		}
 	      else
 		{
-		  cout <<  setw(5)<< " " <<  array[i-1] ;
+		  cout << setw( (rows-currentrow+1) *3 -1)  << " " << array[i-1] ;
 		}
+		    
+	       
 	    }
 	}
       cout << endl;
