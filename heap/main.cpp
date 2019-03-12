@@ -15,7 +15,22 @@ void printArray (int intarray[],int rows, int longestnumber, int numbers)
  
   int indexbegin = pow(2,rows-1) -1;  // if the row that's passed in is 3, index starts 3 which is the 4th element
   int indexend = pow(2,rows) -1; // and ends at 7, which is the 8th element
-  
+
+  for (int i= indexbegin; i<= indexend; i++)
+    {
+      if (intarray[i] == -1)
+	{
+	  intarray[i] = -2;
+	}
+    }
+  for (int i =0; i<= 100; i++)
+    {
+      cout << intarray[i] << endl;
+      if (intarray[i] == -1)
+	{
+	  break;
+	}
+    }
    
   int arrayindex = 0; // keep track of the elements in the elementsindex
   int numbersofelements = pow(2,rows-1);
@@ -67,15 +82,14 @@ void printArray (int intarray[],int rows, int longestnumber, int numbers)
   
   int length = longestnumber*pow(2,rows-1) + (pow(2,rows-1) * 1 -1) - 1;
   cout << "Every row should have a index length of: " << length << endl;
-int a = 0;
+  int a = 0;
 
- for (int j = rows; j > 0; j--)
+  for (int j = rows; j > 0;  j--)
   {
-    int x = pow(2,j-1) -1;
-    if (x == 0) // log 0 is undefined, since the top tree is always the biggest number therefore, just print it out.
+    int x = pow(2,j-1) -1;	
+    if ( x == 0)
       {
-	
-	for (int lastforloopipromise = 0; lastforloopipromise < elementsindex[a]; lastforloopipromise++)
+    for (int lastforloopipromise = 0; lastforloopipromise < elementsindex[a]; lastforloopipromise++)
 	  {
 	    cout <<" ";
 	  }
@@ -85,39 +99,52 @@ int a = 0;
 	    cout << "0" ; // add a 0 if it has even nums of digits
 	  }
 	cout << intarray[0] << endl;
+        
       }
-    for (int i = 0; i<= length;)
+    else
       {
-         
-	if (i == elementsindex[a])
+	for (int i = 0; i<= length;)
 	  {
-	  
-	    if ((intarray[x] != -1) && (x !=0))
+         
+	    if (i == elementsindex[a])
 	      {
-		int p = log10(intarray[x])+1;
-		if (p <= longestnumber)
+		if (intarray[x] == -2)
 		  {
-		    for (int b = 0; b< longestnumber-p; b++)
+		    for( int k = 0; k <= longestnumber; k++ )
 		      {
-			cout << "0"; // 1 -> 001 if the longest digit is 3
+			cout << " ";
 		      }
-		    cout << intarray[x];
-		    i += longestnumber;
-		  
+		    i+= longestnumber;
 		    a++;
 		    x++;
 		  }
+		else if ((intarray[x] != -1) && (x !=0))
+		  {
+		    int p = log10(intarray[x])+1;
+		    if (p <= longestnumber)
+		      {
+			for (int b = 0; b< longestnumber-p; b++)
+			  {
+			    cout << "0"; // 1 -> 001 if the longest digit is 3
+			  }
+			cout << intarray[x];
+			i += longestnumber;
+		  
+			a++;
+			x++;
+		      }
+		  }
+		else
+		  {
+		    break;
+		  }
+	 
 	      }
 	    else
 	      {
-		break;
+		cout <<" ";
+		i++;
 	      }
-	 
-	  }
-	else
-	  {
-	    cout <<" ";
-	    i++;
 	  }
       }
     cout << endl;
@@ -213,7 +240,7 @@ void processArray(int array[])
     }
   cout << "The longestnumber in the array list has a digit of: " << longestnumber << endl; 
   int numbers = 0;
-  for ( int i = 0; i <= sizeof(array); i++)
+  for ( int i = 0; i <= 100; i++)
     {
       if (array[i] != -1)
         {
