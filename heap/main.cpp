@@ -213,7 +213,7 @@ void processArray(int array[])
     }
   cout << "The longestnumber in the array list has a digit of: " << longestnumber << endl; 
   int numbers = 0;
-  for ( int i = 0; i <= sizeof(intarray); i++)
+  for ( int i = 0; i <= sizeof(array); i++)
     {
       if (array[i] != -1)
         {
