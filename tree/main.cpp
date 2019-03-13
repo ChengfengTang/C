@@ -16,7 +16,7 @@ using namespace std;
 void calculatespaces (int intarray[],int rows, int longestnumber, int numbers);
 int main()
 {
-  int intarray[100] =  {1080,-1,-1,-1,-1, '\0' }; // enter the number here
+  int intarray[100] =  {1080,10,5,-1,'\0'}; // enter the number here
   int longestnumber = 0;
   for (int i = 0; i<= 100; i++)
     {

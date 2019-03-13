@@ -96,10 +96,10 @@ void printArray (int intarray[],int rows, int longestnumber, int numbers)
     }
   elementsindex[arrayindex] == '\0';
   //cout << arrayindex << endl;
-  int z =0 ;
+  int z = 0 ;
   for (int n = 0           ; n<=arrayindex-1  ; n++ )
     {
-      //cout << "Index: " <<elementsindex[n] << endl;
+      cout << "Index: " <<elementsindex[n] << endl;
       z = elementsindex[n];
     }
 
@@ -115,7 +115,7 @@ void printArray (int intarray[],int rows, int longestnumber, int numbers)
     if ( x == 0)
       {
 	
-    for (int lastforloopipromise = 0; lastforloopipromise < z; lastforloopipromise++)
+	for (int lastforloopipromise = 0; lastforloopipromise < z; lastforloopipromise++)
 	  {
 	    
 	    cout <<" ";
