@@ -10,6 +10,28 @@ using namespace std;
 void printArray (int intarray[],int rows, int longestnumber, int numbers);
 char* input;
 char* numbers;
+void heapify(int array[], int n, int i) // thanks to Zareef for showing me how to efficiently heapify without resorting the
+// entire int list and do the old sorting in java. Credit: Zareef
+{
+  int largest = i;
+  int left = 2*i+1;
+  int right = 2*i+2;
+  if ((left < n) && array[left] > array[largest])
+    {
+      largest = left;
+    }
+  if ((right < n) && array[right] > array[largest])
+    {
+      largest = right;
+    }
+  if (largest != i)
+    {
+      int temp = array[i];
+      array[i]= array[largest];
+      array[largest] = temp;
+      heapify(array, n, largest);
+    }
+}
 void printArray (int intarray[],int rows, int longestnumber, int numbers)
 {
  
@@ -23,18 +45,18 @@ void printArray (int intarray[],int rows, int longestnumber, int numbers)
 	  intarray[i] = -2;
 	}
     }
-  for (int i =0; i<= 100; i++)
+  /*for (int i =0; i<= 100; i++)
     {
       cout << intarray[i] << endl;
       if (intarray[i] == -1)
 	{
 	  break;
 	}
-    }
+    }*/
    
   int arrayindex = 0; // keep track of the elements in the elementsindex
   int numbersofelements = pow(2,rows-1);
-  cout << "Numbers of number in the bottom row: " << numbersofelements << endl;
+  //cout << "Numbers of number in the bottom row: " << numbersofelements << endl;
   int elementsindex [numbersofelements] = {};
 
   for (int i = 1; i<= numbersofelements; i++ )
@@ -73,24 +95,29 @@ void printArray (int intarray[],int rows, int longestnumber, int numbers)
       m += pow(2,r-2);
     }
   elementsindex[arrayindex] == '\0';
-  cout << arrayindex << endl;
+  //cout << arrayindex << endl;
+  int z =0 ;
   for (int n = 0           ; n<=arrayindex-1  ; n++ )
     {
-      cout << "Index: " <<elementsindex[n] << endl;
-      }
+      //cout << "Index: " <<elementsindex[n] << endl;
+      z = elementsindex[n];
+    }
 
   
   int length = longestnumber*pow(2,rows-1) + (pow(2,rows-1) * 1 -1) - 1;
-  cout << "Every row should have a index length of: " << length << endl;
+  //cout << "Every row should have an index length of: " << length << endl;
   int a = 0;
+  
 
   for (int j = rows; j > 0;  j--)
   {
     int x = pow(2,j-1) -1;	
     if ( x == 0)
       {
-    for (int lastforloopipromise = 0; lastforloopipromise < elementsindex[a]; lastforloopipromise++)
+	
+    for (int lastforloopipromise = 0; lastforloopipromise < z; lastforloopipromise++)
 	  {
+	    
 	    cout <<" ";
 	  }
 	int l = log10(intarray[0])+1;
@@ -150,6 +177,23 @@ void printArray (int intarray[],int rows, int longestnumber, int numbers)
     cout << endl;
   
   }
+  
+  cout << "Removing from the tree" << endl;
+  for (int i = numbers-1; i>= 0; i--)
+    {
+      // print out the largest number
+      cout << intarray[0] << " ";
+      int temp = intarray[i];
+      intarray[i] = intarray[0];
+      intarray[0] = temp;
+      //move it to the end
+      heapify(intarray,i,0); // call max heapify
+      if (i==0)
+	{
+	  
+	  cout << endl;
+	}
+    }
 }
 
 void checkbackward(int array[], int i)
@@ -184,6 +228,7 @@ void checkbackward(int array[], int i)
   
    
 }
+
 void processArray(int array[])
 {
 
@@ -244,7 +289,7 @@ void processArray(int array[])
     {
       if (array[i] != -1)
         {
-	  cout << array[i] << " ";
+	  //cout << array[i] << " ";
         }
       else
         {
@@ -254,13 +299,12 @@ void processArray(int array[])
         
     } // print out all the valid numbers, which are non -1s
   cout << endl;
-
+  cout << endl;
   //calculate # of rows
   int rows =  log2(numbers) + 1;
     
   printArray (array, rows,longestnumber, numbers);
  
-  
 }
 
 int main()
