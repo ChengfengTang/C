@@ -9,10 +9,11 @@
 #include <math.h>
 using namespace std;
 
-void deleteNode(Node* &head, int number, Node* &parent);
+void deleteNode(Node* & n, Node* &parent);
+void findNode(Node*  head, int number, Node* parent);
 void buildTree(int array[], Node* &head, int size);
 void add(Node* &head, int number);
-void print(int array[], Node* head);
+void print(Node* head);
 char* input;
 char* numbers;
 int main()
@@ -201,17 +202,20 @@ int main()
       else if (b==2) // if the user wants to delete
 	{
 	  cout << endl;
+	  cout << "-----------------------------------------" << endl;
+		  
+		  
 	  cout << "What's the number that you want to delete?"<<endl;
 	  cout << endl;
 	  int deleted = 0;
 	  cin >> deleted;
 	  cin.get();
-	  deleteNode(head, deleted, head);
+	  findNode(head, deleted, head);
 	}
       else if (b==3) // if the user wants to print
 	{
 	  cout << "-----------------------------------------" << endl;
-	  print(array,head);
+	  print(head);
 	}
       else if (b==4)
 	{
@@ -232,12 +236,9 @@ int main()
   
 }
 
-void deleteNode(Node* &head, int number, Node* &parent)
+void findNode(Node* head, int number, Node* parent)
 {
-  // method if the node to be deleted has a left, go left once and keep going right to find the largest number that's  smaller than the node.
-  // if the node doesn't have a right, whatever is on its right takes its spot
-  // if the node doesn't have a child, just remove it.
-  
+  // go through all the nodes, and find the one that matches it, (not sure what would happen if there is two of the same node)
   Node* current = head;
   if (current->getValue() != number)
     {
@@ -246,7 +247,7 @@ void deleteNode(Node* &head, int number, Node* &parent)
 	  if (current->getLeft() != NULL)
 	    {
 	      Node* next = current->getLeft();
-	     deleteNode(next,number,current);
+	      findNode(next,number,current);
 	    }
 	  else
 	    {
@@ -259,7 +260,7 @@ void deleteNode(Node* &head, int number, Node* &parent)
 	  if (current->getRight() != NULL)
 	    {
 	      Node* next = current->getRight();
-	      deleteNode(next,number,current);
+	      findNode(next,number,current);
 	    }
 	  else
 	    {
@@ -270,6 +271,50 @@ void deleteNode(Node* &head, int number, Node* &parent)
     }
   else
     {
+      deleteNode(current, parent);
+    }
+}
+void deleteNode(Node* & n, Node* & parent)
+{
+  cout << "Node with number: " << n->getValue() << " has been deleted" << endl;
+ //4 senarios, leaf, node with 1 left, node with 1 right, node with 2 children but right has no left children, node with two children...    
+  if ((n->getLeft() == NULL) && (n->getRight() == NULL))
+	{
+	  //leaf
+	  
+	  
+	}
+  else if ((n->getLeft() == NULL)|| (n->getRight() == NULL))
+	// one child
+	{
+	  if (n->getLeft() == NULL)
+	    {
+
+
+	    }
+	  else if (n->getRight() == NULL)
+	    {
+
+	      
+	    }
+	}
+      else // two children
+	{
+	  if (n->getRight()->getLeft() == NULL)
+	    {
+
+
+	    }
+	  else
+	    {
+
+
+	    }
+
+	}
+
+}
+	/*
       if (current->getLeft() != NULL)
 	{
 	  Node* replace = current->getLeft();
@@ -316,14 +361,15 @@ void deleteNode(Node* &head, int number, Node* &parent)
 	      
 	    }
 	}
-      else if (current->getRight() != NULL)
+      else if (current->getRight() != NULL) // if the node being deleted doens't have a left, but have a right
 	{
-	  Node* replace = current->getRight();
+	  Node* replace = current->getRight(); 
 	  if (current == parent) // if this is the head
 	    {
 	      Node* gone = current;
-	      delete gone;
+	     
 	      current = replace;
+	      delete gone;
 	    }
 	  else
 	    {
@@ -364,10 +410,22 @@ void deleteNode(Node* &head, int number, Node* &parent)
   
 
 }
-void print(int array[], Node* head)
+	*/
+void print(Node* head)
 {
-  cout << head->getValue() << endl;
-  
+  cout << "Head: " << head->getValue() << endl;
+  if (head->getLeft() != NULL)
+    {
+      cout << "Left of " << head->getValue() << " : " ;
+      print(head->getLeft());
+      
+    }
+  if (head->getRight() != NULL)
+    {
+      cout << "Right of " << head->getValue() << " : " ;
+      print(head->getRight());
+      
+    }
   
 }
 
