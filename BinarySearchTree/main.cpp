@@ -49,10 +49,10 @@ int main()
       if (a == 1)
 	{
 	  
-      cout << "--------------------------------------------" << endl;
+	  cout << "--------------------------------------------" << endl;
 	  cout << "Please enter numbers with spaces between them (put a space after the last number)." << endl;
 	  
-       cout << "--------------------------------------------" << endl;
+	  cout << "--------------------------------------------" << endl;
 	  cin.get(input,100);
 	  cin.get();
 
@@ -99,33 +99,33 @@ int main()
 	      array[arrayindex++] = d; // add to the int array
 	    }
 	  
-      cout << "--------------------------------------------" << endl;
-      if (arrayindex == 0) // if the user didn't enter anything, let them retype
-	{
-	  
-	}
-      else
-	{
-      cout << "The numbers are: " << endl;
-	  for (int i = 0; i <= arrayindex-1; i++) // print the array  out
+	  cout << "--------------------------------------------" << endl;
+	  if (arrayindex == 0) // if the user didn't enter anything, let them retype
 	    {
-	      cout << array[i] << " ";
-	    }
-	  int size = arrayindex;
-	  cout << endl;
 	  
-      cout << "--------------------------------------------" << endl;
-	  buildTree(array, head, size);
+	    }
+	  else
+	    {
+	      cout << "The numbers are: " << endl;
+	      for (int i = 0; i <= arrayindex-1; i++) // print the array  out
+		{
+		  cout << array[i] << " ";
+		}
+	      int size = arrayindex;
+	      cout << endl;
+	  
+	      cout << "--------------------------------------------" << endl;
+	      buildTree(array, head, size);
 	 
-	}
+	    }
 	}
       else if (a ==2)
 	{
 	  
-      cout << "--------------------------------------------" << endl;
+	  cout << "--------------------------------------------" << endl;
 	  cout << "please enter the name of the test file." << endl;
 	  
-      cout << "--------------------------------------------" << endl;
+	  cout << "--------------------------------------------" << endl;
 	  cin.get(input,100);
 	  cin.get();
 	  ifstream myfile;
@@ -177,8 +177,8 @@ int main()
 	}
       if (array[0] == -1)
 	{
-      cout << "You didn't type in anything!" << endl;
-      a = 10;
+	  cout << "You didn't type in anything!" << endl;
+	  a = 10;
 	}
     }
   cout << endl;
@@ -201,7 +201,7 @@ int main()
 	  cout << endl;
 	  cout << "What's the number that you want to add?" << endl;
 	  
-      cout << "--------------------------------------------" << endl;
+	  cout << "--------------------------------------------" << endl;
 	  
 	  int temp = 0;
 	  cin >> temp;
@@ -252,41 +252,41 @@ void findNode(Node* &head, int number, Node* &parent)
 {
   if (head != NULL)
     {
-  // go through all the nodes, and find the one that matches it, (not sure what would happen if there is two of the same node)
-  Node* current = head;
-  if (current->getValue() != number)
-    {
-      if(number <= current->getValue())
+      // go through all the nodes, and find the one that matches it, (not sure what would happen if there is two of the same node)
+      Node* current = head;
+      if (current->getValue() != number)
 	{
-	  if (current->getLeft() != NULL)
+	  if(number <= current->getValue())
 	    {
-	      Node* next = current->getLeft();
-	      findNode(next,number,current);
+	      if (current->getLeft() != NULL)
+		{
+		  Node* next = current->getLeft();
+		  findNode(next,number,current);
+		}
+	      else
+		{
+		  cout << "No such number exists" << endl;
+		}
 	    }
-	  else
-	    {
-	      cout << "No such number exists" << endl;
-	    }
-	}
       
-      else if (number > current->getValue())
-	{
-	  if (current->getRight() != NULL)
+	  else if (number > current->getValue())
 	    {
-	      Node* next = current->getRight();
-	      findNode(next,number,current);
-	    }
-	  else
-	    {
+	      if (current->getRight() != NULL)
+		{
+		  Node* next = current->getRight();
+		  findNode(next,number,current);
+		}
+	      else
+		{
 	      
-	      cout << "No such number exists" << endl;
+		  cout << "No such number exists" << endl;
+		}
 	    }
 	}
-    }
-  else
-    {
-      deleteNode(current, parent, head);
-    }
+      else
+	{
+	  deleteNode(current, parent, head);
+	}
     }
   else
     {
@@ -296,228 +296,183 @@ void findNode(Node* &head, int number, Node* &parent)
 void deleteNode(Node* & n, Node* & parent, Node* & head)
 {
   cout << "Node with number: " << n->getValue() << " has been deleted" << endl;
- //4 senarios, leaf, node with 1 left, node with 1 right, node with 2 children but right has no left children, node with two children...    
+  //4 senarios, leaf, node with 1 left, node with 1 right, node with 2 children but right has no left children, node with two children...    
   if ((n->getLeft() == NULL) && (n->getRight() == NULL))
+    {
+      //if it's a leaf, just disconnect it wiht its parent and delete it
+      if(parent->getLeft() == n)
 	{
-	  //if it's a leaf, just disconnect it wiht its parent and delete it
-	  if(parent->getLeft() == n)
-	    {
-	      parent->setLeft(NULL);
-	      cout << "Parent Node: " << parent->getValue() << "  no longer has a left child of: " << n->getValue() << endl;;
+	  parent->setLeft(NULL);
+	  cout << "Parent Node: " << parent->getValue() << "  no longer has a left child of: " << n->getValue() << endl;;
 	      
 	  cout << "-----------------------------------------" << endl;
 
-	    }
-	  else if(parent->getRight() == n)
-	    {
-	      parent->setRight(NULL);
-	      cout << "Parent Node: " << parent->getValue() << "  no longer has a right child of: " << n->getValue() << endl;;
+	}
+      else if(parent->getRight() == n)
+	{
+	  parent->setRight(NULL);
+	  cout << "Parent Node: " << parent->getValue() << "  no longer has a right child of: " << n->getValue() << endl;;
 	      
 	  cout << "-----------------------------------------" << endl;
 
-	    }
-	  else if (n == head)// this only happenes when parent = n, which is when this is the head
-	    {
+	}
+      else if (n == head)// this only happenes when parent = n, which is when this is the head
+	{
 	     
-	      cout << "Head Node: " << head->getValue() << "  was deleted" << endl;;
-	      head = NULL;
+	  cout << "Head Node: " << head->getValue() << "  was deleted" << endl;;
+	  head = NULL;
 	  cout << "-----------------------------------------" << endl;
 
 	    
-	    }
+	}
        
 	  
-	}
+    }
   else if ((n->getLeft() == NULL)|| (n->getRight() == NULL))
-	// one child
+    // one child
+    {
+      if (n->getLeft() == NULL)
 	{
-	  if (n->getLeft() == NULL)
+	  // if the number only has a right child, go right once and go as left as possible
+	  Node* bye = n->getRight();
+	  Node* byeparent = n;
+	  while(bye->getLeft() != NULL)
 	    {
-	      // if the number only has a right child, go right once and go as left as possible
-	      Node* bye = n->getRight();
-	      Node* byeparent = n;
-	      while(bye->getLeft() != NULL)
-		{
-		  byeparent = bye;
-		  bye = bye->getLeft();
+	      byeparent = bye;
+	      bye = bye->getLeft();
 		  
-		}
-	      bye->setRight(n->getRight());
-	      cout << "Number: " << bye->getValue()  <<" will replace node: " << n->getValue() << " With a right child of: "<< n->getRight()->getValue() << endl;
+	    }
+	  bye->setRight(n->getRight());
+	  cout << "Number: " << bye->getValue()  <<" will replace node: " << n->getValue() << " With a right child of: "<< n->getRight()->getValue() << endl;
 	      
-	      //disconnect bye with its parent
-	      if(byeparent->getLeft() == bye)
+	  //disconnect bye with its parent
+	  if(byeparent->getLeft() == bye)
 	    {
 	      byeparent->setLeft(NULL);
 	      cout << "Parent Node: " << byeparent->getValue() << "  no longer has a left child of: " << bye->getValue() << endl;;
 	      
-	      }
+	    }
 	  else if(byeparent->getRight() == bye)
 	    {
 	      byeparent->setRight(NULL);
 	      cout << "Parent Node: " << byeparent->getValue() << "  no longer has a right child of: " << bye->getValue() << endl;;
 	      
 	    }
-	      // now put bye at n's position
-	      if(parent->getLeft() == n)
+	  // now put bye at n's position
+	  if(parent->getLeft() == n)
 	    {
 	      parent->setLeft(bye);
 	      cout << "Parent Node: " << parent->getValue() << "  now has a left child of: " << bye->getValue() << endl;;
 	      
-	  cout << "-----------------------------------------" << endl;
-
+	      cout << "-----------------------------------------" << endl;
+	      
+	      n->setRight(NULL);
+	      delete n;
 	    }
 	  else if(parent->getRight() == n)
 	    {
 	      parent->setRight(bye);
 	      cout << "Parent Node: " << parent->getValue() << "  now has a right child of: " << bye->getValue() << endl;;
 	      
-	  cout << "-----------------------------------------" << endl;
-
+	      cout << "-----------------------------------------" << endl;
+	      
+	      n->setRight(NULL);
+	      delete n;
+	    }
+	  else //n is the head
+	    {
+	      head = bye;
 	    }
 	    
-	      n->setRight(NULL);
-		delete n;
 	      
 	      
-	    }
-	  else if (n->getRight() == NULL)
-	    {
-	      // if the number only has a left child, go left once and go as right as possible
-	      
-	    }
 	}
-      else // two children
+      else if (n->getRight() == NULL)
 	{
-	  if (n->getRight()->getLeft() == NULL)
+	  // if the number only has a left child, go left once and go as right as possible
+	  Node* bye = n->getLeft();
+	  Node* byeparent = n;
+	  while(bye->getRight() != NULL)
 	    {
-
-
+	      byeparent = bye;
+	      bye = bye->getRight();
+		  
+	    }
+	  bye->setLeft(n->getLeft());
+	  cout << "Number: " << bye->getValue()  <<" will replace node: " << n->getValue() << " With a left child of: "<< n->getLeft()->getValue() << endl;
+	      
+	  //disconnect bye with its parent
+	  if(byeparent->getLeft() == bye)
+	    {
+	      byeparent->setLeft(NULL);
+	      cout << "Parent Node: " << byeparent->getValue() << "  no longer has a left child of: " << bye->getValue() << endl;;
+	      
+	    }
+	  else if(byeparent->getRight() == bye)
+	    {
+	      byeparent->setRight(NULL);
+	      cout << "Parent Node: " << byeparent->getValue() << "  no longer has a right child of: " << bye->getValue() << endl;;
+	      
+	    }
+	  // now put bye at n's position
+	  if(parent->getLeft() == n)
+	    {
+	      parent->setLeft(bye);
+	      cout << "Parent Node: " << parent->getValue() << "  now has a left child of: " << bye->getValue() << endl;;
+	      
+	      cout << "-----------------------------------------" << endl;
+	      
+	      n->setLeft(NULL);
+	      delete n;
+	    }
+	  else if(parent->getRight() == n)
+	    {
+	      parent->setRight(bye);
+	      cout << "Parent Node: " << parent->getValue() << "  now has a right child of: " << bye->getValue() << endl;;
+	      
+	      cout << "-----------------------------------------" << endl;
+	      
+	      n->setLeft(NULL);
+	      delete n;
 	    }
 	  else
 	    {
-
-
+	      head = bye;
 	    }
-
+	      
 	}
-
-}
-	/*
-      if (current->getLeft() != NULL)
+    }
+  else // two children
+    {
+      if (n->getRight()->getLeft() == NULL)
 	{
-	  Node* replace = current->getLeft();
-	  if (replace ->getRight() != NULL)
-	    {
-	      current->getLeft() == NULL; // disconnect the node with its current parent
-	    }
-	  else
-	    {
-	      Node* temp;
-	      while (replace->getRight() != NULL) //go left once and keep going right to find the largest number that's smaller than the node being deleted
-		{
-		  temp = replace;
-		  replace = replace->getRight();
-		}
-	      temp->getRight() == NULL;
-	    }
-	  replace->setLeft(current->getLeft()); // connect that node's left with current node's left
-	  cout << "Number: " << replace->getValue()<< " now has a left of: " << replace->getLeft()->getValue() << endl;
-	  if (current->getRight() != NULL)
-	    {
-	      replace->setRight(current->getRight()); // connect that node with current's right
-		
-	      cout << "Number: " << replace->getValue()<< " now has a right of: " << replace->getRight()->getValue() << endl;
-	    }
 	  
-	  if (current != parent) // if the node deleted is not the head, connect the replacing node with
-	    // current nodes' parent
-	    {
-	      if (parent->getLeft() == current)
-		{
-		  parent->setLeft(replace);
-		  cout << "After deletion. Num: " << replace ->getValue() << " is the left of: " << parent->getValue()<< endl;
-	      
-		}
-	      else if (parent->getRight() == current)
-		{
-		  
-		  parent->setRight(replace);
-		  cout << "After deletion. Num: " << replace ->getValue() << " is the right of: " << parent->getValue()<< endl;
-	      
-		}
-	      delete current;
-	      
-	    }
-	}
-      else if (current->getRight() != NULL) // if the node being deleted doens't have a left, but have a right
-	{
-	  Node* replace = current->getRight(); 
-	  if (current == parent) // if this is the head
-	    {
-	      Node* gone = current;
-	     
-	      current = replace;
-	      delete gone;
-	    }
-	  else
-	    {
-	      if (parent->getLeft() == current)
-		{
-		  cout << "parent: " << parent->getValue() << " now has left of: " << replace->getValue() << endl;
-		  parent->getLeft() == replace;
-		  delete current;
-		}
-	      else if (parent->getRight() == current)
-		{
-		  
-		  cout << "parent: " << parent->getValue() << " now has right of: " << replace->getValue() << endl;
-		  parent->getRight() == replace;
-		  delete current;
-		}
-	    }
 	}
       else
 	{
-	
-	  if (parent->getLeft() == current)
-	    {
-	      
-	      cout << "parent: " << parent->getValue() << " now has nothing on its right" << endl;
-	      parent->getLeft() == NULL;
-	      delete current;
-	    }
-	  else if (parent->getRight() == current)
-	    {
-	      
-	      cout << "parent: " << parent->getValue() << " now has nothing on its right" << endl;
-	      parent->getRight() == NULL;
-	      delete current;
-	    }
+
 	}
     }
-  
-
 }
-	*/
+       
 void print(Node* head)
 {
   if (head != NULL)
     {
       
-  cout <<  head->getValue() << endl;
-  if (head->getLeft() != NULL)
-    {
-      cout << "Left of " << head->getValue() << " : " ;
-      print(head->getLeft());
+      cout <<  head->getValue() << endl;
+      if (head->getLeft() != NULL)
+	{
+	  cout << "Left of " << head->getValue() << " : " ;
+	  print(head->getLeft());
       
-    }
-  if (head->getRight() != NULL)
-    {
-      cout << "Right of " << head->getValue() << " : " ;
-      print(head->getRight());
+	}
+      if (head->getRight() != NULL)
+	{
+	  cout << "Right of " << head->getValue() << " : " ;
+	  print(head->getRight());
       
-    }
+	}
     }
   else
     {
@@ -532,42 +487,42 @@ void add(Node* &head, int number)
   cout << "--------------------------------------------" << endl;
   if (head != NULL)
     {
-	  Node * current = head;
-	  while (head != NULL)
+      Node * current = head;
+      while (head != NULL)
+	{
+	  if (number <= current->getValue())
 	    {
-	      if (number <= current->getValue())
+	      if (current->getLeft() == NULL)
 		{
-		  if (current->getLeft() == NULL)
-		    {
-		      cout << "left of " << current->getValue() << ": " << number << endl; 
-		      Node* node = new Node();
-		      node->setValue(number);
-		      current->setLeft(node);
-		      break;
-		    }
-		  else
-		    {
-		      
-		      current = current->getLeft();
-
-		    }
+		  cout << "left of " << current->getValue() << ": " << number << endl; 
+		  Node* node = new Node();
+		  node->setValue(number);
+		  current->setLeft(node);
+		  break;
 		}
-	      else if (number > current->getValue())
+	      else
 		{
-		  if (current->getRight() == NULL)
-		    {
-		      cout << "Right of " <<current->getValue() << ": " << number << endl; 
-		      Node* node = new Node();
-		      node->setValue(number);
-		      current->setRight(node);
-		      break;
-		    }
-		  else
-		    {
-		      current = current->getRight();
-		    }
+		      
+		  current = current->getLeft();
+
 		}
 	    }
+	  else if (number > current->getValue())
+	    {
+	      if (current->getRight() == NULL)
+		{
+		  cout << "Right of " <<current->getValue() << ": " << number << endl; 
+		  Node* node = new Node();
+		  node->setValue(number);
+		  current->setRight(node);
+		  break;
+		}
+	      else
+		{
+		  current = current->getRight();
+		}
+	    }
+	}
     }
   else
     {
@@ -575,7 +530,7 @@ void add(Node* &head, int number)
       Node* whatever = new Node;
       whatever->setValue(number);
       head = whatever;
-     }
+    }
 	  
   
 }
@@ -588,9 +543,9 @@ void buildTree (int array[], Node* &head, int size)
   cout << "There are " << size << " nodes" << endl;
   /*for (int i =0 ; i<=size-1; i++)
     {
-      cout << array[i] << " ";
+    cout << array[i] << " ";
     }
-  cout << endl;*/
+    cout << endl;*/
   cout << "--------------------------------------------" << endl;
   for (int i = 0; i <= size-1; i++)
     {
