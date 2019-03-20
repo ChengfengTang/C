@@ -13,7 +13,7 @@ void deleteNode(Node* & n, Node* &parent, Node* &head);
 void findNode(Node*  &head, int number, Node* &parent);
 void buildTree(int array[], Node* &head, int size);
 void add(Node* &head, int number);
-void print(Node* head);
+void print(Node* head, int printarray[], int i);
 char* input;
 char* numbers;
 int main()
@@ -226,8 +226,12 @@ int main()
       else if (b==3) // if the user wants to print
 	{
 	  cout << "-----------------------------------------" << endl;
-
-	  print(head);
+	  int printarray[999];
+	  for( int i = 0; i<= 998; i++)
+	    {
+	      printarray[i] = -1;
+	    }
+	  print(head,printarray,1);
 	}
       else if (b==4)
 	{
@@ -328,10 +332,7 @@ void deleteNode(Node* & n, Node* & parent, Node* & head)
        
 	  
     }
-  else if ((n->getLeft() == NULL)|| (n->getRight() == NULL))
-    // one child
-    {
-      if (n->getLeft() == NULL)
+  else if  (n->getLeft() == NULL)
 	{
 	  // if the number only has a right child, go right once and go as left as possible
 	  Node* bye = n->getRight();
@@ -342,22 +343,31 @@ void deleteNode(Node* & n, Node* & parent, Node* & head)
 	      bye = bye->getLeft();
 		  
 	    }
+	  Node* temp = new Node();
+	  if (bye->getRight()!= NULL)
+	    {
+	      temp = bye->getRight();
+	    }
+	      
 	  bye->setRight(n->getRight());
 	  cout << "Number: " << bye->getValue()  <<" will replace node: " << n->getValue() << " With a right child of: "<< n->getRight()->getValue() << endl;
 	      
 	  //disconnect bye with its parent
 	  if(byeparent->getLeft() == bye)
 	    {
+	      if (bye->getRight() != NULL)
+		{
+		  byeparent->setLeft(temp);
+		  cout << "Parent Node: " << byeparent->getValue() << " now has a left child of: " << temp->getValue() << endl;
+		}
+	      else
+		{
+	      
 	      byeparent->setLeft(NULL);
 	      cout << "Parent Node: " << byeparent->getValue() << "  no longer has a left child of: " << bye->getValue() << endl;;
-	      
+		}
 	    }
-	  else if(byeparent->getRight() == bye)
-	    {
-	      byeparent->setRight(NULL);
-	      cout << "Parent Node: " << byeparent->getValue() << "  no longer has a right child of: " << bye->getValue() << endl;;
-	      
-	    }
+	  
 	  // now put bye at n's position
 	  if(parent->getLeft() == n)
 	    {
@@ -387,9 +397,9 @@ void deleteNode(Node* & n, Node* & parent, Node* & head)
 	      
 	      
 	}
-      else if (n->getRight() == NULL)
+      else //if (n->getRight() == NULL)
 	{
-	  // if the number only has a left child, go left once and go as right as possible
+	  // if the number only has a left child or both children, go left once and go as right as possible
 	  Node* bye = n->getLeft();
 	  Node* byeparent = n;
 	  while(bye->getRight() != NULL)
@@ -398,22 +408,31 @@ void deleteNode(Node* & n, Node* & parent, Node* & head)
 	      bye = bye->getRight();
 		  
 	    }
+	  Node* temp = new Node();
+	  if (bye->getLeft()!= NULL)
+	    {
+	      // if bye has any left child
+	      temp = bye->getLeft();
+	    }
 	  bye->setLeft(n->getLeft());
 	  cout << "Number: " << bye->getValue()  <<" will replace node: " << n->getValue() << " With a left child of: "<< n->getLeft()->getValue() << endl;
 	      
 	  //disconnect bye with its parent
-	  if(byeparent->getLeft() == bye)
+	  if(byeparent->getRight() == bye)
 	    {
+	      //since bye is the most right child, if bye has any left child make that the right child of bye's parent
+	      if (bye->getLeft() != NULL)
+		{
+		  byeparent->setRight(temp);
+		  cout << "Parent Node: " << byeparent->getValue() << " now has a right child of: " << temp->getValue() << endl;
+		}
+	      else
+		{
 	      byeparent->setLeft(NULL);
-	      cout << "Parent Node: " << byeparent->getValue() << "  no longer has a left child of: " << bye->getValue() << endl;;
-	      
-	    }
-	  else if(byeparent->getRight() == bye)
-	    {
-	      byeparent->setRight(NULL);
 	      cout << "Parent Node: " << byeparent->getValue() << "  no longer has a right child of: " << bye->getValue() << endl;;
-	      
+		}
 	    }
+	  
 	  // now put bye at n's position
 	  if(parent->getLeft() == n)
 	    {
@@ -441,36 +460,26 @@ void deleteNode(Node* & n, Node* & parent, Node* & head)
 	    }
 	      
 	}
-    }
-  else // two children
-    {
-      if (n->getRight()->getLeft() == NULL)
-	{
-	  
-	}
-      else
-	{
-
-	}
-    }
 }
-       
-void print(Node* head)
+         
+void print(Node* head, int printarray[], int i)
 {
   if (head != NULL)
     {
-      
+      cout << endl;
+      cout << "index: " << i-1 << ": " << head->getValue() << endl;
+      //printarray[i-1] = head->getValue();
       cout <<  head->getValue() << endl;
       if (head->getLeft() != NULL)
 	{
 	  cout << "Left of " << head->getValue() << " : " ;
-	  print(head->getLeft());
+	  print(head->getLeft(), printarray, i*2);
       
 	}
       if (head->getRight() != NULL)
 	{
 	  cout << "Right of " << head->getValue() << " : " ;
-	  print(head->getRight());
+	  print(head->getRight(), printarray, i*2+1);
       
 	}
     }
@@ -478,6 +487,7 @@ void print(Node* head)
     {
       cout << "You don't have any numbers in the tree" << endl;
     }
+  
   
 }
 
