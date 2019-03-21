@@ -776,14 +776,18 @@ void printArray (int intarray[],int rows, int longestnumber)
       
       m += pow(2,r-2);
     }
-  elementsindex[arrayindex] == '\0';
+  //elementsindex[arrayindex] == '\0';
   //cout << arrayindex << endl;
   int z = 0 ;
   for (int n = 0           ; n<=arrayindex-1  ; n++ )
     {
       // cout << "Index: " <<elementsindex[n] << endl;
-      z = elementsindex[n];
+      if ( n+2 == arrayindex-1)
+	{
+	  z = (elementsindex[n]+elementsindex[n+1])/2;
+	}
     }
+  //cout << z << endl;
 
   
   int length = longestnumber*pow(2,rows-1) + (pow(2,rows-1) * 1 -1) - 1;
@@ -796,7 +800,7 @@ void printArray (int intarray[],int rows, int longestnumber)
       int x = pow(2,j-1) -1;	
       if ( x == 0)
 	{
-	
+	  
 	  for (int lastforloopipromise = 0; lastforloopipromise < z; lastforloopipromise++)
 	    {
 	    
