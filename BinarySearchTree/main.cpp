@@ -11,10 +11,10 @@ using namespace std;
 
 void printArray (int intarray[],int rows, int longestnumber);
 void deleteNode(Node* & n, Node* &parent, Node* &head);
-void findNode(Node*  &head, int number, Node* &parent);
+void findNode(Node* &head, int number, Node* &parent,int numbersofnumbers );
 void buildTree(int array[], Node* &head, int size);
 void add(Node* &head, int number);
-void print(Node* head, int printarray[], int i);
+void print(Node* head, int printarray[], int i );
 char* input;
 char* numbers;
 int main()
@@ -24,12 +24,13 @@ int main()
   int a = 10;
   
   int array[100];
-  
+   int printarray[999];
+   int numbersofnumbers = 0;
   Node* head = NULL;
   
   for (int abc = 0; abc <= 100; abc++)
     {
-      array[abc] = -1;
+     array[abc] = -1;
     }
   
   
@@ -117,7 +118,7 @@ int main()
 	  
 	      cout << "--------------------------------------------" << endl;
 	      buildTree(array, head, size);
-	 
+	      numbersofnumbers = size;
 	    }
 	}
       else if (a ==2)
@@ -162,7 +163,7 @@ int main()
 		}
 	      cout << endl;
 	      buildTree (array,head, size);
-	      
+	      numbersofnumbers = size;
 	      
 	    }
 	}
@@ -189,6 +190,7 @@ int main()
   while (b != 4)
     {
       cout << "--------------------------------------------" << endl;
+      cout << "There are currently " << numbersofnumbers << " nodes" << endl;
       cout << "Now if you would like to add a Node, enter 1" << endl;
       cout << "If you would like to delete a Node, enter 2" << endl;
       cout << "If you would like to print the tree, enter 3" << endl;
@@ -209,6 +211,7 @@ int main()
 	  cin.get();
 	 
 	  add ( head, temp);
+	  numbersofnumbers++;
 	  //Singleadd
 	}
       else if (b==2) // if the user wants to delete
@@ -222,17 +225,59 @@ int main()
 	  int deleted = 0;
 	  cin >> deleted;
 	  cin.get();
-	  findNode(head, deleted, head);
+	  
+	  findNode(head, deleted, head, numbersofnumbers);
+	  numbersofnumbers --;
 	}
       else if (b==3) // if the user wants to print
 	{
 	  cout << "-----------------------------------------" << endl;
-	  int printarray[999];
 	  for( int i = 0; i<= 998; i++)
 	    {
 	      printarray[i] = -1;
 	    }
+	 
 	  print(head,printarray,1);
+	  
+	  cout << endl;
+	  if (head != NULL)
+	    {
+	  int longestnumber = 0;
+	  int numbers = 0;
+	  int row = 0;
+	  for(int c = 0; c<= 998; c++)
+	    {
+	      if (printarray[c] != -1)
+		{
+		  numbers ++;
+		}
+	      
+	      if (log10(printarray[c]) +1 > longestnumber)
+		{
+		  longestnumber = log10(printarray[c]) + 1;
+		}
+	      if (numbers == numbersofnumbers)
+		{
+		  numbers = c;
+		  break;
+		}
+	      else
+		{
+		  if(printarray[c] == -1)
+		    {
+		      printarray[c] = -2;
+		    }
+		}
+	    }
+	  /*for (int g = 0; g<= 998; g++)
+	    {
+	      cout << printarray[g] << " ";
+	      }*/
+	  
+	  row = log2(numbersofnumbers) +1;
+	  printArray(printarray, row, longestnumber);
+	  
+	    }
 	}
       else if (b==4)
 	{
@@ -244,7 +289,7 @@ int main()
 	  cout << "Invalid #" << endl;
 	  cout << endl;
 	}
-
+      
 
 
 
@@ -252,8 +297,40 @@ int main()
     }
   
 }
+void print(Node* head, int printarray[], int i)
+{
+  if (head != NULL)
+    {
+      //cout << endl;
+      //cout << "index: " << i-1 << ": " << head->getValue() << endl;
+      
+      printarray[i-1] = head->getValue();
+      
+      cout <<  head->getValue() << endl;
+      if (head->getLeft() != NULL)
+	{
+	   cout << "Left of " << head->getValue() << " : " ;
+	  print(head->getLeft(), printarray, i*2);
+	  
+	}
+      if (head->getRight() != NULL)
+	{
+	  cout << "Right of " << head->getValue() << " : " ;
+	  print(head->getRight(), printarray, i*2+1);
+      
+	}
+    }
+  else
+    {
+      cout << "You don't have any numbers in the tree" << endl;
+    }
+  
+  
+  
+ 
+}
 
-void findNode(Node* &head, int number, Node* &parent)
+void findNode(Node* &head, int number, Node* &parent, int numbersofnumbers)
 {
   if (head != NULL)
     {
@@ -266,7 +343,7 @@ void findNode(Node* &head, int number, Node* &parent)
 	      if (current->getLeft() != NULL)
 		{
 		  Node* next = current->getLeft();
-		  findNode(next,number,current);
+		  findNode(next,number,current,numbersofnumbers );
 		}
 	      else
 		{
@@ -279,7 +356,7 @@ void findNode(Node* &head, int number, Node* &parent)
 	      if (current->getRight() != NULL)
 		{
 		  Node* next = current->getRight();
-		  findNode(next,number,current);
+		  findNode(next,number,current, numbersofnumbers );
 		}
 	      else
 		{
@@ -290,12 +367,15 @@ void findNode(Node* &head, int number, Node* &parent)
 	}
       else
 	{
+	  numbersofnumbers = numbersofnumbers - 1;
 	  deleteNode(current, parent, head);
+	  
 	}
     }
   else
     {
       cout << "You don't have any numbers in the tree!" << endl;
+     
     }
 }
 void deleteNode(Node* & n, Node* & parent, Node* & head)
@@ -327,7 +407,7 @@ void deleteNode(Node* & n, Node* & parent, Node* & head)
 	  cout << "Head Node: " << head->getValue() << "  was deleted" << endl;;
 	  head = NULL;
 	  cout << "-----------------------------------------" << endl;
-
+	  
 	    
 	}
        
@@ -345,14 +425,20 @@ void deleteNode(Node* & n, Node* & parent, Node* & head)
 		  
 	    }
 	  Node* temp = new Node();
+
+	  if (bye == n->getRight())
+	    {
+	      
+
+	    }
+	  else
+	    {
 	  if (bye->getRight()!= NULL)
 	    {
 	      temp = bye->getRight();
 	    }
 	      
-	  bye->setRight(n->getRight());
-	  cout << "Number: " << bye->getValue()  <<" will replace node: " << n->getValue() << " With a right child of: "<< n->getRight()->getValue() << endl;
-	      
+	  
 	  //disconnect bye with its parent
 	  if(byeparent->getLeft() == bye)
 	    {
@@ -368,7 +454,9 @@ void deleteNode(Node* & n, Node* & parent, Node* & head)
 	      cout << "Parent Node: " << byeparent->getValue() << "  no longer has a left child of: " << bye->getValue() << endl;;
 		}
 	    }
-	  
+	   bye->setRight(n->getRight());
+	  cout << "Number: " << bye->getValue()  <<" will replace node: " << n->getValue() << " With a right child of: "<< n->getRight()->getValue() << endl;
+	    }
 	  // now put bye at n's position
 	  if(parent->getLeft() == n)
 	    {
@@ -379,6 +467,7 @@ void deleteNode(Node* & n, Node* & parent, Node* & head)
 	      
 	      n->setRight(NULL);
 	      delete n;
+	      
 	    }
 	  else if(parent->getRight() == n)
 	    {
@@ -389,7 +478,7 @@ void deleteNode(Node* & n, Node* & parent, Node* & head)
 	      
 	      n->setRight(NULL);
 	      delete n;
-	    }
+	      	    }
 	  else //n is the head
 	    {
 	      head = bye;
@@ -398,6 +487,7 @@ void deleteNode(Node* & n, Node* & parent, Node* & head)
 	      
 	      
 	}
+      
       else //if (n->getRight() == NULL)
 	{
 	  // if the number only has a left child or both children, go left once and go as right as possible
@@ -410,29 +500,61 @@ void deleteNode(Node* & n, Node* & parent, Node* & head)
 		  
 	    }
 	  Node* temp = new Node();
+
+	  //disconnect bye with its parent
+	  if (byeparent != n )
+	    {
 	  if (bye->getLeft()!= NULL)
 	    {
 	      // if bye has any left child
 	      temp = bye->getLeft();
+	  
 	    }
-	  bye->setLeft(n->getLeft());
-	  cout << "Number: " << bye->getValue()  <<" will replace node: " << n->getValue() << " With a left child of: "<< n->getLeft()->getValue() << endl;
+	  
+
+	  if (n->getRight() != NULL)
+	    {
+	      bye->setRight(n->getRight());
 	      
-	  //disconnect bye with its parent
+	  cout << "Number: " << bye->getValue()  <<" will replace node: " << n->getValue() << " With a right child of: "<< n->getRight()->getValue() << endl;
+	      
+	    }
+	  
 	  if(byeparent->getRight() == bye)
 	    {
 	      //since bye is the most right child, if bye has any left child make that the right child of bye's parent
 	      if (bye->getLeft() != NULL)
 		{
+		  
 		  byeparent->setRight(temp);
 		  cout << "Parent Node: " << byeparent->getValue() << " now has a right child of: " << temp->getValue() << endl;
-		}
+		    
+		    }
 	      else
 		{
-	      byeparent->setLeft(NULL);
+	      byeparent->setRight(NULL);
 	      cout << "Parent Node: " << byeparent->getValue() << "  no longer has a right child of: " << bye->getValue() << endl;;
 		}
 	    }
+	      bye->setLeft(n->getLeft());
+	  
+	      cout << "Number: " << bye->getValue()  <<" will replace node: " << n->getValue() << " With a left child of: "<< n->getLeft()->getValue() << endl;
+	    }
+	  else
+	    {
+	      
+	  if (n->getRight() != NULL)
+	    {
+	      bye->setRight(n->getRight());
+	      
+	  cout << "Number: " << bye->getValue()  <<" will replace node: " << n->getValue() << " With a right child of: "<< n->getRight()->getValue() << endl;
+	      
+	    }
+	  
+	    }
+	  
+	      
+	    
 	  
 	  // now put bye at n's position
 	  if(parent->getLeft() == n)
@@ -441,9 +563,13 @@ void deleteNode(Node* & n, Node* & parent, Node* & head)
 	      cout << "Parent Node: " << parent->getValue() << "  now has a left child of: " << bye->getValue() << endl;;
 	      
 	      cout << "-----------------------------------------" << endl;
-	      
+	      if (n->getRight() != NULL)
+	      {
+	        n->setRight(NULL);
+	      }
 	      n->setLeft(NULL);
 	      delete n;
+	      
 	    }
 	  else if(parent->getRight() == n)
 	    {
@@ -451,10 +577,13 @@ void deleteNode(Node* & n, Node* & parent, Node* & head)
 	      cout << "Parent Node: " << parent->getValue() << "  now has a right child of: " << bye->getValue() << endl;;
 	      
 	      cout << "-----------------------------------------" << endl;
-	      
+	      if (n->getRight() != NULL)
+	      {
+	        n->setRight(NULL);
+	      }
 	      n->setLeft(NULL);
 	      delete n;
-	    }
+	      	    }
 	  else
 	    {
 	      head = bye;
@@ -463,34 +592,6 @@ void deleteNode(Node* & n, Node* & parent, Node* & head)
 	}
 }
          
-void print(Node* head, int printarray[], int i)
-{
-  if (head != NULL)
-    {
-      cout << endl;
-      cout << "index: " << i-1 << ": " << head->getValue() << endl;
-      //printarray[i-1] = head->getValue();
-      cout <<  head->getValue() << endl;
-      if (head->getLeft() != NULL)
-	{
-	  cout << "Left of " << head->getValue() << " : " ;
-	  print(head->getLeft(), printarray, i*2);
-      
-	}
-      if (head->getRight() != NULL)
-	{
-	  cout << "Right of " << head->getValue() << " : " ;
-	  print(head->getRight(), printarray, i*2+1);
-      
-	}
-    }
-  else
-    {
-      cout << "You don't have any numbers in the tree" << endl;
-    }
-  
-  
-}
 
 void add(Node* &head, int number)
 {
@@ -628,11 +729,11 @@ void printArray (int intarray[],int rows, int longestnumber)
     }
   /*for (int i =0; i<= 100; i++)
     {
-      cout << intarray[i] << endl;
-      if (intarray[i] == -1)
-	{
-	  break;
-	}
+    cout << intarray[i] << endl;
+    if (intarray[i] == -1)
+    {
+    break;
+    }
     }*/
    
   int arrayindex = 0; // keep track of the elements in the elementsindex
@@ -671,7 +772,7 @@ void printArray (int intarray[],int rows, int longestnumber)
 	      
 	    }
 	}
-       d = m +1;
+      d = m +1;
       
       m += pow(2,r-2);
     }
@@ -680,7 +781,7 @@ void printArray (int intarray[],int rows, int longestnumber)
   int z = 0 ;
   for (int n = 0           ; n<=arrayindex-1  ; n++ )
     {
-      cout << "Index: " <<elementsindex[n] << endl;
+      // cout << "Index: " <<elementsindex[n] << endl;
       z = elementsindex[n];
     }
 
@@ -691,73 +792,73 @@ void printArray (int intarray[],int rows, int longestnumber)
   
 
   for (int j = rows; j > 0;  j--)
-  {
-    int x = pow(2,j-1) -1;	
-    if ( x == 0)
-      {
+    {
+      int x = pow(2,j-1) -1;	
+      if ( x == 0)
+	{
 	
-	for (int lastforloopipromise = 0; lastforloopipromise < z; lastforloopipromise++)
-	  {
+	  for (int lastforloopipromise = 0; lastforloopipromise < z; lastforloopipromise++)
+	    {
 	    
-	    cout <<" ";
-	  }
-	int l = log10(intarray[0])+1;
-	if (l % 2 == 0)
-	  {
-	    cout << "0" ; // add a 0 if it has even nums of digits
-	  }
-	cout << intarray[0] << endl;
+	      cout <<" ";
+	    }
+	  int l = log10(intarray[0])+1;
+	  if (l % 2 == 0)
+	    {
+	      cout << "0" ; // add a 0 if it has even nums of digits
+	    }
+	  cout << intarray[0] << endl;
         
-      }
-    else
-      {
-	for (int i = 0; i<= length;)
-	  {
+	}
+      else
+	{
+	  for (int i = 0; i<= length;)
+	    {
          
-	    if (i == elementsindex[a])
-	      {
-		if (intarray[x] == -2)
-		  {
-		    for( int k = 0; k <= longestnumber; k++ )
-		      {
-			cout << " ";
-		      }
-		    i+= longestnumber;
-		    a++;
-		    x++;
-		  }
-		else if ((intarray[x] != -1) && (x !=0))
-		  {
-		    int p = log10(intarray[x])+1;
-		    if (p <= longestnumber)
-		      {
-			for (int b = 0; b< longestnumber-p; b++)
-			  {
-			    cout << "0"; // 1 -> 001 if the longest digit is 3
-			  }
-			cout << intarray[x];
-			i += longestnumber;
+	      if (i == elementsindex[a])
+		{
+		  if (intarray[x] == -2)
+		    {
+		      for( int k = 0; k <= longestnumber-1; k++ )
+			{
+			  cout << " ";
+			}
+		      i+= longestnumber;
+		      a++;
+		      x++;
+		    }
+		  else if ((intarray[x] != -1) && (x !=0))
+		    {
+		      int p = log10(intarray[x])+1;
+		      if (p <= longestnumber)
+			{
+			  for (int b = 0; b< longestnumber-p; b++)
+			    {
+			      cout << "0"; // 1 -> 001 if the longest digit is 3
+			    }
+			  cout << intarray[x];
+			  i += longestnumber;
 		  
-			a++;
-			x++;
-		      }
-		  }
-		else
-		  {
-		    break;
-		  }
+			  a++;
+			  x++;
+			}
+		    }
+		  else
+		    {
+		      break;
+		    }
 	 
-	      }
-	    else
-	      {
-		cout <<" ";
-		i++;
-	      }
-	  }
-      }
-    cout << endl;
+		}
+	      else
+		{
+		  cout <<" ";
+		  i++;
+		}
+	    }
+	}
+      cout << endl;
   
-  }
+    }
   
  
 }
