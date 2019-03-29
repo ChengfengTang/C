@@ -9,7 +9,7 @@
 #include <math.h>
 using namespace std;
 
-void printArray (int intarray[]);
+void PrintTree (int intarray[]);
 void deleteNode(Node* & n, Node* &parent, Node* &head);
 void findNode(Node* &head, int number, Node* &parent,int numbersofnumbers );
 void buildTree(int array[], Node* &head, int size);
@@ -23,12 +23,12 @@ int main()
   cout << "To start you would have to enter some numbers!" << endl;
   int a = 10;
   
-  int array[100];
+  int array[999];
    int printarray[999];
    int numbersofnumbers = 0;
   Node* head = NULL;
   
-  for (int abc = 0; abc <= 100; abc++)
+  for (int abc = 0; abc <= 998; abc++)
     {
      array[abc] = -1;
     }
@@ -240,44 +240,38 @@ int main()
 	  print(head,printarray,1);
 	  
 	  cout << endl;
-	  /*if (head != NULL)
+	  if (head != NULL)
 	    {
-	  int longestnumber = 0;
-	  int numbers = 0;
-	  int row = 0;
-	  for(int c = 0; c<= 998; c++)
-	    {
-	      if (printarray[c] != -1)
+	      int numbers = 0;
+	      for(int c = 0; c<= 998; c++)
 		{
-		  numbers ++;
-		}
-	      
-	      if (log10(printarray[c]) +1 > longestnumber)
-		{
-		  longestnumber = log10(printarray[c]) + 1;
-		}
-	      if (numbers == numbersofnumbers)
-		{
-		  numbers = c;
-		  break;
-		}
-	      else
-		{
-		  if(printarray[c] == -1)
+		  if (printarray[c] != -1)
 		    {
-		      printarray[c] = -2;
+		      numbers ++;
+		    }
+	      
+	    
+		  if (numbers == numbersofnumbers)
+		    {
+		      numbers = c;
+		      break;
+		    }
+		  else
+		    {
+		      if(printarray[c] == -1)
+			{
+			  printarray[c] = -2;
+			}
 		    }
 		}
-	    }
-	  /*for (int g = 0; g<= 998; g++)
-	    {
-	      cout << printarray[g] << " ";
-	      }*/
+	      for (int g = 0; g<= 998; g++)
+		{
+		  //  cout << printarray[g] << " ";
+		}
 	  
-	  //row = log2(numbersofnumbers) +1;
-	  printArray(printarray);
+	      PrintTree(printarray);
 	  
-	    }
+	  
 	}
       else if (b==4)
 	{
@@ -296,6 +290,7 @@ int main()
 
     }
   
+    }
 }
 void print(Node* head, int printarray[], int i)
 {
