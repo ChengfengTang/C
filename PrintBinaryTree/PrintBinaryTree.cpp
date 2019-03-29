@@ -5,7 +5,7 @@ using namespace std;
 // I apologize for the wordiness, it's really hard to explain the method, basically calculate the position of the bottom tree then work your way up
 int main()
 {
-  int intarray[999] =  {108,39,60,204,40,104,-2,300,4992,30249,194,2394,309,3,4,5,138,42,209,-1,'\0'};
+  int intarray[999] =  {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,-1,'\0'};
   // people don't really print a tree from int array, but since different trees have different ways of sorting, it's hard to print from node. But feel free to just alter it, the essence of printing shouldn't chagne
   // enter the number in the intarray above to test.
   int longestnumber = 0; // keep track of the longest number in the entire tree
@@ -131,7 +131,7 @@ int main()
 	      cout <<" ";
 	    }
 	  int l = log10(intarray[x])+1; // this is to make sure everything has the same length
-	  if (l % 2 == 0)
+	  for(int b= 0; b<longestnumber-l; b++)
 	    {
 	      cout << "0" ; // add a 0 if it has even nums of digits
 	    }
