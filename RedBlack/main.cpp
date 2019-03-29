@@ -1,6 +1,7 @@
  #include <iostream>
 #include <cstring>
 #include <queue>
+#include "Node.h"
 #include <iomanip>
 #include <stdlib.h>
 #include <fstream>
@@ -9,10 +10,122 @@ using namespace std;
 
 char* input;
 char* numbers;
+void PrintTree(int array[])
+void	 NumStringToChar(int array[]);
+void buildTree (int array[], Node* &head, int size);
+void print(Node* head, int printarray[], int i);
 int main()
 {
   int array[999];
   NumStringToChar(array);
+	buildTree(array[], Node* &head,int size);
+	for( int i = 0; i<= 998; i++)
+	    {
+	      printarray[i] = -1;
+	    }
+	 
+	  print(head,array,1);
+	PrintTree( array);
+	
+}
+
+void print(Node* head, int printarray[], int i)
+{
+  if (head != NULL)
+    {
+      //cout << endl;
+      //cout << "index: " << i-1 << ": " << head->getValue() << endl;
+      
+      printarray[i-1] = head->getValue();
+      
+      cout <<  head->getValue() << endl;
+      if (head->getLeft() != NULL)
+	{
+	   cout << "Left of " << head->getValue() << " : " ;
+	  print(head->getLeft(), printarray, i*2);
+	  
+	}
+      if (head->getRight() != NULL)
+	{
+	  cout << "Right of " << head->getValue() << " : " ;
+	  print(head->getRight(), printarray, i*2+1);
+      
+	}
+    }
+  else
+    {
+      cout << "You don't have any numbers in the tree" << endl;
+    }
+  
+  
+  
+ 
+}
+void buildTree (int array[], Node* &head, int size)
+{
+  
+  cout << "--------------------------------------------" << endl;
+  cout << "There are " << size << " nodes" << endl;
+  /*for (int i =0 ; i<=size-1; i++)
+    {
+    cout << array[i] << " ";
+    }
+    cout << endl;*/
+  cout << "--------------------------------------------" << endl;
+  for (int i = 0; i <= size-1; i++)
+    {
+      if (head == NULL)
+	{
+	  Node* temp = new Node;
+	  temp->setValue(array[i]);
+	  head = temp;
+	  
+	  cout << "head: " << head->getValue() << endl;
+	}
+      
+      else
+	{
+	  Node * current = head;
+	  while (head != NULL)
+	    {
+	      if (array[i] <= current->getValue())
+		{
+		  if (current->getLeft() == NULL)
+		    {
+		      cout << "left of " << current->getValue() << ": " << array[i] << endl; 
+		      Node* node = new Node();
+		      node->setValue(array[i]);
+		      current->setLeft(node);
+		      break;
+		    }
+		  else
+		    {
+		      
+		      current = current->getLeft();
+
+		    }
+		}
+	      else if (array[i] > current->getValue())
+		{
+		  if (current->getRight() == NULL)
+		    {
+		      cout << "Right of " <<current->getValue() << ": " << array[i] << endl; 
+		      Node* node = new Node();
+		      node->setValue(array[i]);
+		      current->setRight(node);
+		      break;
+		    }
+		  else
+		    {
+		      current = current->getRight();
+		    }
+		}
+	    }
+	    
+          
+	}
+    }
+  
 }
 void NumStringToChar(int array[])
 {
