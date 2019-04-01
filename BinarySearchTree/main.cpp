@@ -853,10 +853,12 @@ void PrintTree(int intarray[])
 		{ 
 		  if (intarray[x] == -2) //-2 means null, if null just print the amount of space equal to the longest num
 		    {
+		      
 		      for (int b =0; b< longestnumber; b++)
 			{
 			  cout << " ";
-			}
+			  }
+		      
 		      i+= longestnumber; // keep counting index for each row
 		      a++; //next position
 		      x++; //next number
