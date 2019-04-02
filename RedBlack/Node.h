@@ -12,8 +12,8 @@ class Node
   void setLeft(Node* newLeft);
   void setRight(Node* newRight);
   void setParent(Node* newParent);
-  void setBlack();
-  void setRed();
+  void setColor(int newColor);
+  
   
   int getColor();
   Node* getParent();

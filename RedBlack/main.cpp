@@ -11,10 +11,14 @@
 using namespace std;
 
 void PrintTree (int intarray[]);
-void deleteNode(Node* & n, Node* &parent, Node* &head);
-void findNode(Node* &head, int number, Node* &parent,int numbersofnumbers );
-void buildTree(int array[], Node* &head, int size);
-void add(Node* &head, int number);
+Node* insert(Node* head, Node* n);
+void insert_repair_tree(Node* n);
+void insert_case1(Node* n);
+void insert_case2(Node* n);
+void insert_case3(Node* n);
+void insert_case4(Node* n);
+void insert_case4step2(Node* n);
+void insert_recurse(Node* head, Node* n);
 void print(Node* head, int printarray[], int i );
 char* input;
 char* numbers;
@@ -70,6 +74,7 @@ int main()
 {
   //int red = 10024;
   //cout << "\033[1;31m" << red << " \033[0m\n";
+  
   cout << "Welcome to Chengfeng Tang's Binary Search Project" << endl ;
   cout << "To start you would have to enter some numbers!" << endl;
   int a = 10;
@@ -168,8 +173,15 @@ int main()
 	      cout << endl;
 	  
 	      cout << "--------------------------------------------" << endl;
-	      buildTree(array, head, size);
 	      numbersofnumbers = size;
+	       for (int i =0; i< size; i++)
+		{
+		  Node* n = new Node();
+		  n->setValue(array[i]);
+		  
+		  head = insert(head, n);
+		  
+		}
 	    }
 	}
       else if (a ==2)
@@ -213,9 +225,14 @@ int main()
 	      
 		}
 	      cout << endl;
-	      buildTree (array,head, size);
-	      numbersofnumbers = size;
 	      
+	      numbersofnumbers = size;
+	      	for (int i =0; i< size; i++)
+		{
+		  Node* n = new Node();
+		  n->setValue(array[i]);
+		  head = insert(head, n);
+		}
 	    }
 	}
       else if (a == 3)
@@ -261,7 +278,7 @@ int main()
 	  cin >> temp;
 	  cin.get();
 	 
-	  add ( head, temp);
+	  //add
 	  numbersofnumbers++;
 	  //Singleadd
 	}
@@ -277,7 +294,7 @@ int main()
 	  cin >> deleted;
 	  cin.get();
 	  
-	  findNode(head, deleted, head, numbersofnumbers);
+	  //delete
 	  numbersofnumbers --;
 	}
       else if (b==3) // if the user wants to print
@@ -315,40 +332,171 @@ int main()
 			}
 		    }
 		}
-	      for (int g = 0; g<= 998; g++)
+     	      for (int g = 0; g<= 998; g++)
 		{
-		  //  cout << printarray[g] << " ";
+		 
+    
+		      //cout << printarray[g] << " ";
+
 		}
-	  
+	      cout << endl;
 	      PrintTree(printarray);
+		
 	  
-	  
-	}
-      else if (b==4)
-	{
-	  cout << "bye" << endl;
-	  return 0;
-	}
-      else
-	{
-	  cout << "Invalid #" << endl;
-	  cout << endl;
-	}
+	    }
+	  else if (b==4)
+	    {
+	      cout << "bye" << endl;
+	      return 0;
+	    }
+	  else
+	    {
+	      cout << "Invalid #" << endl;
+	      cout << endl;
+	    }
       
 
 
 
 
-    }
+	}
   
     }
 }
+Node* insert(Node* head, Node* n)
+{
+  insert_recurse(head,n);
+  insert_repair_tree(n);
+  
+  head = n;
+  while(head->getParent() != NULL)
+    {
+      head = head->getParent();
+    }
+  return head;
+
+}
+void insert_recurse(Node* head, Node* n)
+{
+  if(head != NULL && n->getValue() < head->getValue())
+    {
+      if (head->getLeft() != NULL)
+	{
+	  insert_recurse(head->getLeft(),n);
+	  return;
+	}
+      else
+	{
+	  head->setLeft(n);
+	}
+    }
+  else if (head != NULL)
+    {
+      if (head->getRight() != NULL)
+	{
+	  insert_recurse(head->getRight(), n );
+	  return;
+	}
+      else
+	{
+	  head->setRight(n);
+	}
+      
+    }
+  n->setParent(head);
+  n->setLeft(NULL);
+  n->setRight(NULL);
+    n->setColor(1);
+ }
+void insert_repair_tree(Node* n)
+{
+
+  if (n->getParent() == NULL)
+    {
+      insert_case1(n);
+    }
+  else if (n->getParent()->getColor() == 0)
+    {
+      insert_case2(n);
+    }
+  else if (uncle(n) != NULL && uncle(n)->getColor() == 1)
+    {
+      insert_case3(n);
+    }
+  else
+    {
+      //insert_case4(n);
+    }
+}
+void insert_case1(Node* n)
+{
+  if (n->getParent() == NULL)
+    {
+      n->setColor(0);
+    }
+}
+void insert_case2(Node* n)
+{
+  return;
+}
+void insert_case3(Node* n)
+{
+  n->getParent()->setColor(0);
+  uncle(n)->setColor(0);
+  grandparent(n)->setColor(1);
+  insert_repair_tree(grandparent(n));
+}
+void insert_case4(Node* n)
+{
+  Node* p = n->getParent();
+  Node* g = grandparent(n);
+
+  if (n==p->getRight() && p==g->getLeft())
+    {
+      //rotate_left(p);
+      n = n->getLeft();
+    }
+  else if ( n==p->getLeft() && p == g->getRight())
+    {
+      //rotate_right(p);
+      n = n->getRight();
+    }
+  insert_case4step2(n);
+}
+void insert_case4step2(Node* n)
+{
+  Node* p = n->getParent();
+  Node* g = grandparent(n);
+
+  if (n ==p->getLeft())
+    {
+      //rotate_right(g);
+    }
+  else
+    {
+      //rotate_left(g);
+    }
+  p->setColor(0);
+  g->setColor(1);
+  
+}
+
+
+
+
+
+
+
+
+
 void print(Node* head, int printarray[], int i)
 {
   if (head != NULL)
     {
       //cout << endl;
       //cout << "index: " << i-1 << ": " << head->getValue() << endl;
+
+
       
       printarray[i-1] = head->getValue();
       
@@ -371,395 +519,9 @@ void print(Node* head, int printarray[], int i)
       cout << "You don't have any numbers in the tree" << endl;
     }
   
-  
-  
  
 }
 
-void findNode(Node* &head, int number, Node* &parent, int numbersofnumbers)
-{
-  if (head != NULL)
-    {
-      // go through all the nodes, and find the one that matches it, (not sure what would happen if there is two of the same node)
-      Node* current = head;
-      if (current->getValue() != number)
-	{
-	  if(number <= current->getValue())
-	    {
-	      if (current->getLeft() != NULL)
-		{
-		  Node* next = current->getLeft();
-		  findNode(next,number,current,numbersofnumbers );
-		}
-	      else
-		{
-		  cout << "No such number exists" << endl;
-		}
-	    }
-      
-	  else if (number > current->getValue())
-	    {
-	      if (current->getRight() != NULL)
-		{
-		  Node* next = current->getRight();
-		  findNode(next,number,current, numbersofnumbers );
-		}
-	      else
-		{
-	      
-		  cout << "No such number exists" << endl;
-		}
-	    }
-	}
-      else
-	{
-	  numbersofnumbers = numbersofnumbers - 1;
-	  deleteNode(current, parent, head);
-	  
-	}
-    }
-  else
-    {
-      cout << "You don't have any numbers in the tree!" << endl;
-     
-    }
-}
-void deleteNode(Node* & n, Node* & parent, Node* & head)
-{
-  cout << "Node with number: " << n->getValue() << " has been deleted" << endl;
-  //4 senarios, leaf, node with 1 left, node with 1 right, node with 2 children but right has no left children, node with two children...    
-  if ((n->getLeft() == NULL) && (n->getRight() == NULL))
-    {
-      //if it's a leaf, just disconnect it wiht its parent and delete it
-      if(parent->getLeft() == n)
-	{
-	  parent->setLeft(NULL);
-	  cout << "Parent Node: " << parent->getValue() << "  no longer has a left child of: " << n->getValue() << endl;;
-	      
-	  cout << "-----------------------------------------" << endl;
-
-	}
-      else if(parent->getRight() == n)
-	{
-	  parent->setRight(NULL);
-	  cout << "Parent Node: " << parent->getValue() << "  no longer has a right child of: " << n->getValue() << endl;;
-	      
-	  cout << "-----------------------------------------" << endl;
-
-	}
-      else if (n == head)// this only happenes when parent = n, which is when this is the head
-	{
-	     
-	  cout << "Head Node: " << head->getValue() << "  was deleted" << endl;;
-	  head = NULL;
-	  cout << "-----------------------------------------" << endl;
-	  
-	    
-	}
-       
-	  
-    }
-  else if  (n->getLeft() == NULL)
-	{
-	  // if the number only has a right child, go right once and go as left as possible
-	  Node* bye = n->getRight();
-	  Node* byeparent = n;
-	  while(bye->getLeft() != NULL)
-	    {
-	      byeparent = bye;
-	      bye = bye->getLeft();
-		  
-	    }
-	  Node* temp = new Node();
-
-	  if (bye == n->getRight())
-	    {
-	      
-
-	    }
-	  else
-	    {
-	  if (bye->getRight()!= NULL)
-	    {
-	      temp = bye->getRight();
-	    }
-	      
-	  
-	  //disconnect bye with its parent
-	  if(byeparent->getLeft() == bye)
-	    {
-	      if (bye->getRight() != NULL)
-		{
-		  byeparent->setLeft(temp);
-		  cout << "Parent Node: " << byeparent->getValue() << " now has a left child of: " << temp->getValue() << endl;
-		}
-	      else
-		{
-	      
-	      byeparent->setLeft(NULL);
-	      cout << "Parent Node: " << byeparent->getValue() << "  no longer has a left child of: " << bye->getValue() << endl;;
-		}
-	    }
-	   bye->setRight(n->getRight());
-	  cout << "Number: " << bye->getValue()  <<" will replace node: " << n->getValue() << " With a right child of: "<< n->getRight()->getValue() << endl;
-	    }
-	  // now put bye at n's position
-	  if(parent->getLeft() == n)
-	    {
-	      parent->setLeft(bye);
-	      cout << "Parent Node: " << parent->getValue() << "  now has a left child of: " << bye->getValue() << endl;;
-	      
-	      cout << "-----------------------------------------" << endl;
-	      
-	      n->setRight(NULL);
-	      delete n;
-	      
-	    }
-	  else if(parent->getRight() == n)
-	    {
-	      parent->setRight(bye);
-	      cout << "Parent Node: " << parent->getValue() << "  now has a right child of: " << bye->getValue() << endl;;
-	      
-	      cout << "-----------------------------------------" << endl;
-	      
-	      n->setRight(NULL);
-	      delete n;
-	      	    }
-	  else //n is the head
-	    {
-	      head = bye;
-	    }
-	    
-	      
-	      
-	}
-      
-      else //if (n->getRight() == NULL)
-	{
-	  // if the number only has a left child or both children, go left once and go as right as possible
-	  Node* bye = n->getLeft();
-	  Node* byeparent = n;
-	  while(bye->getRight() != NULL)
-	    {
-	      byeparent = bye;
-	      bye = bye->getRight();
-		  
-	    }
-	  Node* temp = new Node();
-
-	  //disconnect bye with its parent
-	  if (byeparent != n )
-	    {
-	  if (bye->getLeft()!= NULL)
-	    {
-	      // if bye has any left child
-	      temp = bye->getLeft();
-	  
-	    }
-	  
-
-	  if (n->getRight() != NULL)
-	    {
-	      bye->setRight(n->getRight());
-	      
-	  cout << "Number: " << bye->getValue()  <<" will replace node: " << n->getValue() << " With a right child of: "<< n->getRight()->getValue() << endl;
-	      
-	    }
-	  
-	  if(byeparent->getRight() == bye)
-	    {
-	      //since bye is the most right child, if bye has any left child make that the right child of bye's parent
-	      if (bye->getLeft() != NULL)
-		{
-		  
-		  byeparent->setRight(temp);
-		  cout << "Parent Node: " << byeparent->getValue() << " now has a right child of: " << temp->getValue() << endl;
-		    
-		    }
-	      else
-		{
-	      byeparent->setRight(NULL);
-	      cout << "Parent Node: " << byeparent->getValue() << "  no longer has a right child of: " << bye->getValue() << endl;;
-		}
-	    }
-	      bye->setLeft(n->getLeft());
-	  
-	      cout << "Number: " << bye->getValue()  <<" will replace node: " << n->getValue() << " With a left child of: "<< n->getLeft()->getValue() << endl;
-	    }
-	  else
-	    {
-	      
-	  if (n->getRight() != NULL)
-	    {
-	      bye->setRight(n->getRight());
-	      
-	  cout << "Number: " << bye->getValue()  <<" will replace node: " << n->getValue() << " With a right child of: "<< n->getRight()->getValue() << endl;
-	      
-	    }
-	  
-	    }
-	  
-	      
-	    
-	  
-	  // now put bye at n's position
-	  if(parent->getLeft() == n)
-	    {
-	      parent->setLeft(bye);
-	      cout << "Parent Node: " << parent->getValue() << "  now has a left child of: " << bye->getValue() << endl;;
-	      
-	      cout << "-----------------------------------------" << endl;
-	      if (n->getRight() != NULL)
-	      {
-	        n->setRight(NULL);
-	      }
-	      n->setLeft(NULL);
-	      delete n;
-	      
-	    }
-	  else if(parent->getRight() == n)
-	    {
-	      parent->setRight(bye);
-	      cout << "Parent Node: " << parent->getValue() << "  now has a right child of: " << bye->getValue() << endl;;
-	      
-	      cout << "-----------------------------------------" << endl;
-	      if (n->getRight() != NULL)
-	      {
-	        n->setRight(NULL);
-	      }
-	      n->setLeft(NULL);
-	      delete n;
-	      	    }
-	  else
-	    {
-	      head = bye;
-	    }
-	      
-	}
-}
-         
-
-void add(Node* &head, int number)
-{
-  
-  cout << "--------------------------------------------" << endl;
-  if (head != NULL)
-    {
-      Node * current = head;
-      while (head != NULL)
-	{
-	  if (number <= current->getValue())
-	    {
-	      if (current->getLeft() == NULL)
-		{
-		  cout << "left of " << current->getValue() << ": " << number << endl; 
-		  Node* node = new Node();
-		  node->setValue(number);
-		  current->setLeft(node);
-		  break;
-		}
-	      else
-		{
-		      
-		  current = current->getLeft();
-
-		}
-	    }
-	  else if (number > current->getValue())
-	    {
-	      if (current->getRight() == NULL)
-		{
-		  cout << "Right of " <<current->getValue() << ": " << number << endl; 
-		  Node* node = new Node();
-		  node->setValue(number);
-		  current->setRight(node);
-		  break;
-		}
-	      else
-		{
-		  current = current->getRight();
-		}
-	    }
-	}
-    }
-  else
-    {
-           
-      Node* whatever = new Node;
-      whatever->setValue(number);
-      head = whatever;
-    }
-	  
-  
-}
-
-
-void buildTree (int array[], Node* &head, int size)
-{
-  
-  cout << "--------------------------------------------" << endl;
-  cout << "There are " << size << " nodes" << endl;
-  /*for (int i =0 ; i<=size-1; i++)
-    {
-    cout << array[i] << " ";
-    }
-    cout << endl;*/
-  cout << "--------------------------------------------" << endl;
-  for (int i = 0; i <= size-1; i++)
-    {
-      if (head == NULL)
-	{
-	  Node* temp = new Node;
-	  temp->setValue(array[i]);
-	  head = temp;
-	  
-	  cout << "head: " << head->getValue() << endl;
-	}
-      
-      else
-	{
-	  Node * current = head;
-	  while (head != NULL)
-	    {
-	      if (array[i] <= current->getValue())
-		{
-		  if (current->getLeft() == NULL)
-		    {
-		      cout << "left of " << current->getValue() << ": " << array[i] << endl; 
-		      Node* node = new Node();
-		      node->setValue(array[i]);
-		      current->setLeft(node);
-		      break;
-		    }
-		  else
-		    {
-		      
-		      current = current->getLeft();
-
-		    }
-		}
-	      else if (array[i] > current->getValue())
-		{
-		  if (current->getRight() == NULL)
-		    {
-		      cout << "Right of " <<current->getValue() << ": " << array[i] << endl; 
-		      Node* node = new Node();
-		      node->setValue(array[i]);
-		      current->setRight(node);
-		      break;
-		    }
-		  else
-		    {
-		      current = current->getRight();
-		    }
-		}
-	    }
-	    
-          
-	}
-    }
-  
-}
 
 void PrintTree(int intarray[])
 {
@@ -892,9 +654,17 @@ void PrintTree(int intarray[])
 	  for(int b= 0; b<longestnumber-l; b++)
 	    {
 	      cout << "0" ; // add a 0 if it has even nums of digits
-	    }
+	    }/*
+	   if (intarray[x] < 0)
+			    {
+			       cout << "\033[1;31m" << intarray[x] << " \033[0m\n";
+ 
+			    }
+			  else
+			    {*/
 	  cout << intarray[x] << endl;
-	  a++;
+			  //}
+	   a++;
 	}
       else // if it's not a head
 	{
@@ -923,14 +693,22 @@ void PrintTree(int intarray[])
 			    {
 			      cout << "0"; // 1 -> 001 if the longest digit is 3
 			    }
+			  /*if (intarray[x] < 0)
+			    {
+			       cout << "\033[1;31m" << intarray[x] << " \033[0m\n";
+ 
+			    }
+			  else
+			  {*/
 			  cout << intarray[x];
+			  //}
 			  i += longestnumber;
 		  
 			  a++;
 			  x++;
 			}
 		    }
-	      	  else //if it's -1 it's at the end of the int array
+	      	  else //if it's '\0' it's at the end of the int array
 		    {
 		      break;
 		    }

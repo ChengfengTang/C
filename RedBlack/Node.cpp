@@ -22,14 +22,11 @@ void Node::setLeft(Node* newLeft)
 {
   left = newLeft;
 }
-void Node::setBlack()
+void Node::setColor(int newColor)
 {
-  color = 0;
+  color = newColor;
 }
-void Node::setRed()
-{
-  color = 1;
-}
+
 void Node::setRight(Node* newRight)
 {
   right = newRight;
