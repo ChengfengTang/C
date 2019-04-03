@@ -477,13 +477,15 @@ void insert_repair_tree(Node* n) //now we fix the tree
     {
       insert_case2(n); // everything is fine
     }
-  else if (uncle(n) != NULL && uncle(n)->getColor() == 1) // if n has an uncle and its uncle's color is red
+  else if (uncle(n) != NULL && uncle(n)->getColor() == 1) // if n's parent and uncle are red, (it wouldn't get to this level if n's parent
+	  // is black, from case 2, so 
     {
-      insert_case3(n);
+      insert_case3(n); // call case 3
     }
   else
     {
-      insert_case4(n); //the rest idrk how they work exactly, I know which cases rotates but I don't really know what the rotation would do to the tree
+      insert_case4(n); // case 4, uncle is black, parent is red. only case left since it already passed all the other ifs
+	  
     }
 }
 void insert_case1(Node* n)
@@ -497,30 +499,33 @@ void insert_case2(Node* n)
 {
   return;
 }
-void insert_case3(Node* n)
+void insert_case3(Node* n) // we change parent and uncle to black, grandparent to red, and since the grandparent maybe
+	// a subtree of something else, so we recursively call to repair on the grandparent and everything above.
 {
   n->getParent()->setColor(0);
   uncle(n)->setColor(0);
   grandparent(n)->setColor(1);
   insert_repair_tree(grandparent(n));
 }
-void insert_case4(Node* n)
+void insert_case4(Node* n) //uncle is black, parent is red, now we need to look at the nodes position in relation to parent
+	// to determine whether we are doing a left rotation or right rotation
 {
-  Node* p = n->getParent();
+  Node* p = n->getParent(); // define parents and grandparents
   Node* g = grandparent(n);
-  if (n==p->getRight() && p==g->getLeft())
+  if (n==p->getRight() && p==g->getLeft()) //if node is parent's right and parent is grandparent's left
     {
-      rotate_left(p);
+	  // I can visualize rotation, but it's really hard to explain here
+      rotate_left(p); // rotate left
       n = n->getLeft();
     }
-  else if ( n==p->getLeft() && p == g->getRight())
+  else if ( n==p->getLeft() && p == g->getRight()) //if node is parent's left and parent is grandparent's right
     { 
-      rotate_right(p);
+      rotate_right(p); //rotate right
       n = n->getRight();
     }
-  insert_case4step2(n);
+  insert_case4step2(n); // case 5
 }
-void insert_case4step2(Node* n)
+void insert_case4step2(Node* n) 
 {
   Node* p = n->getParent();
   Node* g = grandparent(n);
