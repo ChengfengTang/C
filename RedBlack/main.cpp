@@ -536,15 +536,20 @@ void insert_case4step2(Node* n)
   g->setColor(1);
 }
 
-//Because of my poor print function, I copied this from //https:
+//Because of my poor print function, I copied this from https://stackoverflow.com/questions/4965335/how-to-print-binary-tree-diagram?noredirect=1&lq=1
 //Original idea from VasiliNovikov, saw this from Zareef
-void printTree(char prefix[], Node* root, bool isLeft)
-{
-  char* prefix = NULL;
-  if (root != NULL)
-    {
-      cout << prefix << (isLeft ? "  " : "  ") << Root->getValue() << endl;
-    }
+void print(char prefix[], Node* Root, bool isLeft){
+	char* Prefix = NULL;
+	if (Root!=NULL){
+		cout << prefix << (isLeft ? "├── " : "└── ") << Root->getValue() << endl;
+		if (Prefix != NULL){
+			delete []Prefix;
+		}
+		Prefix = new char[100];
+		Prefix = strcpy(Prefix,prefix);
+		print(strcat(prefix,(isLeft ? "│   " : "    ")), Root->getLeft(), true);
+		print(strcat(Prefix,(isLeft ? "│   " : "    ")), Root->getRight(), false);
+	}
 }
 
 
