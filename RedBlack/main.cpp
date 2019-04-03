@@ -351,6 +351,7 @@ int main()
 	  char* str = new char[999];
 	  str[0] = '\0';
 	  printTree(str,head,false);
+	  delete[] str;
 	  //This print function is not optimal for RBT go down to the function to see detail
 	  /*
 	    
@@ -414,7 +415,6 @@ int main()
      
     }
   
-}
 }
 //Following ideas and defining uncle, grandparent, at the beginning was borrowed from Red-Black Tree Wikipeadia with small adjustment due to different
 //implementations of functions
@@ -538,18 +538,27 @@ void insert_case4step2(Node* n)
 
 //Because of my poor print function, I copied this from https://stackoverflow.com/questions/4965335/how-to-print-binary-tree-diagram?noredirect=1&lq=1
 //Original idea from VasiliNovikov, saw this from Zareef
-void print(char prefix[], Node* Root, bool isLeft){
+void printTree(char prefix[], Node* head, bool isLeft){
 	char* Prefix = NULL;
-	if (Root!=NULL){
-		cout << prefix << (isLeft ? "├── " : "└── ") << Root->getValue() << endl;
-		if (Prefix != NULL){
-			delete []Prefix;
-		}
-		Prefix = new char[100];
-		Prefix = strcpy(Prefix,prefix);
-		print(strcat(prefix,(isLeft ? "│   " : "    ")), Root->getLeft(), true);
-		print(strcat(Prefix,(isLeft ? "│   " : "    ")), Root->getRight(), false);
-	}
+	if (head!=NULL)
+	  {	    
+	    if(head->getColor() == 0)
+	      {
+		cout << prefix << (isLeft ? "├── " : "└── ") << head->getValue() << endl;
+	      }
+	    else
+	      {
+		cout <<  prefix <<"\033[1;31m" << (isLeft ? "├── " : "└── ")  << head->getValue() << " \033[0m\n";
+
+	      }
+	    if (Prefix != NULL){
+	      delete []Prefix;
+	    }
+	    Prefix = new char[100];
+	    Prefix = strcpy(Prefix,prefix);
+	    printTree(strcat(prefix,(isLeft ? "│   " : "    ")), head->getLeft(), true);
+	    printTree(strcat(Prefix,(isLeft ? "│   " : "    ")), head->getRight(), false);
+	  }
 }
 
 
