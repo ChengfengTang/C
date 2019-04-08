@@ -118,7 +118,7 @@ int main()
 {
   //int red = 10024;
   //cout << "\033[1;31m" << red << " \033[0m\n";
-
+  cout << (char)192 << endl;
   cout << "Welcome to Chengfeng Tang's Binary Search Project" << endl ;
   cout << "To start you would have to enter some numbers!" << endl;
   int a = 10; 
@@ -549,20 +549,50 @@ void printTree(char prefix[], Node* head, bool isLeft){
 	  {	    
 	    if(head->getColor() == 0)
 	      {
-		cout << prefix << (isLeft ? "├── " : "└── ") << head->getValue() << endl;
+		
+		cout << prefix;
+		if(isLeft == true)
+		  {
+		    cout << (char)124 << "--- " ;
+		  }
+		else
+		  {
+		    cout << (char)124 << "___ ";
+		  }
+	           cout << head->getValue() << endl;
 	      }
 	    else
 	      {
-		cout <<  prefix <<"\033[1;31m" << (isLeft ? "├── " : "└── ")  << head->getValue() << " \033[0m\n";
+		
+		cout << prefix;
+		if(isLeft == true)
+		  {
+		    cout <<"\033[1;31m" << (char)124 << "--- "<< " \033[0m";
 
+		  }
+		else
+		  {
+		    cout << "\033[1;31m" <<(char)124 << "___ " << " \033[0m";
+;
+		  }
+	           cout << head->getValue() << endl;
+		
 	      }
 	    if (Prefix != NULL){
 	      delete []Prefix;
 	    }
 	    Prefix = new char[100];
 	    Prefix = strcpy(Prefix,prefix);
-	    printTree(strcat(prefix,(isLeft ? "│   " : "    ")), head->getLeft(), true);
-	    printTree(strcat(Prefix,(isLeft ? "│   " : "    ")), head->getRight(), false);
+	    if (isLeft == true)
+	      {
+		//printTree(strcat(prefix, (char)124 << "   " ), head->getLeft(), true);
+		//printTree(strcat(Prefix,(char)124 << "   "), head->getRight(), false);
+	      }
+	    else
+	      {
+	    printTree(strcat(prefix, "    "), head->getLeft(), true);
+	    printTree(strcat(Prefix, "    "), head->getRight(), false);
+	      }
 	  }
 }
 
