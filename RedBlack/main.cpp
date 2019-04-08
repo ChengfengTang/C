@@ -585,8 +585,8 @@ void printTree(char prefix[], Node* head, bool isLeft){
 	    Prefix = strcpy(Prefix,prefix);
 	    if (isLeft == true)
 	      {
-		//printTree(strcat(prefix, (char)124 << "   " ), head->getLeft(), true);
-		//printTree(strcat(Prefix,(char)124 << "   "), head->getRight(), false);
+		printTree(strcat(prefix,  "|   " ), head->getLeft(), true);
+		printTree(strcat(Prefix,  "|   "), head->getRight(), false);
 	      }
 	    else
 	      {
