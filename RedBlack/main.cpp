@@ -10,8 +10,8 @@
 
 using namespace std;
 
-//void PrintTree (int intarray[]);
 Node* insert(Node* head, Node* n);
+void search(Node* n, int number);
 void insert_repair_tree(Node* n);
 void insert_case1(Node* n);
 void insert_case2(Node* n);
@@ -118,7 +118,6 @@ int main()
 {
   //int red = 10024;
   //cout << "\033[1;31m" << red << " \033[0m\n";
-  cout << (char)192 << endl;
   cout << "Welcome to Chengfeng Tang's Binary Search Project" << endl ;
   cout << "To start you would have to enter some numbers!" << endl;
   int a = 10; 
@@ -299,14 +298,15 @@ int main()
 
   // now we have a basic tree, we can start doing stuff with it.
   int b = 0;
-  while (b != 4)
+  while (b != 5)
     {
       cout << "--------------------------------------------" << endl;
       cout << "There are currently " << numbersofnumbers << " nodes" << endl;
       cout << "Now if you would like to add a Node, enter 1" << endl;
       cout << "If you would like to delete a Node, enter 2" << endl;
       cout << "If you would like to print the tree, enter 3" << endl;
-      cout << "If you would like to exit, enter 4" << endl;
+      cout << "If you would like to search for a Node, enter 4" << endl;
+      cout << "If you would like to exit, enter 5" << endl;
       
       cout << "--------------------------------------------" << endl;
       cin >> b;
@@ -331,18 +331,6 @@ int main()
       else if (b==2) // if the user wants to delete
 	{
 	  cout << endl;
-	  /*
-	    cout << "-----------------------------------------" << endl;
-		  
-		  
-	    cout << "What's the number that you want to delete?"<<endl;
-	    cout << endl;
-	    int deleted = 0;
-	    cin >> deleted;
-	    cin.get();
-	  
-	    //delete
-	    numbersofnumbers --;*/
 	  cout << "deleteion doesn't work yet" << endl;
 	}
       else if (b==3) // if the user wants to print
@@ -352,57 +340,18 @@ int main()
 	  str[0] = '\0';
 	  printTree(str,head,false);
 	  delete[] str;
-	  //This print function is not optimal for RBT go down to the function to see detail
-	  /*
-	    
-	    for( int i = 0; i<= 998; i++)
-	    {
-	    printarray[i] = '\0';
-	    }
-	 
-	    print(head,printarray,1);
-	  
-	    cout << endl;
-	    if (head != NULL)
-	    {
-	    int numbers = 0;
-	    for(int c = 0; c<= 998; c++)
-	    {
-	    if (printarray[c] != '\0')
-	    {
-	    numbers ++;
-	    }
-	      
-	    
-	    if (numbers == numbersofnumbers)
-	    {
-	    numbers = c;
-	    break;
-	    }
-	    else
-	    {
-	    if(printarray[c] == '\0')
-	    {
-	    printarray[c] = -999999;
-	    }
-	    }
-	    }
-	    for (int g = 0; g<= 998; g++)
-	    {
-		 
-	    if(printarray[g] == '\0')
-	    {
-	    break;
-	    }
-	    //cout << printarray[g] << " ";
-		  
-	    }
-	    cout << endl;
-	    PrintTree(printarray);
-		
-	  */ 
 	}
-      else if (b==4)
+      else if( b == 4)
+	{
+	  cout << endl;
+	  cout << "What's the number that you are looking for? " <<endl;
+	  cout << "-----------------------------------------" << endl;
+	  int number = 0;
+	  cin >> number;
+	  cin.get();
+	  search(head,number);
+	}
+      else if (b==5)
 	{
 	  cout << "bye" << endl;
 	  return 0;
@@ -478,7 +427,7 @@ void insert_repair_tree(Node* n) //now we fix the tree
       insert_case2(n); // everything is fine
     }
   else if (uncle(n) != NULL && uncle(n)->getColor() == 1) // if n's parent and uncle are red, (it wouldn't get to this level if n's parent
-	  // is black, from case 2, so 
+    // is black, from case 2, so 
     {
       insert_case3(n); // call case 3
     }
@@ -500,7 +449,7 @@ void insert_case2(Node* n)
   return;
 }
 void insert_case3(Node* n) // we change parent and uncle to black, grandparent to red, and since the grandparent maybe
-	// a subtree of something else, so we recursively call to repair on the grandparent and everything above.
+// a subtree of something else, so we recursively call to repair on the grandparent and everything above.
 {
   n->getParent()->setColor(0);
   uncle(n)->setColor(0);
@@ -508,13 +457,13 @@ void insert_case3(Node* n) // we change parent and uncle to black, grandparent t
   insert_repair_tree(grandparent(n));
 }
 void insert_case4(Node* n) //uncle is black, parent is red, now we need to look at the nodes position in relation to parent
-	// to determine whether we are doing a left rotation or right rotation
+// to determine whether we are doing a left rotation or right rotation
 {
   Node* p = n->getParent(); // define parents and grandparents
   Node* g = grandparent(n);
   if (n==p->getRight() && p==g->getLeft()) //if node is parent's right and parent is grandparent's left
     {
-	  // I can visualize rotation, but it's really hard to explain here
+      // I can visualize rotation, but it's really hard to explain here
       rotate_left(p); // rotate left
       n = n->getLeft();
     }
@@ -541,354 +490,80 @@ void insert_case4step2(Node* n)
   g->setColor(1);
 }
 
+void search(Node* n, int number)
+{
+  
+   if (n == NULL )
+    {
+      cout << number << " does NOT exist in the tree" << endl;
+    }
+   else if (n->getValue() > number)
+    { 
+      search((n->getLeft()), number );
+    }
+  else if (n->getValue() < number )
+    {
+      search((n->getRight()), number);
+    }
+  else 
+    {
+      cout << number << " does exist in the tree" << endl;
+    }
+  
+}
 //Because of my poor print function, I copied this from https://stackoverflow.com/questions/4965335/how-to-print-binary-tree-diagram?noredirect=1&lq=1
 //Original idea from VasiliNovikov, saw this from Zareef
 void printTree(char prefix[], Node* head, bool isLeft){
-	char* Prefix = NULL;
-	if (head!=NULL)
-	  {	    
-	    if(head->getColor() == 0)
-	      {
+  char* Prefix = NULL;
+  if (head!=NULL)
+    {	    
+      if(head->getColor() == 0)
+	{
 		
-		cout << prefix;
-		if(isLeft == true)
-		  {
-		    cout << (char)124 << "--- " ;
-		  }
-		else
-		  {
-		    cout << (char)124 << "___ ";
-		  }
-	           cout << head->getValue() << endl;
-	      }
-	    else
-	      {
-		
-		cout << prefix;
-		if(isLeft == true)
-		  {
-		    cout <<"\033[1;31m" << (char)124 << "--- "<< " \033[0m";
-
-		  }
-		else
-		  {
-		    cout << "\033[1;31m" <<(char)124 << "___ " << " \033[0m";
-;
-		  }
-	           cout << head->getValue() << endl;
-		
-	      }
-	    if (Prefix != NULL){
-	      delete []Prefix;
+	  cout << prefix;
+	  if(isLeft == true)
+	    {
+	      cout << (char)124 << "--- " ;
 	    }
-	    Prefix = new char[100];
-	    Prefix = strcpy(Prefix,prefix);
-	    if (isLeft == true)
-	      {
-		printTree(strcat(prefix,  "|   " ), head->getLeft(), true);
-		printTree(strcat(Prefix,  "|   "), head->getRight(), false);
-	      }
-	    else
-	      {
-	    printTree(strcat(prefix, "    "), head->getLeft(), true);
-	    printTree(strcat(Prefix, "    "), head->getRight(), false);
-	      }
-	  }
+	  else
+	    {
+	      cout << (char)124 << "___ ";
+	    }
+	  cout << head->getValue() << endl;
+	}
+      else
+	{
+		
+	  cout << prefix;
+	  if(isLeft == true)
+	    {
+	      cout <<"\033[1;31m" << (char)124 << "--- "<< " \033[0m";
+
+	    }
+	  else
+	    {
+	      cout << "\033[1;31m" <<(char)124 << "___ " << " \033[0m";
+	      ;
+	    }
+	  cout << head->getValue() << endl;
+		
+	}
+      if (Prefix != NULL){
+	delete []Prefix;
+      }
+      Prefix = new char[100];
+      Prefix = strcpy(Prefix,prefix);
+      if (isLeft == true)
+	{
+	  printTree(strcat(prefix,  "|   " ), head->getLeft(), true);
+	  printTree(strcat(Prefix,  "|   "), head->getRight(), false);
+	}
+      else
+	{
+	  printTree(strcat(prefix, "    "), head->getLeft(), true);
+	  printTree(strcat(Prefix, "    "), head->getRight(), false);
+	}
+    }
 }
-
-
-
-
-//This print function is poor for more than 6-7 rows of single digit numbers
-//So probably 4-5 rows of 3-4 digits number would crash it
-/*  
-    void print(Node* head, int printarray[], int i)
-    {
-    if (head != NULL)
-    {
-    //cout << endl;
-    //cout << "index: " << i-1 << ": " << head->getValue() << endl;
-
-      
-    if (head->getColor() == 1)
-    {
-    printarray[i-1] = -1* head->getValue();
-
-    }
-    else
-    {
-    printarray[i-1] = head->getValue();
-
-    }
-    cout <<  head->getValue() << endl;
-    if (head->getLeft() != NULL)
-    {
-    cout << "Left of " << head->getValue() << " : " ;
-    print(head->getLeft(), printarray, i*2);
-	  
-    }
-    if (head->getRight() != NULL)
-    {
-    cout << "Right of " << head->getValue() << " : " ;
-    print(head->getRight(), printarray, i*2+1);
-      
-    }
-    }
-    else
-    {
-    cout << "You don't have any numbers in the tree" << endl;
-    }
-  
- 
-    }
-
-
-    void PrintTree(int intarray[])
-    {
-    //int intarray[999] =  {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,-1,'\0'};
-    // people don't really print a tree from int array, but since different trees have different ways of sorting, it's hard to print from node. But feel free to just alter it, the essence of printing shouldn't chagne
-    // enter the number in the intarray above to test.
-    int longestnumber = 0; // keep track of the longest number in the entire tree
-    for (int i = 0; i<= 998; i++)
-    {
-    if (intarray[i] != '\0') // go through the entire list. -2 by default means null in a tree, and -1 means the end of the list
-    {
-    if (log10(intarray[i]) +1 > longestnumber) //log10 of a numb + 1 gives the digits of numbers 
-    {
-    if(intarray[i] < 0)
-    {
-    longestnumber = log10(-1*intarray[i])+1; //keep track of the longest number til the end of list
-
-    }
-    else
-    {
-		 
-    longestnumber = log10(intarray[i])+1; //keep track of the longest number til the end of list
- 
-    }
-    }
-    }
-    else
-    {
-    break;
-    }
-    }
-    // the longestnumber will be used to determine the length of every single number
-    if (longestnumber %2 == 0) // make sure every number has a odd length, since there isn't a "center" for even digits
-    {
-    longestnumber ++;
-    }
-    //cout << "The longestnumber in the array list has a digit of: " << longestnumber << endl;
-  
-    int numbers = 0;
-    for ( int i = 0; i <= 998; i++)
-    {
-    if (intarray[i] != '\0')
-    {
-    //cout << intarray[i] << " ";
-    }
-    else
-    {
-    numbers = i;
-    break;
-    }     
-    }
-    // print out all the valid numbers, which are non -1s and keep track of the numbers of elements in the tree
-    cout << "There are " << numbers << " numbers in the tree." <<endl;
-    cout << endl;
-  
-    //calculate # of rows
-    int rows =  log2(numbers) + 1; // 1 row has 1 number which is 2 to the 0 power+1. 2 rowshave 3 number which is 2 to the 1 power +1
-   
-    int indexbegin = pow(2,rows-1) -1;  // if there are 3rows, the bottom row should start at index 3 which is the 4th element
-    int indexend = pow(2,rows) -2; // and ends at 6, which is the 7th element
-    //if there are 4 rows, the bottom row should start at index 7, which is the 8th element
-    //and end at 14, the 15th element
-  
-    int arrayindex = 0; // keep track of the elements' positions in the elementsindex
-    int numberofpositions = indexend+1; // this is the number of positions the tree should contain, including spaces, basically
-    // if a tree has 3 rows, it should have 7 numbers despite empty / null
-    int elementsindex [numberofpositions] = {}; //basically where all the elements should be
-
-    for (int i = 1; i<= (indexend - indexbegin +1); i++ ) // this calculate all of the bottom row's position
-    {
-    int position = ((i-1) * longestnumber) + (i-1)* 1 ; // 1 here is spacing between each element
-    elementsindex[arrayindex] = position;    
-    //cout << elementsindex[arrayindex] << endl;
-    arrayindex++;
-      
-    }
-    //calculate everything above this level now
-    //basically, if the bottom row has 4 numbers, add up 1 and 2 to get 5, 3 and 4 to get 6, and add up 5 and 6 to get 1
-    // when there is only 1 being added, that's the head and the last row since we are going backward.
-    int initialindex = 0; 
-    int maxindex = pow(2,rows-1)-1; // since we are starting from the last row, the max index should start from the number of elements of the bottom row
-    for(int r = rows; r > 1; r--) //let's imagine there is 3 rows, which therefore 7 elements and a max index of 3, init of 0
-    {
-    for ( int i = initialindex;  i<= maxindex ; i++) // go from 0 to 3
-    {
-    if (i%2 == 0 ) //if the number is even add this number and the previous one to calculate the position of the element in the next row
-    {     
-    int newnum =  (elementsindex[i] + elementsindex[i+1])/2;
-    elementsindex[arrayindex] = newnum; // add it to the elementsindex
-    arrayindex++;
-    }
-    }
-    initialindex = maxindex +1; // now initial index becomes max index + 1, so 4 in this case
-    maxindex += pow(2,r-2); // and max index becomes 5, add by number of elements in the upcoming row, which is 2 for the second row
-    }
-    elementsindex[arrayindex] == '\0';
-  
-    // now we have the position for each number, we just need to print it!
-    //but since we worked our way from the bottom, to print the tree would be backward, now let's flip it
-    int newelementsindex [arrayindex] = {}; //printing in the right order
-    int newarrayindex = 0; // keep track of the new array
-  
-    initialindex = arrayindex-1; // again let's imagine it's a perfect 3 rows binary tree
-    maxindex = arrayindex-1; // the intial would then be 6, since there is 7 elements, and the max would also be 6 since the head always has one number.
-    for (int r = 1; r<= rows; r++) //starting from row 1, which is the head
-    {
-    for( int i = initialindex; i <= maxindex; i++)
-    {
-    newelementsindex[newarrayindex++] = elementsindex[i]; //add that to the new elementsindex 
-    //cout << elementsindex[i] << endl;
-    }
-    initialindex -= pow(2,r);
-    //cout << "init" << initialindex << endl;//go backward more, for example the intial should start at 4
-    maxindex -= pow(2,r-1);
-    //cout << "max: " << maxindex << endl;// and max should start at 5
-    }
-    newelementsindex[newarrayindex] == '\0';
-  
-    for (int i = 0; i<= newarrayindex -1; i++)
-    {
-    //cout << newelementsindex[i] << endl;
-    }
-    //actual time to print
-    int length = longestnumber*pow(2,rows-1) + (pow(2,rows-1) * 1 -1) - 1; // calculate the length of each row
-    //imagine a 3 rows binary search tree with 3 digits numbers. that would just be 3 * 4 + 3 spaces = 15units, however since we are gonna be dealing with indexes, I am just gonna put an extra -1, so that the max index is actually 14
-    cout << "Every row should have a index length of: " << length << endl;
-
-  
-    int a = 0;//basically a index indicator that helps me run through the program
-    for (int j = 1; j <= rows; j++) // starting from the first row
-    {
-    int x = pow(2,j-1) -1; // x is basically the int array index indicator
-    if (x == 0) // if this is the head
-    {
-    for (int i = 0; i < newelementsindex[a]; i++)//keep the spacing
-    {
-    cout <<" ";
-    }
-    int l = 0;
-    if(intarray[x] >0)
-    {
-    l = log10(intarray[x])+1; // this is to make sure everything has the same length
-    }
-    else
-    {
-
-    l = log10(-1*intarray[x])+1;
-    }
-    for(int b= 0; b<longestnumber-l; b++)
-    {
-    if (intarray[x] <0)
-    {
-		  
-    cout << "\033[1;31m0\033[0m";// add a 0 if it has even nums of digits
-    }
-    else
-    {
-    cout << "0";
-    }
-    }
-    if (intarray[x] < 0)
-    {
-    cout << "\033[1;31m" << -1* intarray[x] << " \033[0m" << endl;
-    }
-    else
-    {
-    cout << intarray[x] << endl;
-    }
-    a++;
-    }
-    else // if it's not a head
-    {
-    for (int i = 0; i <= length;) //since every row has a set amount of index, we use this to determine the end of a row
-    {
-    if (i == newelementsindex[a]) //all the elementsindex are the position of a num, aka the numbers of spaces
-    { 
-    if (intarray[x] == -999999) //-2 means null, if null just print the amount of space equal to the longest num
-    {
-		      
-    for (int b =0; b< longestnumber; b++)
-    {
-    cout << " ";
-    }
-		      
-    i+= longestnumber; // keep counting index for each row
-    a++; //next position
-    x++; //next number
-    }
-    else if (intarray[x] != '\0')
-    {
-    int  p = 0;
-    if(intarray[x] <0)
-    {
-    p = log10(-1*intarray[x])+1; // p is the length of the current number
-			
-    }
-    else
-    {
-			  
-    p = log10(intarray[x])+1; // p is the length of the current number
-			
-    }
-    if (p <= longestnumber) // if it's shorter
-    {
-    for (int b = 0; b< longestnumber-p; b++) // add 0s
-    {
-    if (intarray[x] < 0)
-    {
-				  
-    cout << "\033[1;31m0\033[0m";
-    }
-    else
-    {
-    cout << "0" ;
-    }
-    // 1 -> 001 if the longest digit is 3
-    }
-    if (intarray[x] < 0)
-    {
-    cout << "\033[1;31m" << -1* intarray[x] << " \033[0m" ;
-    }
-    else
-    {
-    cout << intarray[x] ;
-    }
-			 
-    i += longestnumber;
-		  
-    a++;
-    x++;
-    }
-    }
-    else //if it's '\0' it's at the end of the int array
-    {
-    break;
-    }
-    }
-    else //if there isn't a number at the current i position, just print space and keep going
-    {
-    cout <<" ";
-    i ++;
-    }
-    }
-    cout << endl; //move on to next row if current row is full
-    }
-    }
-    }
-*/
 
 
