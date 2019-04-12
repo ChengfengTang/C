@@ -11,7 +11,7 @@
 using namespace std;
 
 Node* insert(Node* head, Node* n);
-void search(Node* n, int number);
+Node* search(Node* n, int number);
 void insert_repair_tree(Node* n);
 void insert_case1(Node* n);
 void insert_case2(Node* n);
@@ -19,6 +19,11 @@ void insert_case3(Node* n);
 void insert_case4(Node* n);
 void insert_case4step2(Node* n);
 void insert_recurse(Node* head, Node* n);
+int delete_recurse(Node* &head, int number, int numbersofnumbers);
+void delete_case1(Node* n);
+void delete_case2(Node* n);
+void delete_case3(Node* n);
+void delete_case4(Node* n);
 //void print(Node* head, int printarray[], int i );
 void printTree(char prefix[], Node* root, bool isLeft);
 char* input;
@@ -330,16 +335,32 @@ int main()
 	}
       else if (b==2) // if the user wants to delete
 	{
+	 
 	  cout << endl;
-	  cout << "deleteion doesn't work yet" << endl;
+	  cout << "What's the number that you want to delete? " <<endl;
+	  cout << "-----------------------------------------" << endl;
+	  int number = 0;
+	  cin >> number;
+	  cin.get();
+	  numbersofnumbers = delete_recurse(head,number,numbersofnumbers);
+	  
 	}
       else if (b==3) // if the user wants to print
 	{
 	  cout << "-----------------------------------------" << endl;
+	  if (numbersofnumbers != 0)
+	    {
 	  char* str = new char[999];
 	  str[0] = '\0';
 	  printTree(str,head,false);
 	  delete[] str;
+	    }
+	  else
+
+	    {
+	      cout << "You don't have any Node in the tree!" << endl;
+	    }
+	  
 	}
       else if( b == 4)
 	{
@@ -349,7 +370,14 @@ int main()
 	  int number = 0;
 	  cin >> number;
 	  cin.get();
-	  search(head,number);
+	  if( search(head,number) == NULL)
+	    {
+	      cout << "The Node does not exist in the tree!" << endl;
+	    }
+	  else
+	    {
+	      cout << "The Node exists in the tree!" << endl;
+	    }
 	}
       else if (b==5)
 	{
@@ -364,6 +392,54 @@ int main()
      
     }
   
+}
+int delete_recurse(Node* &head, int number, int numbersofnumbers)
+{
+  Node* n = search(head, number);
+  if (n != NULL)
+    {
+      
+      Node* p = n->getParent();
+      Node* s = sibling(n);
+      Node* lc = n->getLeft();
+      Node* rc = n->getRight();
+      if (p == NULL)
+	{
+	  Node* temp = head;
+	  head = NULL;
+	  
+	}
+      else
+	{
+	  if (lc == NULL && rc == NULL)
+	    {
+	      if(p->getLeft() == n)
+		{
+		  p->setLeft(NULL);
+		}
+	      else
+		{
+		  p->setRight(NULL);
+		}
+	      delete n;
+	    }
+	  else if (rc != NULL && lc == NULL)
+	    {
+
+	    }
+	  else if (lc != NULL && rc == NULL)
+	    {
+
+	    }
+	
+	}
+      return numbersofnumbers-1;
+    }
+  else
+    {
+      cout << "Such node doens't exist" << endl;
+      return numbersofnumbers;
+    }
 }
 //Following ideas and defining uncle, grandparent, at the beginning was borrowed from Red-Black Tree Wikipeadia with small adjustment due to different
 //implementations of functions
@@ -417,7 +493,6 @@ void insert_recurse(Node* head, Node* n)
 }
 void insert_repair_tree(Node* n) //now we fix the tree
 {
-
   if (n->getParent() == NULL) // if n is the head, set it to Black
     {
       insert_case1(n); // since every new Node is red, if n is the head, make it black
@@ -433,8 +508,7 @@ void insert_repair_tree(Node* n) //now we fix the tree
     }
   else
     {
-      insert_case4(n); // case 4, uncle is black, parent is red. only case left since it already passed all the other ifs
-	  
+      insert_case4(n); // case 4, uncle is black, parent is red. only case left since it already passed all the other ifs	  
     }
 }
 void insert_case1(Node* n)
@@ -490,12 +564,12 @@ void insert_case4step2(Node* n)
   g->setColor(1);
 }
 
-void search(Node* n, int number)
+Node* search(Node* n, int number)
 {
   
    if (n == NULL )
     {
-      cout << number << " does NOT exist in the tree" << endl;
+      return NULL;
     }
    else if (n->getValue() > number)
     { 
@@ -507,7 +581,7 @@ void search(Node* n, int number)
     }
   else 
     {
-      cout << number << " does exist in the tree" << endl;
+      return n;
     }
   
 }
