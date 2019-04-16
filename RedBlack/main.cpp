@@ -393,6 +393,32 @@ int main()
     }
   
 }
+Node* inOrderSuccessor(Node* n)
+{
+  if(n->getRight() != NULL)
+    {
+      Node* ios = n->getRight();
+      while(ios->getLeft() != NULL)
+	{
+	  ios = ios->getLeft();
+	}
+      return ios;
+    }
+  else if (n->getLeft() != NULL)
+    {
+      Node* pds = n->getLeft();
+      while (pds->getRight() != NULL)
+	{
+	  pds = pds->getRight();
+	}
+      return pds;
+    }
+  else
+    {
+      return n;
+    }
+    
+}
 int delete_recurse(Node* &head, int number, int numbersofnumbers)
 {
   Node* n = search(head, number);
@@ -400,39 +426,58 @@ int delete_recurse(Node* &head, int number, int numbersofnumbers)
     {
       
       Node* p = n->getParent();
-      Node* s = sibling(n);
-      Node* lc = n->getLeft();
-      Node* rc = n->getRight();
-      if (p == NULL)
-	{
-	  Node* temp = head;
-	  head = NULL;
-	  
-	}
-      else
-	{
-	  if (lc == NULL && rc == NULL)
+    
+    
+	  // find the inorder successor, swap it with the node that's about to be deleted
+	  // and fix the tree.
+	  Node* ios = inOrderSuccessor(n);
+	  // if inorder successor is itself
+	  //delete the node and disconnect it with its parent
+	  if (ios == n)
 	    {
-	      if(p->getLeft() == n)
+	      if (p == NULL) // if it's a head and it has no child
 		{
+		  head = NULL; // set head null
+		  delete n;
+		}
+	      else if (p->getLeft() == n) // otherwise disconnect with parent then delete node.
+		{
+		  Node* del = n;
 		  p->setLeft(NULL);
+		   delete del;
 		}
-	      else
+	      else if (p->getRight() == n)
 		{
+		  Node* del = n;
 		  p->setRight(NULL);
+		  delete del;
 		}
-	      delete n;
 	    }
-	  else if (rc != NULL && lc == NULL)
+	  // if ios is a predessecor that means there is nothing on the right, and there is only two nodes in that
+	  //small subtree, then just replace the ios with n and swap color.
+	  else if( ios->getValue() < n->getValue())
 	    {
+	      
+	      n->setValue(ios->getValue());
+	      n->setLeft(NULL);
+	      delete ios;
+	      // n->setColor(0); // always black
+	    }
 
-	    }
-	  else if (lc != NULL && rc == NULL)
+	  // if ios is an inorder successor..
+	  //cite en.wikipedia.org/wiki/Red-black_tree for part of deletion algorithm and ideas
+	  else
 	    {
+	      // case 1
+	      // ios doesn't have any child
+	      // case 2
+	      // ios has a right child
+	      // ...
+
 
 	    }
 	
-	}
+	
       return numbersofnumbers-1;
     }
   else
