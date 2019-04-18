@@ -453,7 +453,7 @@ int delete_recurse(Node* &head, int number, int numbersofnumbers)
 		  delete del;
 		}
 	    }
-	  // if ios is a predessecor that means there is nothing on the right, and there is only two nodes in that
+	  // if # is a predessecor that means there is nothing on the right (nothing bigger than the deleted number, and there is only two nodes in that
 	  //small subtree, then just replace the ios with n and swap color.
 	  else if( ios->getValue() < n->getValue())
 	    {
@@ -468,11 +468,38 @@ int delete_recurse(Node* &head, int number, int numbersofnumbers)
 	  //cite en.wikipedia.org/wiki/Red-black_tree for part of deletion algorithm and ideas
 	  else
 	    {
+	      // right ios never has a left child !!!
 	      // case 1
-	      // ios doesn't have any child
-	      // case 2
-	      // ios has a right child
-	      // ...
+	      // right ios doesn't have a right child
+	      if (ios->getRight() == NULL)
+		{
+		  n->setValue(ios->getValue());
+		  ios->getParent()->setLeft(NULL);
+		  delete ios;
+		}
+	      
+	      else
+		{
+      		  // if ios has a right child and ios is red, then just replace ios's right child with ios
+		  // deleting a red node doesn't m atter
+		  Node* iosc = ios->getRight();
+		  ios->getParent()->setLeft(iosc);
+		  if (ios->getColor() == 0)
+		    {
+		      // else if ios is blalck and ios's right child is red, then just replace the Node and color and the tree remains 
+		      if (iosc->getColor() == 1)
+			{
+			  iosc->setColor(1);
+			}
+		      // if both are black, then we have a lot to do 
+		      else
+			{
+		      
+			}
+		    }
+		  delete ios;
+		}
+	     
 
 
 	    }
