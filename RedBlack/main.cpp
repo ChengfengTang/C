@@ -19,13 +19,15 @@ void insert_case3(Node* n);
 void insert_case4(Node* n);
 void insert_case4step2(Node* n);
 void insert_recurse(Node* head, Node* n);
-int delete_recurse(Node* &head, int number, int numbersofnumbers);
+int big_delete(Node* head, int number, int numbersofnumbers);
+//void print(Node* head, int printarray[], int i );
+void printTree(char prefix[], Node* root, bool isLeft);
 void delete_case1(Node* n);
 void delete_case2(Node* n);
 void delete_case3(Node* n);
 void delete_case4(Node* n);
-//void print(Node* head, int printarray[], int i );
-void printTree(char prefix[], Node* root, bool isLeft);
+void delete_case5(Node* n);
+void delete_case6(Node* n);
 char* input;
 char* numbers;
 //Basically instead of putting it into .h and Node.cpp, define it here, so there is less pointers to be track of
@@ -131,6 +133,8 @@ int main()
   int numbersofnumbers = 0;
   Node* head = NULL;
   
+
+ 
   for (int abc = 0; abc <= 998; abc++)
     {
       array[abc] = -1;
@@ -342,7 +346,7 @@ int main()
 	  int number = 0;
 	  cin >> number;
 	  cin.get();
-	  numbersofnumbers = delete_recurse(head,number,numbersofnumbers);
+	  numbersofnumbers = big_delete(head,number,numbersofnumbers);
 	  
 	}
       else if (b==3) // if the user wants to print
@@ -419,98 +423,261 @@ Node* inOrderSuccessor(Node* n)
     }
     
 }
-int delete_recurse(Node* &head, int number, int numbersofnumbers)
+int big_delete(Node* head, int number, int numbersofnumbers)
 {
+ 
   Node* n = search(head, number);
   if (n != NULL)
     {
+      cout << endl;
       
-      Node* p = n->getParent();
-    
-    
-	  // find the inorder successor, swap it with the node that's about to be deleted
-	  // and fix the tree.
-	  Node* ios = inOrderSuccessor(n);
-	  // if inorder successor is itself
-	  //delete the node and disconnect it with its parent
-	  if (ios == n)
-	    {
-	      if (p == NULL) // if it's a head and it has no child
-		{
-		  head = NULL; // set head null
-		  delete n;
-		}
-	      else if (p->getLeft() == n) // otherwise disconnect with parent then delete node.
-		{
-		  Node* del = n;
-		  p->setLeft(NULL);
-		   delete del;
-		}
-	      else if (p->getRight() == n)
-		{
-		  Node* del = n;
-		  p->setRight(NULL);
-		  delete del;
-		}
-	    }
-	  // if # is a predessecor that means there is nothing on the right (nothing bigger than the deleted number, and there is only two nodes in that
-	  //small subtree, then just replace the ios with n and swap color.
-	  else if( ios->getValue() < n->getValue())
-	    {
-	      
-	      n->setValue(ios->getValue());
-	      n->setLeft(NULL);
-	      delete ios;
-	      // n->setColor(0); // always black
-	    }
+      // find the inorder successor, swap it with the node that's about to be deleted
+      // and fix the tree.
+      Node* ios = inOrderSuccessor(n);
+      cout <<"n:"  << n->getValue() << endl;
+      cout << "ios: " << ios->getValue() << endl;
+      // if inorder successor is itself
+      
+      Node* p = ios->getParent();
+      //cite en.wikipedia.org/wiki/Red-black_tree for part of deletion algorithm and ideas
 
-	  // if ios is an inorder successor..
-	  //cite en.wikipedia.org/wiki/Red-black_tree for part of deletion algorithm and ideas
+      // case 1 deletng head
+      if (n == head && ios == n) 
+	{
+	  cout << "case 1 " << endl;
+	  cout << "Deleting the only Node in the tree" << endl;
+	      
+	  cout << endl;
+	  head = NULL; // set head null
+	  delete n;
+	    
+	}
+      // 1b when n == ios but there is nothing else in the subtree
+      // ex. 4 2 3 7 6 9 deleting 4
+      else if ((n == ios) && (ios->getLeft() == NULL) && (ios->getRight() == NULL))  
+	{
+	  cout << "case 1b" << endl;
+	  cout << endl;
+	  if ((sibling(ios)->getLeft() != NULL) || (sibling(ios)->getRight() != NULL))
+	    {
+	      p->setColor(0);
+	      sibling(ios)->setColor(1);
+	      
+	     rotate_left(p);
+	     sibling(p)->setColor(0);
+	    }
+	  if (p->getLeft() == ios)
+	    {
+	      p->setLeft(NULL);
+	    }
 	  else
 	    {
-	      // right ios never has a left child !!!
-	      // case 1
-	      // right ios doesn't have a right child
-	      if (ios->getRight() == NULL)
+	      p->setRight(NULL);
+	    }
+	  delete ios;
+	}
+      // case 2 no ios, only pds, which means there is only 2 Nodes in the small subtree.
+      else if (ios->getValue() < n->getValue()) // ex. 2 1 4 3 deleting 4  or 2 1 deleting 2
+	{
+	  cout << "case 2" << endl;
+	  n->setValue(ios->getValue());
+	  p->setLeft(NULL);
+	  delete ios;
+	}
+      // case 3 no pds, only ios
+      // ex.. 2 3 deleting 2 or 2 1 3 4 deleting 3
+      else if (n->getLeft() == NULL)
+	{
+	  cout << "case 3 " << endl;
+	  n->setValue(ios->getValue());
+	  p->setRight(NULL);
+	  delete ios;
+	}
+      // case 4 ios has no children
+      // ex. 3 2 6 7 4  deleting 3
+      
+      else if ((ios->getLeft() == NULL) && (ios->getRight() == NULL))
+	{
+	  cout << "case 4 " << endl;
+	  n->setValue(ios->getValue());
+	  p->setLeft(NULL);
+	  delete ios;
+	}
+      // case 5
+      //since it's right ios, it can only have none or right child
+      
+      else if (ios->getRight() != NULL)
+	{
+	  cout << "case 5 " << endl;
+        
+	  // if ios has a right child and ios is red, then just replace ios's right child with ios
+	  // deleting a red node doesn't m atter
+	  Node* iosc;
+	  
+	  if (ios->getRight() != NULL)
+	    {
+	      Node* iosc = ios->getRight();
+	    }
+	  else if (ios->getLeft() != NULL)
+	    {
+	      Node* iosc = ios->getLeft();
+	    }
+	  else
+	    {
+	      Node* p = ios ->getParent();
+	      if (p->getLeft() == ios)
 		{
-		  n->setValue(ios->getValue());
-		  ios->getParent()->setLeft(NULL);
-		  delete ios;
-		}
 	      
+		  
+		  p->setLeft(NULL);
+	      
+		  delete n;
+		  //rotate if
+		}
 	      else
 		{
-      		  // if ios has a right child and ios is red, then just replace ios's right child with ios
-		  // deleting a red node doesn't m atter
-		  Node* iosc = ios->getRight();
-		  ios->getParent()->setLeft(iosc);
-		  if (ios->getColor() == 0)
-		    {
-		      // else if ios is blalck and ios's right child is red, then just replace the Node and color and the tree remains 
-		      if (iosc->getColor() == 1)
-			{
-			  iosc->setColor(1);
-			}
-		      // if both are black, then we have a lot to do 
-		      else
-			{
-		      
-			}
-		    }
-		  delete ios;
+		  
+		  p->setRight(NULL);
+		  delete n;
+		  //rotate if
 		}
-	     
-
-
+	      return numbersofnumbers - 1;
 	    }
+	  Node* temp = ios->getParent();
+	  iosc->setParent(temp);
+	  
+	  if(ios == ios->getParent()->getLeft())
+	    {
+	      ios->getParent()->setLeft(iosc);
+	    }
+	  else
+	    {
+	      ios->getParent()->setRight(iosc);
+	    }
+	  if (ios->getColor(ios) == 0)
+	    {
+	      if (iosc->getColor(iosc) == 1)
+		{	  
+		  iosc->setColor(0);
+		}
+	      else
+		{
+		  delete_case1(iosc);
+		}
+	    }
+	  
+	  
+	  delete ios;
+	}
 	
-	
+     
       return numbersofnumbers-1;
     }
   else
     {
       cout << "Such node doens't exist" << endl;
       return numbersofnumbers;
+    }
+}
+
+void delete_case1(Node* n)
+{
+  cout << "case1" << endl;
+  if ( n->getParent() != NULL)
+    {
+      
+      delete_case2(n);
+    }
+}
+void delete_case2(Node* n)
+{
+  
+  cout << "case2" << endl;
+  Node* s = sibling (n);
+  if (s->getColor(s) == 1)
+    {
+      n->getParent()->setColor(1);
+      s->setColor(0);
+      if(n == n->getParent()->getLeft())
+	{
+      rotate_left(n->getParent());
+	}
+      else
+	{
+	  rotate_right(n->getParent());
+	}
+    }
+  delete_case3(n);
+}
+void delete_case3(Node* n)
+{
+  
+  cout << "case3" << endl;
+  Node* s = sibling(n);
+  
+  if ((n->getParent()->getColor(n->getParent()) == 0) && (s->getColor(s) == 0) && (s->getLeft()->getColor(s->getLeft()) == 0) && (s->getRight()->getColor(s->getRight()) == 0 ))
+    {
+      s->setColor(1);
+      delete_case1(n->getParent());
+    }
+  else
+    {
+      delete_case4(n);
+    }
+}
+void delete_case4(Node* n)
+{
+  
+  cout << "case4" << endl;
+  Node* s = sibling(n);
+  if ((n->getParent()->getColor(n->getParent()) == 1) && (s->getColor(s) == 0) && (s->getLeft()->getColor(s->getLeft()) == 0) && (s->getRight()->getColor(s->getRight()) == 0 ))
+    {
+      s->setColor(1);
+      n->getParent()->setColor(0);
+     
+    }
+  else
+    {
+      delete_case5(n);
+    }
+}
+void delete_case5(Node* n)
+{
+  
+  cout << "case5" << endl;
+  Node* s = sibling(n);
+  if (s->getColor(s) == 0)
+    {
+      if ((n == n->getParent()->getLeft()) &&(s->getRight()->getColor(s->getRight()) == 0) && (s->getLeft()->getColor(s->getLeft()) == 1))
+	{
+	  s->setColor(1);
+	  s->getLeft()->setColor(0);
+	  rotate_right(s);
+	}
+      else if ((n == n->getParent()->getRight()) &&(s->getRight()->getColor(s->getRight()) == 0) && (s->getLeft()->getColor(s->getLeft()) == 1))
+	  {
+	    s->setColor(1);
+	    s->getRight()->setColor(0);
+	    rotate_left(s);
+	  }
+	
+    }		
+  delete_case6(n);
+}
+void delete_case6(Node* n)
+{
+  
+  cout << "case6" << endl;
+  Node* s = sibling(n);
+  if (n == n->getParent()->getLeft())
+    {
+      n->getRight()->setColor(0);
+      rotate_left(n->getParent());
+    }
+  else
+    { 
+  s->getLeft()->setColor(0);
+  rotate_right(n->getParent());
     }
 }
 //Following ideas and defining uncle, grandparent, at the beginning was borrowed from Red-Black Tree Wikipeadia with small adjustment due to different
@@ -569,11 +736,11 @@ void insert_repair_tree(Node* n) //now we fix the tree
     {
       insert_case1(n); // since every new Node is red, if n is the head, make it black
     }
-  else if (n->getParent()->getColor() == 0) // if n's parent is black, and n is red
+  else if (n->getParent()->getColor(n->getParent()) == 0) // if n's parent is black, and n is red
     {
       insert_case2(n); // everything is fine
     }
-  else if (uncle(n) != NULL && uncle(n)->getColor() == 1) // if n's parent and uncle are red, (it wouldn't get to this level if n's parent
+  else if (uncle(n) != NULL && uncle(n)->getColor(uncle(n)) == 1) // if n's parent and uncle are red, (it wouldn't get to this level if n's parent
     // is black, from case 2, so 
     {
       insert_case3(n); // call case 3
@@ -635,10 +802,8 @@ void insert_case4step2(Node* n)
   p->setColor(0);
   g->setColor(1);
 }
-
 Node* search(Node* n, int number)
-{
-  
+{  
    if (n == NULL )
     {
       return NULL;
@@ -655,7 +820,6 @@ Node* search(Node* n, int number)
     {
       return n;
     }
-  
 }
 //Because of my poor print function, I copied this from https://stackoverflow.com/questions/4965335/how-to-print-binary-tree-diagram?noredirect=1&lq=1
 //Original idea from VasiliNovikov, saw this from Zareef
@@ -663,7 +827,7 @@ void printTree(char prefix[], Node* head, bool isLeft){
   char* Prefix = NULL;
   if (head!=NULL)
     {	    
-      if(head->getColor() == 0)
+      if(head->getColor(head) == 0)
 	{
 		
 	  cout << prefix;

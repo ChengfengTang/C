@@ -13,9 +13,9 @@ class Node
   void setRight(Node* newRight);
   void setParent(Node* newParent);
   void setColor(int newColor);
+
+  int getColor(Node* n);
   
-  
-  int getColor();
   Node* getParent();
   Node* getLeft();
   Node* getRight();
@@ -23,7 +23,7 @@ class Node
   
  private:
   int  value;
-  int color;
+  int color ;
   Node* parent;
   Node* left;
   Node* right;

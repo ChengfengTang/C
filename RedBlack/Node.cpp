@@ -11,7 +11,6 @@ Node::~Node()
 {
   
     left = NULL;
-  
   right = NULL;
 }
 void Node::setValue(int newValue)
@@ -52,7 +51,14 @@ int Node::getValue()
 {
   return value;
 }
-int Node::getColor()
+int Node::getColor(Node* n)
 {
+  if (n== NULL)
+    {
+      return 0;
+    }
+  else
+    {
   return color;
+    }
 }
