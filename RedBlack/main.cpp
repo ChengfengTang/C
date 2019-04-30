@@ -19,15 +19,15 @@ void insert_case3(Node* n);
 void insert_case4(Node* n);
 void insert_case4step2(Node* n);
 void insert_recurse(Node* head, Node* n);
-int big_delete(Node* head, int number, int numbersofnumbers);
+int big_delete(Node* &head, int number, int numbersofnumbers);
 //void print(Node* head, int printarray[], int i );
 void printTree(char prefix[], Node* root, bool isLeft);
-void delete_case1(Node* n);
-void delete_case2(Node* n);
-void delete_case3(Node* n);
-void delete_case4(Node* n);
-void delete_case5(Node* n);
-void delete_case6(Node* n);
+void delete_case1(Node* &n);
+void delete_case2(Node* &n);
+void delete_case3(Node* &n);
+void delete_case4(Node* &n);
+void delete_case5(Node* &n);
+void delete_case6(Node* &n);
 void detailed_info(Node* head);
 char* input;
 char* numbers;
@@ -357,6 +357,8 @@ int main()
 	  cout << "-----------------------------------------" << endl;
 	  if (numbersofnumbers != 0)
 	    {
+	      detailed_info(head);
+	      cout << endl;
 	  char* str = new char[999];
 	  str[0] = '\0';
 	  printTree(str,head,false);
@@ -426,7 +428,7 @@ Node* inOrderSuccessor(Node* n)
     }
     
 }
-int big_delete(Node* head, int number, int numbersofnumbers)
+int big_delete(Node* &head, int number, int numbersofnumbers)
 {
  
   Node* n = search(head, number);
@@ -439,8 +441,7 @@ int big_delete(Node* head, int number, int numbersofnumbers)
       Node* ios = inOrderSuccessor(n);
       cout <<"n:"  << n->getValue() << endl;
       cout << "ios: " << ios->getValue() << endl;
-      cout << endl;
-    
+          
       //cite en.wikipedia.org/wiki/Red-black_tree for part of deletion algorithm and ideas
 
       // case 1 deletng head
@@ -477,7 +478,7 @@ int big_delete(Node* head, int number, int numbersofnumbers)
 	  
 	      Node* temp = ios->getParent();
 	      iosc->setParent(temp);
-	  
+	      
 	      if(ios == ios->getParent()->getLeft())
 		{
 	      
@@ -487,17 +488,29 @@ int big_delete(Node* head, int number, int numbersofnumbers)
 		{
 		  ios->getParent()->setRight(iosc);
 		}
+	      
+             
 	      if (ios->getColor(ios) == 0)
 		{
+		  // if we are deleting (not the deleted node, but its in order succesor)
+		  // if it's blakc and it's child (only have 1) is red, we can just replace them and make
+		  // iosc black, other wise if ios is red, it doesn't affect anything at all
 		  if (iosc->getColor(iosc) == 1)
 		    {	  
 		      iosc->setColor(0);
 		    }
 		  else
 		    {
-		      delete_case1(iosc);
+		       delete_case1(iosc);
+		       
+		       
 		    }
 		}
+	      
+              
+	      // again since I don't have leaf children, this is just to help replacing and deleting.
+	      // for example when the inorder successor have no children, it will be replaced by this Node
+	      // that will be deleted later
 	      if (iosc->getValue() == -1)
 		{
 		  if (iosc->getParent()->getLeft() == iosc)
@@ -510,11 +523,21 @@ int big_delete(Node* head, int number, int numbersofnumbers)
 		    }
 		  delete iosc;
 		}
-	  
-	  delete ios;
+	      
+	      delete ios;
+	      
+      Node* x = head;
+      while(x->getParent() != NULL)
+	{
+	  x = x->getParent();
 	}
-     
-      return numbersofnumbers - 1;
+      head = x ;
+	
+	 	       
+      
+    	}
+        return numbersofnumbers - 1;
+
     }
   else
     {
@@ -523,20 +546,27 @@ int big_delete(Node* head, int number, int numbersofnumbers)
     }
 }
 
-void delete_case1(Node* n)
+void delete_case1(Node* &n)
 {
+  // this cacse 1 is borrowed from the website
+  // but it's actually the same as my case 0 so i don't really need it, but still borrowed it for the purpose of flater // cases
+  /*
+  cout << endl;
   cout << "case1" << endl;
+  */
   if ( n->getParent() != NULL)
     {
       
       delete_case2(n);
     }
 }
-void delete_case2(Node* n)
+void delete_case2(Node* &n)
 {
-  
+  /*
+  cout << endl;
   cout << "case2" << endl;
-  Node* s = sibling (n);
+  */
+Node* s = sibling (n);
 
   if (s->getColor(s) == 1)
     {
@@ -556,20 +586,26 @@ void delete_case2(Node* n)
     {
        temp = temp->getParent();
     }
-  detailed_info(temp);
+  //detailed_info(temp);
   
  
   delete_case3(n);
 }
-void delete_case3(Node* n)
+void delete_case3(Node* &n)
 {
-  
+  /*
+  cout << endl;
   cout << "case3" << endl;
-  Node* s = sibling(n);
+  */
+Node* s = sibling(n);
+  
+
+  //since I don't have leaf children, to prevent getcolor and getparent errors, i will make a temporary
+  // leaf node that's black for the sake of checking and fixing tree. They will be deleted at the end of each function
   if (s == NULL)
     {
       s = new Node;
-      s->setValue(-1);
+      s->setValue(-3);
       s->setColor(0);
       s->setLeft(NULL);
       s->setRight(NULL);
@@ -577,14 +613,15 @@ void delete_case3(Node* n)
   if ((n->getParent()->getColor(n->getParent()) == 0) && (s->getColor(s) == 0) && (s->getLeft()->getColor(s->getLeft()) == 0) && (s->getRight()->getColor(s->getRight()) == 0 ))
     {
       s->setColor(1);
-      delete_case1(n->getParent());
+      Node* p = n->getParent();
+      delete_case1(p);
       
       Node* temp = n->getParent();
       while(temp->getParent() != NULL)
 	{
 	  temp = temp->getParent();
 	}
-      detailed_info(temp);
+      //detailed_info(temp);
     }
   else
     {
@@ -594,11 +631,11 @@ void delete_case3(Node* n)
 	{
 	  temp = temp->getParent();
 	}
-      detailed_info(temp);
+      //   detailed_info(temp);
       delete_case4(n);
     }
   
-  if (s->getValue() == -1)
+  if (s->getValue() == -3)
     {
       if(s->getParent()->getLeft() == s)
 	{
@@ -611,16 +648,19 @@ void delete_case3(Node* n)
       delete s;
     }
 }
-void delete_case4(Node* n)
+void delete_case4(Node* &n)
 {
-  
+  /*
+  cout << endl;
   cout << "case4" << endl;
-  Node* s = sibling(n);
- 
+  
+  */
+Node* s = sibling(n);
+  
   if (s == NULL)
     {
       
-      s->setValue(-2);
+      s->setValue(-4);
       s->setColor(0);
       s->setLeft(NULL);
       s->setRight(NULL);
@@ -636,7 +676,9 @@ void delete_case4(Node* n)
 	{
 	  temp = temp->getParent();
 	}
-      detailed_info(temp);
+      
+
+      //detailed_info(temp);
     }
   else
     {
@@ -645,14 +687,14 @@ void delete_case4(Node* n)
 	{
 	  temp = temp->getParent();
 	}
-      detailed_info(temp);
- 
+      //detailed_info(temp);
+      
       delete_case5(n);
     }
   
-  if (s->getValue() == -2)
+  if (s->getValue() == -4)
     {
-      
+     
       if(s->getParent()->getLeft() == s)
 	{
 	  s->getParent()->setLeft(NULL); 
@@ -662,20 +704,22 @@ void delete_case4(Node* n)
 	  s->getParent()->setRight(NULL);
 	}
       delete s;
-    }
+      }
   
 }
-void delete_case5(Node* n)
+void delete_case5(Node* &n)
 {
-  
+  /*
+  cout << endl;
   cout << "case5" << endl;
-  Node* s = sibling(n);
+  */
+ Node* s = sibling(n);
   
   
   if (s == NULL)
     {
       s = new Node;
-      s->setValue(-3);
+      s->setValue(-5);
       s->setColor(0);
       s->setLeft(NULL);
       s->setRight(NULL);
@@ -702,7 +746,7 @@ void delete_case5(Node* n)
 	  }
 	
     }
-  if (s->getValue() == -3)
+  if (s->getValue() == -5)
     {
       if(s->getParent()->getLeft() == s)
 	{
@@ -719,15 +763,16 @@ void delete_case5(Node* n)
     {
        temp = temp->getParent();
     }
-  detailed_info(temp);
+  //detailed_info(temp);
   
   delete_case6(n);
 }
-void delete_case6(Node* n)
+void delete_case6(Node* &n)
 {
-  
+  /*
+  cout << endl;
   cout << "case6" << endl;
-  
+  cout << endl; */
   Node* s = sibling(n);
   
   if (n == n->getParent()->getLeft())
@@ -753,7 +798,8 @@ void delete_case6(Node* n)
     {
        temp = temp->getParent();
     }
-  detailed_info(temp);
+  
+  //detailed_info(temp);
   
 }
 //Following ideas and defining uncle, grandparent, at the beginning was borrowed from Red-Black Tree Wikipeadia with small adjustment due to different
@@ -879,7 +925,8 @@ void insert_case4step2(Node* n)
   g->setColor(1);
 }
 Node* search(Node* n, int number)
-{  
+{
+  // if u were to look for node
   if (n == NULL )
     {
       return NULL;
@@ -954,7 +1001,7 @@ void printTree(char prefix[], Node* head, bool isLeft){
 
 void detailed_info(Node* head)
 {
-  
+  //display every single node and its chidlren
   
   if(head != NULL)
     {
