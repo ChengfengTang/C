@@ -96,6 +96,12 @@ void rotate_left(Node* n)
 	}
     }
   nnew->setParent(p);
+  /*
+  if ((n->getColor(n) == 1) && (n->getRight()->getColor(n->getRight()) == 1))
+    {
+      n->setColor(0);
+      nnew->setColor(1);
+      }*/
 }
 void rotate_right(Node* n)
 {
@@ -121,6 +127,11 @@ void rotate_right(Node* n)
 	}
     }
   nnew->setParent(p);
+  /*if ((n->getColor(n) == 1) && (n->getLeft()->getColor(n->getRight()) == 1))
+    {
+      n->setColor(0);
+      nnew->setColor(1);
+      }*/
 }
 int main()
 {
@@ -550,10 +561,10 @@ void delete_case1(Node* &n)
 {
   // this cacse 1 is borrowed from the website
   // but it's actually the same as my case 0 so i don't really need it, but still borrowed it for the purpose of flater // cases
-  /*
+  
   cout << endl;
   cout << "case1" << endl;
-  */
+  
   if ( n->getParent() != NULL)
     {
       
@@ -562,10 +573,10 @@ void delete_case1(Node* &n)
 }
 void delete_case2(Node* &n)
 {
-  /*
+  
   cout << endl;
   cout << "case2" << endl;
-  */
+  
 Node* s = sibling (n);
 
   if (s->getColor(s) == 1)
@@ -586,17 +597,17 @@ Node* s = sibling (n);
     {
        temp = temp->getParent();
     }
-  //detailed_info(temp);
+  detailed_info(temp);
   
  
   delete_case3(n);
 }
 void delete_case3(Node* &n)
 {
-  /*
+  
   cout << endl;
   cout << "case3" << endl;
-  */
+  
 Node* s = sibling(n);
   
 
@@ -650,11 +661,11 @@ Node* s = sibling(n);
 }
 void delete_case4(Node* &n)
 {
-  /*
+  
   cout << endl;
   cout << "case4" << endl;
   
-  */
+  
 Node* s = sibling(n);
   
   if (s == NULL)
@@ -678,7 +689,7 @@ Node* s = sibling(n);
 	}
       
 
-      //detailed_info(temp);
+      detailed_info(temp);
     }
   else
     {
@@ -687,7 +698,7 @@ Node* s = sibling(n);
 	{
 	  temp = temp->getParent();
 	}
-      //detailed_info(temp);
+      detailed_info(temp);
       
       delete_case5(n);
     }
@@ -709,14 +720,12 @@ Node* s = sibling(n);
 }
 void delete_case5(Node* &n)
 {
-  /*
+  
   cout << endl;
   cout << "case5" << endl;
-  */
- Node* s = sibling(n);
+  Node* s;
   
-  
-  if (s == NULL)
+  if (sibling(n) == NULL)
     {
       s = new Node;
       s->setValue(-5);
@@ -724,10 +733,18 @@ void delete_case5(Node* &n)
       s->setLeft(NULL);
       s->setRight(NULL);
     }
+  else
+    {
+
+  s = sibling(n);
+    }
+  
   if (s->getColor(s) == 0)
     {
+     
       if ((n == n->getParent()->getLeft()) &&(s->getRight()->getColor(s->getRight()) == 0) && (s->getLeft()->getColor(s->getLeft()) == 1))
 	{
+	  
 	  s->setColor(1);
 	  if (s->getLeft() != NULL)
 	    {
@@ -735,8 +752,9 @@ void delete_case5(Node* &n)
 	    }
 	  rotate_right(s);
 	}
-      else if ((n == n->getParent()->getRight()) &&(s->getRight()->getColor(s->getRight()) == 0) && (s->getLeft()->getColor(s->getLeft()) == 1))
+      else if ((n == n->getParent()->getRight()) &&(s->getLeft()->getColor(s->getLeft()) == 0) && (s->getRight()->getColor(s->getRight()) == 1))
 	  {
+	    
 	    s->setColor(1);
 	    if (s->getRight() != NULL)
 	      {
@@ -746,6 +764,7 @@ void delete_case5(Node* &n)
 	  }
 	
     }
+
   if (s->getValue() == -5)
     {
       if(s->getParent()->getLeft() == s)
@@ -763,18 +782,33 @@ void delete_case5(Node* &n)
     {
        temp = temp->getParent();
     }
-  //detailed_info(temp);
+  detailed_info(temp);
   
   delete_case6(n);
 }
 void delete_case6(Node* &n)
 {
-  /*
+  
   cout << endl;
   cout << "case6" << endl;
-  cout << endl; */
-  Node* s = sibling(n);
+  cout << endl; 
+  Node* s;
+  if (sibling(n) == NULL)
+    {
+      s = new Node;
+      s->setValue(-6);
+      s->setColor(0);
+      s->setLeft(NULL);
+      s->setRight(NULL);
+    }
+  else
+    {
+
+  s = sibling(n);
+    }
   
+  s->setColor(n->getParent()->getColor(n->getParent()));
+  n->getParent()->setColor(0);
   if (n == n->getParent()->getLeft())
     {
       if(s->getRight() != NULL)
@@ -793,13 +827,26 @@ void delete_case6(Node* &n)
       rotate_right(n->getParent());
  
     }
+  
+  if (s->getValue() == -6)
+    {
+      if(s->getParent()->getLeft() == s)
+	{
+	  s->getParent()->setLeft(NULL); 
+	}
+      else
+	{
+	  s->getParent()->setRight(NULL);
+	}
+      delete s;
+    }
   Node* temp = n->getParent();
   while(temp->getParent() != NULL)
     {
        temp = temp->getParent();
     }
   
-  //detailed_info(temp);
+  detailed_info(temp);
   
 }
 //Following ideas and defining uncle, grandparent, at the beginning was borrowed from Red-Black Tree Wikipeadia with small adjustment due to different
