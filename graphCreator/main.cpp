@@ -2,17 +2,28 @@
 #include <math.h>
 #include <iomanip>
 #include <queue>
+#include <cstring>
 using namespace std;
+char* vertex;
 
-int main()
-{
-  int a = 10;
   char* input;
   char* start;
   char* end;
   
-  vector<vector<int> > vectorsofvectors;
-  vector<char*> vertex;
+int main()
+{
+  int a = 10;
+  vector<char*> vertex ;
+
+  int arr[20][20];
+  for(int q = 0; q <= 19; q++)
+    {
+      for (int w = 0; w <= 19; w++)
+	{
+	  arr[q][w] = -1;
+	}
+    }
+  
   while (a != 5 )
     {
       
@@ -36,9 +47,8 @@ int main()
 	  
 	  cout << "----------------------------------------" << endl;
 	  cout << "Vertex " << input << " is created. " << endl;
-	  //vector<int> newv;
-	  vertex.push_back(input);
-	  //vectorsofvectors.push_back(newv);
+	  vertex.push_back(input); // put this in the vector of all nodes
+	  arr[vertex.size()-1][vertex.size()-1] = 0; //the distance of a node to itsself is always 0
 	  cout << "----------------------------------------" << endl;
 	}
       else if (a == 2)
@@ -58,11 +68,65 @@ int main()
 	  cout<< "What's the weight of the edge going from " << start << " to " << end << " ?" << endl;
 	  cin >> weight;
 	  cin.get();
+	  if (strcmp(start,end) == 0) // can not connect a node with it self
+	    {
+	  cout << "----------------------------------------" << endl;
+	  cout << "Can't connect a node with itself. "  << endl;
+	  cout << "----------------------------------------" << endl;
+	     
+	    }
+	  else
+	    {
+	  int q ; // column
+	  for( q = 0; q <= vertex.size()-1; q++)
+	    {
+	      if (strcmp(vertex[q] , start) == 0)
+		{
+		  break;
+		}
+	    }
 	  
-	  cout << "----------------------------------------" << endl;
-	  cout << "The weight that goes from "<< start << " to " << end << " is: " << weight << endl;
-	  cout << "----------------------------------------" << endl;
-	}
+	  int w ; //row
+	  for(w = 0; w <= vertex.size()-1; w++)
+	    {
+	      if (strcmp(vertex[w],end) == 0)
+		{
+		  break;
+		}
+	    }
+	  /*
+	  cout << q << endl;
+	  cout << w << endl;
+	  cout << vertex.size() -1 << endl;*/
+	  if ((q > vertex.size()-1)) // just to make sure that the node is not even on the list, the counter would
+	    // therefore, be greater than the index
+	    {
+	      cout << "----------------------------------------" << endl;
+	  
+
+	      cout << "Can not find the beginning node" << endl;
+	      cout << "----------------------------------------" << endl;
+	  
+	    }
+	  else if (w > vertex.size()-1)
+	    {
+	      cout << "----------------------------------------" << endl;
+	  
+	      cout << "Can not find the ending node" << endl;
+	      cout << "----------------------------------------" << endl;
+	      
+	    }
+	  else // if it is located, change that position to the value/
+	    {
+	  
+	      arr[q][w] = weight;
+	      
+	      cout << "----------------------------------------" << endl;
+	      cout << "The weight that goes from "<< start << " to " << end << " is: " << weight << endl;
+	      cout << "----------------------------------------" << endl;
+	    }
+	    }
+       }
       else if (a == 3 )
 	{
 	  cout << "----------------------------------------" << endl;
@@ -81,50 +145,48 @@ int main()
 	}
       else if (a == 4)
 	{
-	  if (vectorsofvectors.isempty() == 1)
-	    {
-	  vector <int> a;
-	  vector <int> b;
-	  vector <int> c;
-	  a.push_back(0);
-	  a.push_back(5);
-	  a.push_back(11);
-	  b.push_back(3);
-	  b.push_back(0);
-	  b.push_back(1);
-	  c.push_back(7);
-	  c.push_back(3);
-	  c.push_back(0);
-	  vectorsofvectors.push_back(a);
-	  vectorsofvectors.push_back(b);
-	  vectorsofvectors.push_back(c);
 	  
-	  cout << "----------------------------------------" << endl;
-	  cout << "  " ;
-	  
-	  for(     vector<char*>::iterator v = vertex.begin(); v != vertex.end(); v++)
-	    {
-	      cout << *v <<" ";
-	    }
-	  cout << endl;
-	  vector<char*>::iterator x = vertex.begin();
-	  for (vector<vector<int> >::iterator it = vectorsofvectors.begin(); it != vectorsofvectors.end(); it++)
-	    {
+	  /*
+	  arr[0][1] =5;
+	  arr[0][2] =11;
+		
+		
+	  arr[1][0] = 3;
+	 
+	  arr[1][2] =1;
+		
+	  arr[2][0] =7;
+	  arr[2][1] =3;
+	  */
+		
+	      cout << "----------------------------------------" << endl;
+	      cout << "  " ;
+	      // print the a b c on top
+	      for(vector<char*>::iterator v = vertex.begin(); v != vertex.end(); v++ )
+		{
+		  
+		  cout << *v << " ";
+		}
+	      cout << endl;
+	      // print a and all of A's distance to abc...
+	      //then move on to B's distanec to abc... for a range of the numbers of vertex - 1 as index
+	      vector<char*> :: iterator b = vertex.begin();
+	      for (int a = 0; a<= vertex.size()-1; a++)
+		{
 	      
 	          
-		  cout << *x << " ";
-		  for (vector<int>::iterator itt = (*it).begin(); itt != (*it).end(); itt++)
+		  cout << *b << " ";
+		  for (int c = 0; c<= vertex.size()-1; c++)
 		    {
-		      cout << *itt << " ";
+		      
+		      
+		      cout << arr[a][c] << " ";
+			
 		    }
 		  cout << endl;
-		  x++;
-	    }
-	    }
-	  else
-	    {
-	      cout << "There is no vertex in the graph creator" << endl;
-	    }
+		  b++;
+		}
+	    
 	  cout << "----------------------------------------" << endl;
 	  
 	    
