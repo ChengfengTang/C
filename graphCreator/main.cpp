@@ -12,6 +12,9 @@ char* end;
   
 int main()
 {
+
+  cout << "Welcome to Cheng's Graph Creator!" << endl;
+
   int a = 10;
   vector<char*> vertex ;
 
@@ -27,7 +30,6 @@ int main()
   while (a != 6 )
     {
       
-      cout << "Welcome to Cheng's Graph Creator!" << endl;
       cout << "To add a vertex, enter \"1\"." << endl;
       cout << "To add an edge, enter \"2\"." << endl;
       cout << "To delete an edge, enter \"3\"." << endl;
@@ -40,7 +42,7 @@ int main()
       cin >> a;
       cin.get();
 
-  
+      
       if (a == 1) // add vertex
 	{
 	  cout << "----------------------------------------" << endl;
@@ -197,58 +199,58 @@ int main()
 	  
 	  if (strcmp(start,end) == 0) // can not connect a node with it self
 	    {
-	  cout << "----------------------------------------" << endl;
-	  cout << "Can't delete a Node's connection to itself. "  << endl;
-	  cout << "----------------------------------------" << endl;
+	      cout << "----------------------------------------" << endl;
+	      cout << "Can't delete a Node's connection to itself. "  << endl;
+	      cout << "----------------------------------------" << endl;
 	     
 	    }
 	  else
 	    {
-	  int q ; // column
-	  for( q = 0; q <= vertex.size()-1; q++)
-	    {
-	      if (strcmp(vertex[q] , start) == 0)
+	      int q ; // column
+	      for( q = 0; q <= vertex.size()-1; q++)
 		{
-		  break;
+		  if (strcmp(vertex[q] , start) == 0)
+		    {
+		      break;
+		    }
 		}
-	    }
 	  
-	  int w ; //row
-	  for(w = 0; w <= vertex.size()-1; w++)
-	    {
-	      if (strcmp(vertex[w],end) == 0)
+	      int w ; //row
+	      for(w = 0; w <= vertex.size()-1; w++)
 		{
-		  break;
+		  if (strcmp(vertex[w],end) == 0)
+		    {
+		      break;
+		    }
 		}
-	    }
-	  /*
-	  cout << q << endl;
-	  cout << w << endl;
-	  cout << vertex.size() -1 << endl;*/
-	  if (q > vertex.size()-1) // just to make sure that the node is not even on the list, the counter would
-	    // therefore, be greater than the index
-	    {
-	      cout << "----------------------------------------" << endl;
-	      cout << "Can not find the beginning node" << endl;
-	      cout << "----------------------------------------" << endl;
+	      /*
+		cout << q << endl;
+		cout << w << endl;
+		cout << vertex.size() -1 << endl;*/
+	      if (q > vertex.size()-1) // just to make sure that the node is not even on the list, the counter would
+		// therefore, be greater than the index
+		{
+		  cout << "----------------------------------------" << endl;
+		  cout << "Can not find the beginning node" << endl;
+		  cout << "----------------------------------------" << endl;
 	  
-	    }
-	  else if (w > vertex.size()-1)
-	    {
-	      cout << "----------------------------------------" << endl;
-	      cout << "Can not find the ending node" << endl;
-	      cout << "----------------------------------------" << endl;
+		}
+	      else if (w > vertex.size()-1)
+		{
+		  cout << "----------------------------------------" << endl;
+		  cout << "Can not find the ending node" << endl;
+		  cout << "----------------------------------------" << endl;
 	      
-	    }
-	  else // if it is located, change that position to the value/
-	    {
+		}
+	      else // if it is located, change that position to the value/
+		{
 	  
-	      arr[q][w] = -1;
+		  arr[q][w] = -1;
 	      
-	      cout << "----------------------------------------" << endl;
-	      cout << "The weight that goes from "<< start << " to " << end << " is deleted" << endl;
-	      cout << "----------------------------------------" << endl;
-	    }
+		  cout << "----------------------------------------" << endl;
+		  cout << "The weight that goes from "<< start << " to " << end << " is deleted" << endl;
+		  cout << "----------------------------------------" << endl;
+		}
 	    }
 	}
       else if (a == 4)
@@ -318,52 +320,140 @@ int main()
 	 
 	  if (strcmp(start,end) == 0) // can not connect a node with it self
 	    {
-	  cout << "----------------------------------------" << endl;
-	  cout << "A node's distance to itself is always 0. "  << endl;
-	  cout << "----------------------------------------" << endl;
+	      cout << "----------------------------------------" << endl;
+	      cout << "A node's distance to itself is always 0. "  << endl;
+	      cout << "----------------------------------------" << endl;
 	    }
 	  else
 	    {
-	  int q ; // column
-	  for( q = 0; q <= vertex.size()-1; q++)
-	    {
-	      if (strcmp(vertex[q] , start) == 0)
+	      int q ; // column
+	      for( q = 0; q <= vertex.size()-1; q++)
 		{
-		  break;
+		  if (strcmp(vertex[q] , start) == 0)
+		    {
+		      break;
+		    }
 		}
-	    }
 	  
-	  int w ; //row
-	  for(w = 0; w <= vertex.size()-1; w++)
-	    {
-	      if (strcmp(vertex[w],end) == 0)
+	      int w ; //row
+	      for(w = 0; w <= vertex.size()-1; w++)
 		{
-		  break;
+		  if (strcmp(vertex[w],end) == 0)
+		    {
+		      break;
+		    }
 		}
-	    }
-	  /*
-	  cout << q << endl;
-	  cout << w << endl;
-	  cout << vertex.size() -1 << endl;*/
-	  if (q > vertex.size()-1) // just to make sure that the node is not even on the list, the counter would
-	    // therefore, be greater than the index
-	    {
-	      cout << "----------------------------------------" << endl;
+	      /*
+		cout << q << endl;
+		cout << w << endl;
+		cout << vertex.size() -1 << endl;*/
+	      if (q > vertex.size()-1) // just to make sure that the node is not even on the list, the counter would
+		// therefore, be greater than the index
+		{
+		  cout << "----------------------------------------" << endl;
 	  
 
-	      cout << "Can not find the beginning node" << endl;
-	      cout << "----------------------------------------" << endl;
+		  cout << "Can not find the beginning node" << endl;
+		  cout << "----------------------------------------" << endl;
 	  
-	    }
-	  else if (w > vertex.size()-1)
-	    {
-	      cout << "----------------------------------------" << endl;
-	      cout << "Can not find the ending node" << endl;
-	      cout << "----------------------------------------" << endl;
-	    }
-	  else
-	    {
-	      // di
+		}
+	      else if (w > vertex.size()-1)
+		{
+		  cout << "----------------------------------------" << endl;
+		  cout << "Can not find the ending node" << endl;
+		  cout << "----------------------------------------" << endl;
+		}
+	      else
+		{
+		  // a queue for all the path
+		  int size = vertex.size();
+		  int arra [size][size];
+		  int go = q;
+		  cout << go << endl;
+		  int stop = w;
+		  cout << stop << endl;
+		  for(int i = 0; i< size; i++)
+		    {
+		      for(int k = 0; k< size; k++)
+
+			{
+			  arra[i][k] = -1;
+			}
+		      
+		    }
+		  
+		      int shortest = 0;
+		      int index = 0;
+		      vector <int> whereihavebeen;
+		      for(int i =0; i<size; i++) // do this 5 times becuase we will be filling5 rows
+		    {
+
+		      
+		      for(int k = 0; k < size; k++) // for each row,
+			{
+			  if(arr[go+index][k] != -1) // if the original distance is not null
+			    {
+			      arra[go+index][k] = arr[go+index][k] + shortest;
+			      // the new distance will be filled with original distance + shortest path
+			      // for example;
+			      /*
+
+				down below is the distance               down below is the shortest distance from 
+				  from single node to single node      a node to all its path
+				   A B C  D  E                       A B C D  E
+			        A  0 4 2 -1 -1                     A 0 4 2 -1 -1         
+                                                                   right here, the shortet path is 0, since we are starting from A andd A-> A is 0, so everything is the same
+				                                   therefore, we go through the list and figure out that C is the next one, so index would then be 2 since A = 0 B =1 C =2 D = 3
+
+				B -1 0 3  2  3                     C 0 3 2 6 7				                                   
+                                                                   now the shortest becomes 2, because we are calculating from A->C->everynode, since C->B is 1 A->C->B = 3 and therefore replaced
+
+
+				C -1 1 0  4  5                     B 0 3 2 5 6 
+				D -1 -1 -1 -1 -1                   D 0 3 2 5 6 
+				E -1 -1 -1 1  0                    E 0 3 2 5 6 
+
+			       */
+			    }
+			}
+		      
+	       
+		      whereihavebeen.push_back(index);
+		      for(int k = 0; k < size; k++)
+			{
+			  for(int j = 0; j < whereihavebeen.size(); j++)
+
+			    {
+			      if (k = whereihavebeen.at(j))
+				{
+				  k++;
+				  break;
+				}
+			    }
+			  if (arra[go+index][k] < shortest)
+			    {
+			      shortest = arr[go+index][k];
+			      index = k;
+			    }
+			}
+
+		  
+		    }
+		      //print final    
+		  for(int i = 0; i< size; i++)
+		    {
+		      for(int k = 0; k< size; k++)
+
+			{
+			  cout << arra[i][k] << " ";
+			}
+		      cout << endl;
+		    }
+		  
+		  
+		  
+		  
+		}
 	    }
 	}
       else if (a == 6)
@@ -380,9 +470,6 @@ int main()
 	  
 	}
   
-
-
     }
-  
-  
+ 
 }
