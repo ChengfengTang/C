@@ -369,9 +369,9 @@ int main()
 		  int size = vertex.size();
 		  int arra [size][size];
 		  int go = q;
-		  cout << go << endl;
+		  
 		  int stop = w;
-		  cout << stop << endl;
+		  
 		  for(int i = 0; i< size; i++)
 		    {
 		      for(int k = 0; k< size; k++)
@@ -381,20 +381,26 @@ int main()
 			}
 		      
 		    }
-		  
-		      int shortest = 0;
-		      int index = 0;
-		      vector <int> whereihavebeen;
+	      
+		  int shortest = 0;
+		      int index = go;
+		      int indexx = 0;
+		     		      vector <int> whereihavebeen;
 		      for(int i =0; i<size; i++) // do this 5 times becuase we will be filling5 rows
 		    {
-
-		      
+		      cout << "Trial: " << i + 1 << endl;
+		      cout <<"Index: " << index << endl;
+		      cout << "Indexx: " << indexx << endl;
+		      cout << "Shortest: " << shortest << endl;
+		      cout << "Size: " << size << endl;
+		      //arr original arra new
 		      for(int k = 0; k < size; k++) // for each row,
 			{
-			  if(arr[go+index][k] != -1) // if the original distance is not null
+			  if(arr[index][k] != -1) // if the original distance is not null
 			    {
-			      arra[go+index][k] = arr[go+index][k] + shortest;
-			      // the new distance will be filled with original distance + shortest path
+			      arra[indexx][k] = arr[index][k] + shortest;
+			      cout << arr[index][k] <<" + " << shortest << " = " << arra[i][k] << endl;
+			     			      // the new distance will be filled with original distance + shortest path
 			      // for example;
 			      /*
 
@@ -415,31 +421,62 @@ int main()
 
 			       */
 			    }
+			  else if (i != 0)
+			    {
+			      arra[indexx][k] = arra[i-1][k];
+			      cout << "same as last row: " << arra[i-1][k] << endl;
+			    }
+			  else
+			    {
+			      cout << "-1" << endl;
+			    }
+			  
+			
 			}
 		      
-	       
+		      
 		      whereihavebeen.push_back(index);
+		      shortest = 0;
+		      for (int xd = 0; xd < whereihavebeen.size(); xd++ )
+			{
+			  cout << "I have been to: " << whereihavebeen.at(xd) << endl;
+			}
+		      int yesno = 0;
 		      for(int k = 0; k < size; k++)
 			{
-			  for(int j = 0; j < whereihavebeen.size(); j++)
-
+			  yesno = 0;
+			  for (int gg = 0; gg < whereihavebeen.size(); gg++ )
 			    {
-			      if (k = whereihavebeen.at(j))
-				{
-				  k++;
-				  break;
-				}
+			      cout << k << " " ;
+			      cout << whereihavebeen.at(gg) << endl;
+			      if (k - (whereihavebeen.at(gg)) == 0 )
+			      {
+			        yesno = 1;
+				
+			      }
 			    }
-			  if (arra[go+index][k] < shortest)
+			  cout << yesno << endl;
+			  
+			  if ((arra[indexx][k] > 0 ) && (arra[indexx][k] < shortest) && (yesno == 0))
 			    {
-			      shortest = arr[go+index][k];
+			      shortest = arra[indexx][k];
 			      index = k;
+				  
+			      cout << "new shortest " << shortest << " at " << index << endl;
 			    }
-			}
+			  else if ((arra[indexx][k] > 0) && (shortest == 0 ) && (yesno == 0))
+			    {
+			      shortest = arra[indexx][k];
+			      index = k;
+				  
+			      cout << "new shortest " << shortest << " at " << index << endl;
+			    } 
+			    
 
-		  
-		    }
-		      //print final    
+			} 
+		    
+		      indexx++;
+		            
 		  for(int i = 0; i< size; i++)
 		    {
 		      for(int k = 0; k< size; k++)
@@ -450,6 +487,9 @@ int main()
 		      cout << endl;
 		    }
 		  
+		    }
+		
+		   
 		  
 		  
 		  
