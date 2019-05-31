@@ -388,18 +388,35 @@ int main()
 		     		      vector <int> whereihavebeen;
 		      for(int i =0; i<size; i++) // do this 5 times becuase we will be filling5 rows
 		    {
-		      cout << "Trial: " << i + 1 << endl;
-		      cout <<"Index: " << index << endl;
-		      cout << "Indexx: " << indexx << endl;
-		      cout << "Shortest: " << shortest << endl;
-		      cout << "Size: " << size << endl;
+		      //cout << "Trial: " << i + 1 << endl;
+		      //cout <<"Index: " << index << endl;
+		      //cout << "Indexx: " << indexx << endl;
+		      //cout << "Shortest: " << shortest << endl;
+		      // cout << "Size: " << size << endl;
 		      //arr original arra new
 		      for(int k = 0; k < size; k++) // for each row,
 			{
 			  if(arr[index][k] != -1) // if the original distance is not null
 			    {
-			      arra[indexx][k] = arr[index][k] + shortest;
-			      cout << arr[index][k] <<" + " << shortest << " = " << arra[i][k] << endl;
+			      if ((i == 0) || (arra[i-1][k] == -1))
+				{
+		      	    arra[indexx][k] = arr[index][k] + shortest;
+			    // cout << arr[index][k] <<" + " << shortest << " = " << arra[i][k] << endl;
+			     
+				}
+			      else
+				{
+				  arra[indexx][k] = arr[index][k] + shortest;
+				  //cout << arr[index][k] <<" + " << shortest << " = " << arra[i][k] << endl;
+				
+				  if (arra[indexx][k] > arra[indexx-1][k])
+			
+				    {
+				      arra[indexx][k] = arra[indexx-1][k];
+			       
+				      //cout << "same as last row" << endl;
+				    }
+				}
 			     			      // the new distance will be filled with original distance + shortest path
 			      // for example;
 			      /*
@@ -424,11 +441,11 @@ int main()
 			  else if (i != 0)
 			    {
 			      arra[indexx][k] = arra[i-1][k];
-			      cout << "same as last row: " << arra[i-1][k] << endl;
+			      //cout << "same as last row: " << arra[i-1][k] << endl;
 			    }
 			  else
 			    {
-			      cout << "-1" << endl;
+			      //cout << "-1" << endl;
 			    }
 			  
 			
@@ -439,7 +456,7 @@ int main()
 		      shortest = 0;
 		      for (int xd = 0; xd < whereihavebeen.size(); xd++ )
 			{
-			  cout << "I have been to: " << whereihavebeen.at(xd) << endl;
+			  // cout << "I have been to: " << whereihavebeen.at(xd) << endl;
 			}
 		      int yesno = 0;
 		      for(int k = 0; k < size; k++)
@@ -447,36 +464,37 @@ int main()
 			  yesno = 0;
 			  for (int gg = 0; gg < whereihavebeen.size(); gg++ )
 			    {
-			      cout << k << " " ;
-			      cout << whereihavebeen.at(gg) << endl;
+			     
 			      if (k - (whereihavebeen.at(gg)) == 0 )
 			      {
 			        yesno = 1;
 				
 			      }
 			    }
-			  cout << yesno << endl;
-			  
+			  			  
 			  if ((arra[indexx][k] > 0 ) && (arra[indexx][k] < shortest) && (yesno == 0))
 			    {
 			      shortest = arra[indexx][k];
 			      index = k;
 				  
-			      cout << "new shortest " << shortest << " at " << index << endl;
+			      //cout << "new shortest " << shortest << " at " << index << endl;
 			    }
 			  else if ((arra[indexx][k] > 0) && (shortest == 0 ) && (yesno == 0))
 			    {
 			      shortest = arra[indexx][k];
 			      index = k;
 				  
-			      cout << "new shortest " << shortest << " at " << index << endl;
+			      //cout << "new shortest " << shortest << " at " << index << endl;
 			    } 
 			    
 
 			} 
 		    
 		      indexx++;
-		            
+		     
+		  
+		    }
+		             
 		  for(int i = 0; i< size; i++)
 		    {
 		      for(int k = 0; k< size; k++)
@@ -486,12 +504,35 @@ int main()
 			}
 		      cout << endl;
 		    }
-		  
-		    }
 		
-		   
+	  cout << "----------------------------------------" << endl;
+
+	  if (arra[size-1][stop] == -1)
+	    {
+	      cout << "No possible path" << endl;
+	      
+	    }
+	  else
+	    {
+	  cout << "weight: " << arra[size-1][stop] << endl;
+	
+	  
+		  for(int l = 0; l < whereihavebeen.size(); l++)
+		    {
+		      if (whereihavebeen.at(l) != stop)
+			{
+			  cout << vertex.at(whereihavebeen.at(l)) << "->"; 
+			}
+		      else
+			{
+			  cout << vertex.at(whereihavebeen.at(l)) << endl;
+			  break;
+			}
+		    }
 		  
-		  
+	    }
+	  cout << "----------------------------------------" << endl;
+	 	  
 		  
 		}
 	    }
