@@ -214,11 +214,13 @@ int main()
 		  
 		  for(int i = 0; i < vertex.size(); i++ )
 		    {
-		      //cout << vertex.at(i) << endl;
+		      cout << vertex.at(i) << endl;
 		      
 		    }
+		  cout << z << endl;
+		 
 		  //if deleted vertex is the last one in the list, then just set that row and column to -1
-		  if ( z == vertex.size()-1)
+		  if ( z == vertex.size())
 		    {
 		      for(int i = 0; i< vertex.size(); i++)
 			{
@@ -233,7 +235,36 @@ int main()
 		  //else fill the blank with stuff afterward
 		  else
 		    {
-
+		      for(int g = 0; g < z; g++ )
+			{
+			  for(int i = z+1; i <= vertex.size(); i++ )
+			    {
+			      arr[i-1][g]=arr[i][g];
+			      arr[i][g] = -1;
+			    }
+			}
+		      
+		      for(int g = 0; g < z; g++ )
+			{
+			  for(int i = z+1; i <= vertex.size(); i++ )
+			    {
+			      arr[g][i-1]=arr[g][i];
+			      arr[g][i] = -1;
+			    }
+			}
+		      
+		      for(int g = z+1; g <= vertex.size(); g++ )
+			{
+			  for(int i = z+1; i <= vertex.size(); i++ )
+			    {
+			      arr[i-1][g-1]=arr[i][g];
+			      arr[i][g] = -1;
+			    }
+			}
+		    }
+		  for(int i = 0; i < vertex.size(); i++)
+		    {
+		      arr[i][i] = 0;
 		    }
 		  cout << "----------------------------------------" << endl;
 		}
