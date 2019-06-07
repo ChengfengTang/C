@@ -261,10 +261,27 @@ int main()
 			      arr[i][g] = -1;
 			    }
 			}
-		    }
-		  for(int i = 0; i < vertex.size(); i++)
-		    {
-		      arr[i][i] = 0;
+		    
+		      for(int i = vertex.size();i< 20; i++)
+			{
+			  for(int g = 0; g < 20; g++)
+			    {
+			      arr[i][g] = -1;
+			    }
+			}
+		  
+		      for(int g = vertex.size(); g< 20; g++)
+			{
+			  for(int i = 0; i < 20; i++)
+			    {
+			      arr[i][g] = -1;
+			    }
+			}
+		  
+		      for(int i = 0; i < 20; i++)
+			{
+			  arr[i][i] = 0;
+			}
 		    }
 		  cout << "----------------------------------------" << endl;
 		}
