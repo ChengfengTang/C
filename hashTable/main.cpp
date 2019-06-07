@@ -5,6 +5,7 @@
 #include <cstring>
 #include <iomanip>
 #include <math.h>
+#include <stdlib.h>
 #include <fstream>
 #include <vector>
 using namespace std;
@@ -33,7 +34,7 @@ struct node
 //functions
 
 int getHashValue(int id, int size); // return the index of a student
-//void rehash(node* newHash[], node* oldHash[], int &size);
+int  rehash(node* newHashTablle[], node* oldHashTable[], int size);
 student* create( char* firstName, char* lastName, int id, float gpa);
 void addStudent(node* hashTable[],int index, student* student);
 void print(node* hashTable[], int size);
@@ -43,7 +44,7 @@ void deleteStudent(node* hashTable[], int id, int size);
 //then double the size, students can have same name but not the same id.
 int main()
 {
-  int size = 100;
+  int size = 2;
   vector <char*> firstNames;
   vector <char*> lastNames;
   node** hashTable = new node* [100];
@@ -107,9 +108,37 @@ int main()
 	      student* news;
 	      news = create(firstName, lastName, id, gpa);
 	      int index = getHashValue(id, size);
+      	      addStudent (hashTable, index, news );	
 	      //check if the hash table needs to be rehashed every time a new student is added
-	      
-	      addStudent (hashTable, index, news );	
+	      for(int i = 0; i< size; i++)
+		{
+		  int xd = 0;
+		  node* counter = hashTable[i];
+		  if (counter == NULL)
+		    {
+		      //if there is no student in this row, keep going down
+		    }
+		  else
+		    {
+		      while(counter != NULL) // count the number of student in the current row
+			{
+			  counter = counter->next;
+			  xd += 1;
+			}
+		      if(xd > 3  ) //if there is more than 3 students, rehash the table
+			{
+			  node** newHashTable = new node*[size * 2 ]; //create a new hashtable
+			  size = rehash(newHashTable, hashTable, size); //return the doubled size while adding all the
+			  //student in oldhashtable to new hashtable
+			  // if there is more than 3 students with the same index, double the size            
+			  delete[] hashTable; //don't wanna make too many hashtables, clean up the one and only hashtable, and make it equal to the new hashtable
+			  hashTable = newHashTable;
+			}
+		    }
+		  
+
+		}
+	     
 	      cout << "The new student: " << news->firstName << " " << news->lastName << endl;
 	      cout << "With student id: " << news->id << " and gpa: " << news->gpa << endl;
 	      cout << "will be placed at index: " << index << endl;
@@ -241,7 +270,35 @@ int main()
 	      student* news = create(firstName,lastName,id,gpa);
 	      int index = getHashValue(id,size);
 	      addStudent(hashTable,index,news);
-	      //check if rehashing is needed
+	       for(int i = 0; i< size; i++)
+		{
+		  int xd = 0;
+		  node* counter = hashTable[i];
+		  if (counter == NULL)
+		    {
+
+		    }
+		  else
+		    {
+		      while(counter != NULL)
+			{
+			  counter = counter->next;
+			  xd += 1;
+			}
+		      if(xd > 3  )
+			{
+			  node** newHashTable = new node*[size * 2 ];
+			  size = rehash(newHashTable, hashTable, size);
+			  // if there is more than 3 students with the same index, double the size            
+			  delete[] hashTable;
+			  hashTable = newHashTable;
+			  break;
+			}
+		    }
+		  
+
+		}
+	
 	      cout << "The random new student: " << news->firstName << " " << news->lastName << endl;
 	      cout << "With student id: " << news->id << " and gpa: " << news->gpa << endl;
 	      cout << "will be placed at index: " << index << endl;
@@ -300,6 +357,31 @@ int main()
       
     }
   
+}
+int rehash(node* newHashTable[], node* oldHashTable[], int size)
+{
+  for( int i = 0; i< (size *2); i++)
+    {
+      //set everything in the new hashtable to null
+      newHashTable[i] = NULL; 
+    }
+  for( int i = 0; i< size; i++) // go through the old one
+    {
+      node* n = oldHashTable[i];
+      // go through each index and add each student to the new hashtable
+      while(n != NULL)
+	{
+	  int index = getHashValue(n->student->id, size *2); //get the new index
+	  addStudent(newHashTable,  index , n->student); //add
+	  n = n->next;//go through each index for the old hashtable
+	}
+      
+
+    }
+
+
+  size = size * 2 ; // return the new size
+  return size;
 }
 void deleteStudent(node* hashTable[], int id, int size)
 {
@@ -389,19 +471,6 @@ void addStudent(node* hashTable[], int index, student* news)
       current = temp;
       int length = 1;
     
-      while(current != NULL)
-	{
-	  current = current->next;
-	  length ++;
-	}
-      if (length > 3 ) // if there is more than 3 students with the same index, the table needs to be enlarged
-	{
-	  //resize
-	}
-      else
-	{
-	  //
-	}
     }
 }
 
